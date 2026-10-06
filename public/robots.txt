@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /staff
+Disallow: /cart
+Disallow: /payments
+Disallow: /oauth
+Sitemap: https://maven-host.com/sitemap.xml
+Sitemap: https://maven-host.com/sitemap-blog.xml

@@ -1,0 +1,368 @@
+@import "tailwindcss";
+
+/* Self-hosted fonts (via @fontsource) rather than a Google Fonts <link> â€”
+   no third-party request at page load, and it renders identically in
+   network-restricted environments (CI, offline demos, this sandbox). */
+@import "@fontsource/space-grotesk/latin-500.css";
+@import "@fontsource/space-grotesk/latin-600.css";
+@import "@fontsource/space-grotesk/latin-700.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-500.css";
+@import "@fontsource/jetbrains-mono/latin-600.css";
+
+/* MavenHost: Inara Crest palette. Blue #0C6898, cyan #00D2FF,
+   deep blue #0B4C72, white content surfaces and dark feature sections. */
+
+@theme {
+  --color-maven-ink: #0B4C72;
+  --color-maven-navy: #0B4C72;
+  --color-maven-slate: #193E53;
+  --color-maven-text: #0B4C72;
+  --color-maven-link: #0C6898;
+  --color-maven-paper: #F8FAFC;
+  --color-maven-surface: #FFFFFF;
+  --color-maven-line: #DDE5EB;
+  --color-maven-signal: #0C6898;
+  --color-maven-blue: #0C6898;
+  --color-maven-cyan: #00D2FF;
+  --color-maven-bright: #00D2FF;
+  --color-maven-gold: #B7791C;
+  --color-maven-muted: #526679;
+  --color-maven-danger: #B3261E;
+  --color-maven-panel-dark: #0A324A;
+
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+@layer base {
+  :root {
+    color: var(--color-maven-text);
+    background: var(--color-maven-paper);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { margin: 0; min-width: 320px; background: var(--color-maven-paper); color: var(--color-maven-text); }
+  button, input, select, textarea { font: inherit; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+  ::selection { background: rgb(12 104 152 / 0.28); }
+
+  :focus-visible { outline: 2px solid rgb(0 210 255 / 0.72); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  @keyframes maven-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  @keyframes maven-orbit {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes maven-orbit-reverse {
+    to { transform: rotate(-360deg); }
+  }
+
+  .float-gentle { animation: maven-float 6s ease-in-out infinite; }
+  .orbit-gentle { animation: maven-orbit 34s linear infinite; }
+  .orbit-gentle-reverse { animation: maven-orbit-reverse 46s linear infinite; }
+
+  .container-shell {
+    width: min(1600px, calc(100% - 32px));
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .container-shell { width: min(1600px, calc(100% - clamp(48px, 8vw, 128px))); }
+  }
+
+  /* ---------------------------------------------------------------------
+     Shared primitives â€” used instead of ad hoc rounded-3xl/shadow classes
+     so every surface in the app shares the same hierarchy of emphasis.
+     --------------------------------------------------------------------- */
+
+  .panel {
+    min-width: 0;
+    background: var(--color-maven-surface);
+    border: 1px solid var(--color-maven-line);
+    border-radius: 14px;
+  }
+
+  .panel-raised {
+    min-width: 0;
+    background: var(--color-maven-surface);
+    border: 1px solid var(--color-maven-line);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgb(12 18 32 / 0.04), 0 16px 40px -20px rgb(12 18 32 / 0.22);
+  }
+
+  .panel-dark {
+    min-width: 0;
+    background: var(--color-maven-panel-dark);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 16px 40px -20px rgb(0 0 0 / 0.5);
+    color: white;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.7rem 1.15rem;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, opacity 120ms ease, transform 120ms ease;
+    white-space: nowrap;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary { background: var(--color-maven-signal); color: white; }
+  .btn-primary:hover:not(:disabled) { background: #0B4C72; }
+
+  /* Bright button â€” high-contrast blue CTA on dark surfaces. */
+  .btn-bright { background: var(--color-maven-bright); color: #0B4C72; }
+  .btn-bright:hover:not(:disabled) { background: #58E2FF; }
+
+  .btn-signal { background: var(--color-maven-signal); color: white; }
+  .btn-signal:hover:not(:disabled) { background: #0B4C72; }
+
+  .btn-secondary { background: transparent; color: var(--color-maven-text); border: 1px solid var(--color-maven-line); }
+  .btn-secondary:hover:not(:disabled) { background: rgb(12 104 152 / 0.07); }
+
+  /* Outline button for dark surfaces (hero secondary CTA). */
+  .btn-outline-dark { background: transparent; color: white; border: 1px solid rgb(255 255 255 / 0.22); }
+  .btn-outline-dark:hover:not(:disabled) { background: rgb(255 255 255 / 0.06); border-color: rgb(255 255 255 / 0.4); }
+
+  .btn-ghost { background: transparent; color: var(--color-maven-muted); }
+  .btn-ghost:hover:not(:disabled) { background: rgb(12 104 152 / 0.07); color: var(--color-maven-text); }
+
+  .field {
+    width: 100%;
+    border: 1px solid var(--color-maven-line);
+    border-radius: 10px;
+    background: var(--color-maven-surface);
+    padding: 0.7rem 0.95rem;
+    font-size: 0.9rem;
+    color: var(--color-maven-text);
+    outline: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .field:focus { border-color: var(--color-maven-signal); box-shadow: 0 0 0 3px rgb(12 104 152 / 0.18); }
+  .field::placeholder { color: var(--color-maven-muted); }
+
+  .label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-maven-text);
+  }
+
+  .mono { font-family: var(--font-mono); }
+
+  /* Small icon tile used in feature grids â€” 24â€“40px icon on a quiet chip,
+     the icon+heading+description pattern that carries most of the density
+     on cloud-platform marketing sites, instead of bordered/shadowed cards. */
+  .icon-tile {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9px;
+    background: rgb(0 210 255 / 0.12);
+    color: var(--color-maven-signal);
+    flex: none;
+  }
+  .icon-tile.on-light { background: rgb(12 104 152 / 0.12); color: var(--color-maven-signal); }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .chip-dark { background: rgb(255 255 255 / 0.08); color: rgb(255 255 255 / 0.85); }
+  .chip-bright { background: rgb(0 210 255 / 0.14); color: var(--color-maven-bright); }
+
+  /* Status dot â€” the one recurring visual vocabulary for state (active,
+     pending, suspended...) instead of colored pill badges everywhere. */
+  .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; flex: none; }
+  .status-dot.is-live { background: #4ADE80; box-shadow: 0 0 0 3px rgb(74 222 128 / 0.16); }
+  .status-dot.is-pending { background: var(--color-maven-gold); box-shadow: 0 0 0 3px rgb(185 121 28 / 0.16); }
+  .status-dot.is-off { background: #9AA0A6; }
+  .status-dot.is-error { background: var(--color-maven-danger); box-shadow: 0 0 0 3px rgb(179 38 30 / 0.14); }
+
+  .hairline-table { width: 100%; border-collapse: collapse; }
+  .hairline-table th, .hairline-table td { border-bottom: 1px solid var(--color-maven-line); padding: 0.85rem 1rem; text-align: left; }
+  .hairline-table th { font-size: 0.75rem; font-weight: 600; color: var(--color-maven-muted); text-transform: none; }
+
+  .hairline-table-dark { width: 100%; border-collapse: collapse; }
+  .hairline-table-dark th, .hairline-table-dark td { border-bottom: 1px solid rgb(255 255 255 / 0.1); padding: 0.85rem 1rem; text-align: left; }
+  .hairline-table-dark th { font-size: 0.75rem; font-weight: 600; color: rgb(255 255 255 / 0.5); text-transform: none; }
+
+  /* Prose styling for sanitized blog-post HTML (plain h2/h3/p/ul/li/strong â€”
+     the backend allowlist strips classes, so these need their own rules). */
+  .prose-content > * + * { margin-top: 1.1em; }
+  .prose-content h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--color-maven-text); margin-top: 1.8em; }
+  .prose-content h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--color-maven-text); margin-top: 1.6em; }
+  .prose-content p, .prose-content li { color: var(--color-maven-text); }
+  .prose-content ul, .prose-content ol { padding-left: 1.4em; }
+  .prose-content ul { list-style: disc; }
+  .prose-content ol { list-style: decimal; }
+  .prose-content li + li { margin-top: 0.4em; }
+  .prose-content a { color: var(--color-maven-link); text-decoration: underline; text-decoration-color: rgb(12 104 152 / 0.35); }
+  .prose-content code { font-family: var(--font-mono); font-size: 0.9em; background: rgb(12 104 152 / 0.06); padding: 0.15em 0.4em; border-radius: 4px; }
+  .prose-content blockquote { border-left: 2px solid var(--color-maven-line); padding-left: 1em; color: var(--color-maven-muted); }
+  .prose-content img { border-radius: 10px; max-width: 100%; }
+}
+
+
+/* Legacy page utilities retain their light-surface semantics. */
+@layer utilities {
+  .bg-blue-50 { background-color: rgb(12 104 152 / 0.07) !important; }
+  .text-blue-600, .text-blue-700 { color: var(--color-maven-signal) !important; }
+  .border-blue-200 { border-color: rgb(12 104 152 / 0.24) !important; }
+  .ring-blue-200 { --tw-ring-color: rgb(12 104 152 / 0.24); }
+}
+
+/* Mode-specific tokens leave the Inara Crest brand blues unchanged. */
+@layer base {
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-maven-text: #E5EDF7;
+    --color-maven-link: #65D7FF;
+    --color-maven-paper: #081723;
+    --color-maven-surface: #102635;
+    --color-maven-line: #294556;
+    --color-maven-muted: #A8BDCC;
+    --color-maven-danger: #F87171;
+    --color-maven-gold: #F5B942;
+  }
+}
+@layer utilities {
+  :root[data-theme="dark"] .text-maven-ink,
+  :root[data-theme="dark"] .text-maven-navy { color: var(--color-maven-text); }
+  :root[data-theme="dark"] .text-maven-signal,
+  :root[data-theme="dark"] .text-maven-blue,
+  :root[data-theme="dark"] .text-blue-600,
+  :root[data-theme="dark"] .text-blue-700 { color: var(--color-maven-link) !important; }
+  :root[data-theme="dark"] .bg-white { background-color: var(--color-maven-surface); }
+  :root[data-theme="dark"] .bg-slate-50 { background-color: #122D3E; }
+  :root[data-theme="dark"] .bg-slate-100 { background-color: #193747; }
+  :root[data-theme="dark"] .bg-slate-200 { background-color: #234456; }
+  :root[data-theme="dark"] .text-slate-900,
+  :root[data-theme="dark"] .text-slate-800,
+  :root[data-theme="dark"] .text-slate-700 { color: #E5EDF7; }
+  :root[data-theme="dark"] .text-slate-600 { color: #C1D2DE; }
+  :root[data-theme="dark"] .text-slate-500 { color: #A8BDCC; }
+  :root[data-theme="dark"] .border-slate-100,
+  :root[data-theme="dark"] .border-slate-200 { border-color: var(--color-maven-line); }
+  :root[data-theme="dark"] .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--color-maven-line); }
+  :root[data-theme="dark"] .hover\:bg-slate-50:hover,
+  :root[data-theme="dark"] .hover\:bg-slate-100:hover,
+  :root[data-theme="dark"] .hover\:bg-white:hover { background-color: #193747; }
+  :root[data-theme="dark"] .bg-red-50 { background-color: rgb(248 113 113 / 0.12); }
+  :root[data-theme="dark"] .text-red-700 { color: #FCA5A5; }
+  :root[data-theme="dark"] .bg-amber-50 { background-color: rgb(245 185 66 / 0.12); }
+  :root[data-theme="dark"] .text-amber-700 { color: #FCD34D; }
+  :root[data-theme="dark"] .bg-emerald-50 { background-color: rgb(74 222 128 / 0.12); }
+  :root[data-theme="dark"] .text-emerald-700 { color: #86EFAC; }
+}
+
+/* Keep the main header controls readable on the light navigation row. */
+.site-header-light .header-actions > a,
+.site-header-light .header-actions > button,
+.site-header-light .header-actions > div > button { color: var(--color-maven-text); }
+.site-header-light .header-actions > a:hover,
+.site-header-light .header-actions > button:hover,
+.site-header-light .header-actions > div > button:hover { background-color: color-mix(in srgb, var(--color-maven-signal) 8%, transparent); }
+
+/* Quiet opening surfaces keep the brand color in controls and illustrations. */
+.hero-neutral { background-color: #FFFFFF; color: var(--color-maven-text); }
+:root[data-theme="dark"] .hero-neutral { background-color: #000000; }
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-header > .container-shell > a img { width: 128px; }
+  .site-header > .container-shell > a > span { padding-inline: 8px; }
+  .site-header .header-actions { gap: 0; padding-left: 8px; }
+  .site-header .header-actions > button { padding-inline: 6px; }
+}
+.site-header-light #mobile-primary-navigation [class*="text-white"] { color: var(--color-maven-text); }
+.site-header-light #mobile-primary-navigation [class*="border-white"] { border-color: var(--color-maven-line); }
+
+/* The main navigation stays white in both page themes. */
+.nav-strip-white { background: #FFFFFF; border-color: #DDE5EB; }
+.nav-strip-white > .container-shell { --color-maven-text: #0B4C72; --color-maven-line: #DDE5EB; }
+.nav-strip-white > .container-shell > nav > a,
+.nav-strip-white > .container-shell > nav > div { color: #0B4C72; }
+.nav-strip-white > .container-shell > nav > a[aria-current="page"],
+.nav-strip-white > .container-shell > nav > div:has(button[aria-expanded="true"]) { background: #EDF4F8; color: #0C6898; box-shadow: none; }
+
+/* Customer-facing editorial system: compact, consistent and content-led. */
+@layer components {
+  .section-space { padding-block: clamp(2.5rem, 4vw, 4rem); }
+  .page-intro, .home-intro { padding-block: clamp(2.5rem, 4vw, 4rem); }
+  .eyebrow { font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--color-maven-link); }
+  .page-intro h1, .home-intro h1 { max-width: 22ch; margin-top: 1rem; font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.15; font-weight: 600; letter-spacing: -.035em; }
+  .intro-copy { max-width: 68ch; margin-top: 1.2rem; color: var(--color-maven-muted); font-size: 1rem; line-height: 1.8; }
+  .service-summary h2, .service-summary h3 { margin-top: .8rem; font-weight: 600; color: var(--color-maven-text); font-size: 1.15rem; line-height: 1.45; }
+  .service-summary p { margin-top: .65rem; font-size: .875rem; line-height: 1.8; color: var(--color-maven-muted); }
+  .service-summary a { display: flex; align-items: center; gap: .5rem; width: fit-content; margin-top: 1rem; font-size: .875rem; font-weight: 600; color: var(--color-maven-link); }
+  .notice { border-left: 3px solid var(--color-maven-link); background: var(--color-maven-surface); padding: 1rem 1.2rem; margin-top: 1.5rem; font-size: .875rem; line-height: 1.7; color: var(--color-maven-muted); }
+  .plan-price { padding-block: 1.25rem; }
+  .compact-specs { font-size: .8125rem; border-top: 1px solid var(--color-maven-line); }
+  .compact-specs > div { display: grid; grid-template-columns: 1fr 1.2fr; gap: .8rem; padding-block: .65rem; border-bottom: 1px solid var(--color-maven-line); }
+  .compact-specs dt { color: var(--color-maven-muted); } .compact-specs dd { color: var(--color-maven-text); text-align: right; overflow-wrap: anywhere; }
+  .steps-list { counter-reset: steps; }
+  .steps-list li { position: relative; padding: 1rem 0 1rem 3rem; border-bottom: 1px solid var(--color-maven-line); counter-increment: steps; }
+  .steps-list li::before { content: '0' counter(steps); position: absolute; left: 0; top: 1rem; font-weight: 600; color: var(--color-maven-link); }
+  .steps-list h3 { font-weight: 600; color: var(--color-maven-text); } .steps-list p { margin-top: .4rem; color: var(--color-maven-muted); font-size: .875rem; line-height: 1.8; }
+}
+.public-page a, .public-page p, .public-page dd { overflow-wrap: anywhere; }
+html { scroll-padding-top: 190px; }
+.public-page .hero-neutral:not(.home-intro):not(.page-intro) { padding-block: clamp(2.5rem, 4vw, 4rem); }
+.public-page .hero-neutral h1 { font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.15; }
+.skip-link { position: fixed; left: 1rem; top: -5rem; z-index: 100; padding: .75rem 1rem; background: #fff; color: #0B4C72; border: 2px solid #0C6898; }
+.skip-link:focus { top: 1rem; }
+:focus-visible { outline-color: var(--color-maven-link); }
+:root[data-theme="light"] .chip-bright { color: #0C6898; }
+@media (max-width: 1023px) { html { scroll-padding-top: 130px; } }
+
+.site-header-light .header-actions > a.btn-primary { color: #FFFFFF; }
+.site-header-light .header-actions > a.btn-primary:hover { background: #0B4C72; }
+
+/* Small, one-time lifts as editorial items enter view; no continuous bobbing. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] { transition: opacity 480ms ease, transform 480ms cubic-bezier(.2,.65,.3,1), box-shadow 180ms ease; }
+  [data-reveal="pending"] { opacity: .65; transform: translateY(14px); }
+  [data-reveal="shown"] { opacity: 1; transform: translateY(0); transition-delay: var(--reveal-delay, 0ms); }
+  [data-reveal]:focus-within { opacity: 1; transform: none; transition-delay: 0ms; }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .public-page main article.panel { transition: transform 220ms ease, box-shadow 220ms ease, opacity 480ms ease; }
+  .public-page main article.panel:not([data-reveal="pending"]):hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgb(0 0 0 / .09); transition-delay: 0ms; }
+  .service-summary a svg { transition: transform 180ms ease; }
+  .service-summary a:hover svg { transform: translateX(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; }
+}
