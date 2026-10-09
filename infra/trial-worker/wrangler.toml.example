@@ -1,0 +1,7 @@
+name = "maven-host-trial-edge"
+main = "src/index.js"
+compatibility_date = "2026-07-29"
+
+[[r2_buckets]]
+binding = "TRIAL_BUCKET"
+bucket_name = "maven-host-trials"

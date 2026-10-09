@@ -4,6 +4,7 @@
 import { database, transaction } from '../db'
 import { syncPermissions } from '../auth/permissions'
 import { commands as accountCommands } from './accounts'
+import { commands as websiteCommands } from './websites'
 
 export type Command = { help: string; run: (args: string[]) => Promise<void> }
 
@@ -26,6 +27,7 @@ const commands: Record<string, Command> = {
     },
   },
   ...accountCommands,
+  ...websiteCommands,
 }
 
 async function main() {

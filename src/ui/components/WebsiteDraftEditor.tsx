@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { renderPageDocument } from '@/lib/website-renderer'
 import { ApiError, listWebsitePages, saveWebsitePage, type EditableWebsitePage, type GeneratedWebsitePage } from '../lib/api'
 
 export function WebsiteDraftEditor({ name, pages, websiteId, onSaved }: { name: string; pages: GeneratedWebsitePage[]; websiteId?: string; onSaved: () => void }) {
@@ -15,6 +16,14 @@ export function WebsiteDraftEditor({ name, pages, websiteId, onSaved }: { name: 
     return () => { active = false }
   }, [websiteId])
   const page = drafts[selected]
+  const previewDocument = useMemo(() => {
+    if (!page) return ''
+    try {
+      return renderPageDocument({ name }, page, drafts, { mode: 'preview' })
+    } catch {
+      return '<p style="font-family:sans-serif;padding:1rem">This page contains a section the preview cannot display.</p>'
+    }
+  }, [name, page, drafts])
   if (!page) return <p role="status" className="mt-4 text-sm">{message || (websiteId && !ready ? 'Loading saved pages…' : 'This website has no pages yet.')}</p>
   function update(values: Partial<GeneratedWebsitePage>) {
     setDrafts(current => current.map((item, index) => index === selected ? { ...item, ...values } : item))
@@ -49,17 +58,9 @@ export function WebsiteDraftEditor({ name, pages, websiteId, onSaved }: { name: 
     {message && <p role="status" className="mt-3 text-sm">{message}</p>}
     <button className="btn btn-secondary mt-4" onClick={() => setNarrow(value => !value)}>{narrow ? 'Desktop preview' : 'Mobile preview'}</button>
     <div className="mt-4 overflow-auto rounded-lg border bg-slate-100 p-3">
-      <div className="mx-auto min-h-96 bg-white p-6 text-slate-800" style={{ maxWidth: narrow ? 375 : '100%' }} aria-label="Website page preview">
-        <header className="border-b pb-4"><strong>{name}</strong><nav className="mt-3 flex flex-wrap gap-3">{drafts.map((item, index) => <button key={item.slug} onClick={() => setSelected(index)} className="text-sm underline">{item.title}</button>)}</nav></header>
-        {(page.content.sections ?? []).map((section, index) => <section key={index} className={section.type === 'hero' ? 'py-12' : 'py-6'}>
-          {section.heading && (section.type === 'hero' ? <h1 className="text-3xl font-bold">{section.heading}</h1> : <h2 className="text-xl font-semibold">{section.heading}</h2>)}
-          {section.subheading && <p className="mt-3 text-lg">{section.subheading}</p>}
-          {section.body && <p className="mt-3 whitespace-pre-line">{section.body}</p>}
-          {section.items?.map((item, i) => <div key={i} className="mt-4"><h3 className="font-semibold">{item.title || item.question}</h3><p>{item.description || item.answer}</p>{item.image_url && /^https?:\/\//.test(item.image_url) && <img src={item.image_url} alt={item.alt || ''} loading="lazy" className="mt-2 max-w-full" />}</div>)}
-          {section.cta && <span className="mt-4 inline-block rounded bg-slate-800 px-4 py-2 text-white">{section.cta}</span>}
-        </section>)}
-      </div>
+      {/* Same renderer as trial and hosting publication, so the preview matches the deployed page. */}
+      <iframe title={`Preview of ${page.title}`} sandbox="" srcDoc={previewDocument} className="mx-auto block h-[640px] w-full rounded bg-white" style={{ maxWidth: narrow ? 375 : '100%' }} />
     </div>
-    <p className="mt-2 text-xs text-maven-muted">Responsive content preview. Publishing to a hosting account is a separate step.</p>
+    <p className="mt-2 text-xs text-maven-muted">This preview uses the same page renderer as publishing. Publishing to a hosting account is a separate step.</p>
   </div>
 }

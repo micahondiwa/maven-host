@@ -8,11 +8,16 @@ const SKIP = Symbol('skip')
 type Parsed<T> = T | typeof SKIP
 
 class FieldError extends Error {
-  constructor(readonly detail: string[] | Record<string, unknown>) {
+  constructor(readonly detail: unknown[] | Record<string, unknown>) {
     super('field error')
   }
 }
 const fail = (message: string): never => {
+  throw new FieldError([message])
+}
+
+/** Raised from a field's `.check()` rule; reported under that field like DRF `validate_<field>`. */
+export function invalid(message: string): never {
   throw new FieldError([message])
 }
 
@@ -243,7 +248,8 @@ class ListField<T> extends Field<T[]> {
         errors[index] = error.detail
       }
     })
-    if (Object.keys(errors).length) throw new FieldError(errors)
+    // DRF ListSerializer reports one entry per item (empty for valid items); ListField reports by index.
+    if (Object.keys(errors).length) throw new FieldError(this.child instanceof ObjectField ? items.map((_, index) => errors[index] ?? {}) : errors)
     return result
   }
 }
@@ -253,6 +259,26 @@ class DictField extends Field<Record<string, unknown>> {
     if (!value || typeof value !== 'object' || Array.isArray(value))
       fail(`Expected a dictionary of items but got type "${pythonType(value)}".`)
     return value as Record<string, unknown>
+  }
+}
+
+class ObjectField<S extends Schema> extends Field<Validated<S>> {
+  constructor(
+    private readonly schema: S,
+    protected readonly options: FieldOptions<Validated<S>> = {},
+  ) {
+    super(options)
+  }
+
+  protected convert(value: unknown): Validated<S> {
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      throw new FieldError({ non_field_errors: [`Invalid data. Expected a dictionary, but got ${pythonType(value)}.`] })
+    try {
+      return validate(this.schema, value)
+    } catch (error) {
+      if (error instanceof ValidationError) throw new FieldError(error.errors)
+      throw error
+    }
   }
 }
 
@@ -324,6 +350,7 @@ export const f = {
     new ListField<T>(child, options),
   dict: (options: FieldOptions<Record<string, unknown>> = {}) => new DictField(options),
   json: (options: FieldOptions<unknown> = {}) => new JsonField(options),
+  object: <S extends Schema>(schema: S, options: FieldOptions<Validated<S>> = {}) => new ObjectField<S>(schema, options),
   date: (options: FieldOptions<string> = {}) => new DateField(options),
   datetime: (options: FieldOptions<Date> = {}) => new DateTimeField(options),
   url: (options: StringOptions = {}) => new UrlField(options),
@@ -347,7 +374,7 @@ export function validate<S extends Schema>(
   }
   const record = data as Record<string, unknown>
   const values: Record<string, unknown> = {}
-  const errors: Record<string, string[] | Record<string, unknown>> = {}
+  const errors: Record<string, unknown> = {}
   for (const [name, field] of Object.entries(schema)) {
     try {
       const parsed = field.run(record[name], Object.prototype.hasOwnProperty.call(record, name) && record[name] !== undefined, Boolean(options.partial))

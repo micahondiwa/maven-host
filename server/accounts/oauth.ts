@@ -1,6 +1,6 @@
 import 'server-only'
-import { createHmac, timingSafeEqual } from 'node:crypto'
 import { settings } from '../config'
+import { BadSignature, timestampSign, timestampUnsign } from '../auth/signing'
 import { onCommit, transaction } from '../db'
 import type { AuthUser } from '../http/router'
 import { issueTokens } from '../auth/jwt'
@@ -12,25 +12,6 @@ import { sendWelcomeEmail } from './emails'
 export class OAuthError extends Error {}
 
 const STATE_MAX_AGE_SECONDS = 600
-
-/** Signed, timestamped state (Django TimestampSigner semantics: value, timestamp, HMAC under a provider salt). */
-function signState(value: string, salt: string) {
-  const timestamp = Math.floor(Date.now() / 1000).toString(36)
-  const payload = `${Buffer.from(value).toString('base64url')}:${timestamp}`
-  const signature = createHmac('sha256', `${salt}signer${settings.secretKey}`).update(payload).digest('base64url')
-  return `${payload}:${signature}`
-}
-
-function unsignState(state: string, salt: string): string | null {
-  const parts = state.split(':')
-  if (parts.length !== 3) return null
-  const [value, timestamp, signature] = parts
-  const expected = createHmac('sha256', `${salt}signer${settings.secretKey}`).update(`${value}:${timestamp}`).digest()
-  const provided = Buffer.from(signature, 'base64url')
-  if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) return null
-  if (Date.now() / 1000 - Number.parseInt(timestamp, 36) > STATE_MAX_AGE_SECONDS) return null
-  return Buffer.from(value, 'base64url').toString('utf8')
-}
 
 export function safeNext(value: string | null | undefined) {
   const next = (value || '/account').trim()
@@ -126,13 +107,16 @@ export const OAUTH_PROVIDERS: Record<string, Provider> = { google, github }
 
 export function authorizationUrl(provider: Provider, nextPath: string) {
   if (!provider.enabled()) throw new OAuthError(`${provider.label} sign-in is not configured.`)
-  return provider.authorizeUrl(signState(safeNext(nextPath), provider.salt))
+  return provider.authorizeUrl(timestampSign(safeNext(nextPath), provider.salt))
 }
 
 export function validateState(provider: Provider, state: string) {
-  const value = unsignState(state, provider.salt)
-  if (value === null) throw new OAuthError(`The ${provider.label} sign-in session expired. Please try again.`)
-  return safeNext(value)
+  try {
+    return safeNext(timestampUnsign(state, provider.salt, STATE_MAX_AGE_SECONDS))
+  } catch (error) {
+    if (error instanceof BadSignature) throw new OAuthError(`The ${provider.label} sign-in session expired. Please try again.`)
+    throw error
+  }
 }
 
 /** Links by verified email; new accounts are verified customers with unusable passwords. */

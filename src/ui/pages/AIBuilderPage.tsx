@@ -172,7 +172,7 @@ export function AIBuilderPage() {
                       {(page.content.sections ?? []).map((section, index) => (
                         <div key={`${page.slug}-${index}`} className="border-l-2 border-maven-bright pl-3">
                           {section.heading && <h4 className="text-sm font-semibold text-maven-ink">{section.heading}</h4>}
-                          {section.subheading && <p className="mt-1 text-sm font-medium text-white/90">{section.subheading}</p>}
+                          {section.subheading && <p className="mt-1 text-sm font-medium text-maven-text">{section.subheading}</p>}
                           {section.body && <p className="mt-1 text-sm leading-6 text-maven-muted">{section.body}</p>}
                           {section.items?.length ? <ul className="mt-2 space-y-2 text-sm leading-6 text-maven-muted">{section.items.map((item, itemIndex) => <li key={`${index}-${itemIndex}`}>{item.title && <span className="font-semibold text-maven-ink">{item.title}</span>}{item.question && <span className="font-semibold text-maven-ink">{item.question}</span>}{(item.description || item.answer) && <span className="block">{item.description || item.answer}</span>}</li>)}</ul> : null}
                         </div>

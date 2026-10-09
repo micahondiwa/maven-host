@@ -13,7 +13,7 @@ export class HttpError extends Error {
 
 /** DRF `serializers.ValidationError`: `{field: [messages]}` or `{non_field_errors: [...]}`. */
 export class ValidationError extends HttpError {
-  constructor(readonly errors: Record<string, string[] | Record<string, unknown>>) {
+  constructor(readonly errors: Record<string, unknown>) {
     super(400, errors)
   }
 

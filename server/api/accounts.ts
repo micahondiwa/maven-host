@@ -2,7 +2,7 @@ import 'server-only'
 import { database, query, queryOne, transaction } from '../db'
 import { HttpError, notFound } from '../http/errors'
 import { AllowAny, json, Router, type Context } from '../http/router'
-import { f, fieldError, validate } from '../http/validation'
+import { f, fieldError, invalid, validate } from '../http/validation'
 import { pageParams, paginate, pageWindow } from '../http/pagination'
 import { allStaffPermissions, PERMISSION_REGISTRY, ROLE_PERMISSION_MATRIX, roleCodes, STAFF_ROLES, staffPermission, userRoles } from '../auth/permissions'
 import * as auth from '../accounts/auth'
@@ -184,7 +184,7 @@ export const staffRoutes = new Router()
         first_name: nameField(),
         last_name: nameField(),
         role: f.choice(STAFF_ROLES).check((role) => {
-          if (role === 'Platform Administrator' && !ctx.authenticatedUser.is_superuser) fieldError('role', 'Only a platform superuser may create a Platform Administrator.')
+          if (role === 'Platform Administrator' && !ctx.authenticatedUser.is_superuser) invalid('Only a platform superuser may create a Platform Administrator.')
         }),
       },
       await ctx.body(),
@@ -209,8 +209,8 @@ export const staffRoutes = new Router()
     const data = validate(
       {
         roles: f.list(f.choice(STAFF_ROLES), { allowEmpty: false }).check((roles) => {
-          if (roles.includes('Platform Administrator') && !ctx.authenticatedUser.is_superuser) fieldError('roles', 'Only a platform superuser may assign Platform Administrator.')
-          if (new Set(roles).size !== roles.length) fieldError('roles', 'Roles must be unique.')
+          if (roles.includes('Platform Administrator') && !ctx.authenticatedUser.is_superuser) invalid('Only a platform superuser may assign Platform Administrator.')
+          if (new Set(roles).size !== roles.length) invalid('Roles must be unique.')
         }),
       },
       await ctx.body(),

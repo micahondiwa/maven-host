@@ -12,19 +12,20 @@ A source implementation or test file does not prove a provider integration works
 | Domain search and suggestions | Working in v1 production smoke checks | Server adapter/API port pending | backend/apps/domains/api/urls.py |
 | Registration, transfer, renewal and DNS | Source implemented; provider integration depends on credentials | Not ported; lifecycle and recovery tests required | backend/apps/domains |
 | Register.co.ke | Intentionally disabled awaiting actual reseller API | Keep disabled; no invented API | docs/supplier-workflows.md |
-| Hosting plans and cart selection | Working; 23 proposed plans, activation pending | UI carried; catalog and cart backend port pending | backend/apps/hosting |
+| Hosting plans and cart selection | Working; 23 proposed plans, activation pending | Catalog served natively from the Django tables with the v1 availability policy; cart pending | backend/apps/hosting |
 | KnownHost provisioning | Adapter exists; credentials and wholesale activation pending | Keep checkout/provisioning restrictions | backend/apps/hosting/providers/knownhost.py |
 | Email packages | cPanel mailbox inclusions, not separate subscriptions | Preserve shared-storage/mailbox presentation | frontend/src/pages/HostingPlansPage.tsx |
-| Login, registration, email verification, staff invitations | Source implemented; prior live emails confirmed | Password primitive started; APIs, tokens and email port pending | backend/apps/accounts |
-| Password recovery | Backend endpoints exist; public recovery UI absent | Preserve backend recovery; track UI gap as pre-existing | backend/apps/accounts/api/urls.py |
-| Google/GitHub OAuth | Prior user confirmed successful live login | Port state/PKCE, token checks and safe account linking | backend/apps/accounts/api/views/oauth.py |
-| Permissions and staff/customer access | Source implemented, with explicit business permissions | Server-side authorization port pending; UI guards insufficient | backend/apps/accounts/api |
+| Login, registration, email verification, staff invitations | Source implemented; prior live emails confirmed | Ported with v1 messages/throttles; SimpleJWT- and reset-token-compatible (fixture-tested against v1 code); SMTP delivery not yet exercised against a live server | backend/apps/accounts |
+| Password recovery | Backend endpoints exist; public recovery UI absent | API ported and Django-token-compatible; the `/reset-password/` page linked from the email still needs a frontend route | backend/apps/accounts/api/urls.py |
+| Google/GitHub OAuth | Prior user confirmed successful live login | Ported (signed state, verified-email linking); live provider sign-in not yet exercised | backend/apps/accounts/api/views/oauth.py |
+| Permissions and staff/customer access | Source implemented, with explicit business permissions | Database-backed `has_perm`, role matrix, staff lifecycle, customer directory and authorization catalogue ported; staff customer sub-resources follow their domains | backend/apps/accounts/api |
 | Cart and checkout | Source implemented; hosting checkout intentionally blocked | Exact decimal helper started; catalog re-resolution/ownership port pending | backend/apps/orders/services |
 | Invoices, refunds, reconciliation and payment webhooks | Source implemented with extensive boundary tests | Port all transactions, signatures, idempotency and accounting before acceptance | backend/apps/billing |
 | Support and contact | Public contact and staff support workflows implemented | UI carried; ticket/notification services pending | backend/apps/support |
 | Emails and documents | Implemented templates and notification/PDF services | Server render, attachments and outbox deliveries pending | backend/apps/notifications |
 | Blogs and managed content | Working public published articles | UI carried; database/content/admin migration pending | backend/apps/blog |
-| Assistant and AI Builder | Source API and UI implemented; runtime requires provider configuration | Port adapters and access/rate limits; no invented AI responses | backend/apps/ai |
+| Assistant and AI Builder | Source API and UI implemented; runtime requires provider configuration | Ported (OpenAI Responses API, strict schema, quotas, claim). Preview and publication now share one renderer. Requires `OPENAI_API_KEY`; default model `gpt-5.6` must be confirmed for the account | backend/apps/ai |
+| SEO checks | Deterministic checks over structured pages; crashed when a page repeated a finding | Ported with v1 scoring, one finding per page/code, plus content-depth, length-floor, home page, slug, internal-link and call-to-action checks | backend/apps/seo |
 | Websites, WordPress and trial infrastructure | Source implementations with provider/durable operation boundaries | Review per-endpoint completeness; do not omit expansion workflows | backend/apps/websites, backend/apps/wordpress, backend/apps/infrastructure |
 | Scheduled work | 29 source management commands identified | Durable outbox schema started; bounded runner/handlers pending | docs/source-inventory.json |
 | Historical data migration | No production export authorized for development | Build idempotent importer; use synthetic data; full balances/counts tests pending | docs/source-inventory.json |
