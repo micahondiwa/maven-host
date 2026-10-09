@@ -7,6 +7,7 @@ import { bootstrap } from '../bootstrap'
 import { commands as accountCommands } from './accounts'
 import { commands as websiteCommands } from './websites'
 import { commands as domainCommands } from './domains'
+import { commands as blogCommands } from './blog'
 
 export type Command = { help: string; run: (args: string[]) => Promise<void> }
 
@@ -31,6 +32,7 @@ const commands: Record<string, Command> = {
   ...accountCommands,
   ...websiteCommands,
   ...domainCommands,
+  ...blogCommands,
 }
 
 async function main() {

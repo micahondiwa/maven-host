@@ -1,0 +1,4666 @@
+{
+ "categories": {
+  "AI-Assisted Development": "Practical AI-assisted software workflows, code review, testing and safe delivery.",
+  "Django & Python": "Python web development, Django applications, APIs, deployment and maintenance.",
+  "React & Frontend": "React, TypeScript, Vite, browser applications, accessibility and frontend delivery.",
+  "MERN Stack": "Full-stack MongoDB, Express, React and Node.js architecture, security, testing and deployment.",
+  "Frontend & Web Design": "Framework-agnostic frontend engineering, HTML, CSS, responsive design, accessibility and user experience.",
+  "Vue, Angular & Svelte": "Modern JavaScript frameworks including Vue, Angular and Svelte, with practical application architecture and delivery.",
+  "Next.js": "Next.js routing, rendering, data handling, performance and production deployment.",
+  "Node.js": "Node.js APIs, JavaScript backends, service design and production operations.",
+  "PHP & Laravel": "PHP application development, Laravel, Symfony, Composer and deployment.",
+  "FastAPI & Flask": "Python API design and lightweight application deployment with FastAPI and Flask.",
+  "Java & Spring": "Java services, Spring Boot, data access, testing and deployment.",
+  ".NET Development": "ASP.NET Core, C#, APIs, data access, testing and hosting.",
+  "Go, Rust & Rails": "Backend services and web applications built with Go, Rust and Ruby on Rails.",
+  "Flutter & Cross-platform": "Cross-platform mobile development, Flutter, React Native and app delivery.",
+  "Android Development": "Android application architecture, Kotlin, Jetpack Compose and release operations.",
+  "iOS Development": "iOS application architecture, Swift, testing, signing and App Store delivery.",
+  "Databases & Data": "Database design, migrations, query performance, backups and application data safety.",
+  "DevOps & CI/CD": "Build automation, containers, deployment pipelines, observability and release safety.",
+  "Hosting & Deployment": "Production hosting decisions, application deployment, DNS, SSL and operations.",
+  "Domains & DNS": "Domain names, DNS records, custom domains, email routing and secure domain changes.",
+  "Security & Performance": "Application security, reliability, browser performance and operational safeguards.",
+  "Technical SEO": "Search-friendly software delivery, crawlability, metadata and measurable site experience."
+ },
+ "sources": {
+  "ai": [
+   "Django tutorial",
+   "https://docs.djangoproject.com/en/5.2/intro/tutorial01/"
+  ],
+  "django": [
+   "Django documentation",
+   "https://docs.djangoproject.com/en/5.2/"
+  ],
+  "drf": [
+   "Django REST framework documentation",
+   "https://www.django-rest-framework.org/"
+  ],
+  "react": [
+   "React documentation",
+   "https://react.dev/learn"
+  ],
+  "vite": [
+   "Vite deployment guide",
+   "https://vite.dev/guide/static-deploy.html"
+  ],
+  "next": [
+   "Next.js documentation",
+   "https://nextjs.org/docs/app"
+  ],
+  "node": [
+   "Node.js documentation",
+   "https://nodejs.org/en/learn"
+  ],
+  "express": [
+   "Express production best practices",
+   "https://expressjs.com/en/advanced/best-practice-performance.html"
+  ],
+  "nest": [
+   "NestJS documentation",
+   "https://docs.nestjs.com/"
+  ],
+  "php": [
+   "PHP manual",
+   "https://www.php.net/manual/en/"
+  ],
+  "laravel": [
+   "Laravel deployment documentation",
+   "https://laravel.com/docs/deployment"
+  ],
+  "symfony": [
+   "Symfony documentation",
+   "https://symfony.com/doc/current/index.html"
+  ],
+  "fastapi": [
+   "FastAPI documentation",
+   "https://fastapi.tiangolo.com/"
+  ],
+  "flask": [
+   "Flask documentation",
+   "https://flask.palletsprojects.com/"
+  ],
+  "spring": [
+   "Spring Boot documentation",
+   "https://docs.spring.io/spring-boot/index.html"
+  ],
+  "dotnet": [
+   "ASP.NET Core documentation",
+   "https://learn.microsoft.com/aspnet/core/"
+  ],
+  "go": [
+   "Go documentation",
+   "https://go.dev/doc/"
+  ],
+  "rust": [
+   "The Rust Book",
+   "https://doc.rust-lang.org/book/"
+  ],
+  "rails": [
+   "Ruby on Rails Guides",
+   "https://guides.rubyonrails.org/"
+  ],
+  "flutter": [
+   "Flutter documentation",
+   "https://docs.flutter.dev/"
+  ],
+  "android": [
+   "Android architecture guide",
+   "https://developer.android.com/topic/architecture"
+  ],
+  "ios": [
+   "Apple app distribution documentation",
+   "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases"
+  ],
+  "postgres": [
+   "PostgreSQL documentation",
+   "https://www.postgresql.org/docs/current/"
+  ],
+  "mysql": [
+   "MySQL documentation",
+   "https://dev.mysql.com/doc/"
+  ],
+  "mongodb": [
+   "MongoDB data modeling documentation",
+   "https://www.mongodb.com/docs/manual/data-modeling/"
+  ],
+  "redis": [
+   "Redis documentation",
+   "https://redis.io/docs/latest/"
+  ],
+  "docker": [
+   "Docker documentation",
+   "https://docs.docker.com/"
+  ],
+  "actions": [
+   "GitHub Actions documentation",
+   "https://docs.github.com/actions"
+  ],
+  "nginx": [
+   "NGINX documentation",
+   "https://nginx.org/en/docs/"
+  ],
+  "cpanel": [
+   "cPanel documentation",
+   "https://docs.cpanel.net/"
+  ],
+  "owasp": [
+   "OWASP Cheat Sheet Series",
+   "https://cheatsheetseries.owasp.org/"
+  ],
+  "webdev": [
+   "web.dev performance guidance",
+   "https://web.dev/articles/vitals"
+  ],
+  "seo": [
+   "Google Search Essentials",
+   "https://developers.google.com/search/docs/essentials"
+  ],
+  "django_deploy": [
+   "Django deployment checklist",
+   "https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/"
+  ],
+  "mdn": [
+   "MDN Web Docs",
+   "https://developer.mozilla.org/en-US/docs/Learn_web_development"
+  ],
+  "namecheap_dns": [
+   "Namecheap host records guide",
+   "https://www.namecheap.com/support/knowledgebase/article.aspx/434/2237/how-do-i-set-up-host-records-for-a-domain/"
+  ],
+  "namecheap_email_dns": [
+   "Namecheap SPF, DKIM and DMARC guide",
+   "https://www.namecheap.com/support/knowledgebase/article.aspx/317/2237/how-do-i-add-txtspfdkim-dmarc-records-for-my-domain/"
+  ],
+  "google_host_move": [
+   "Google Search Central hosting migration guide",
+   "https://developers.google.com/search/docs/crawling-indexing/site-move-no-url-changes"
+  ],
+  "namecheap_shared": [
+   "Namecheap shared hosting overview",
+   "https://www.namecheap.com/hosting/shared/"
+  ]
+ },
+ "articles": [
+  [
+   "Scaffold a Django and React app without mixing frontend and backend concerns",
+   "AI-Assisted Development",
+   "A new product needs a maintainable API and browser UI, but generated scaffolds often tangle the two build systems.",
+   [
+    "Create separate backend and frontend applications, each with its own dependency lockfile and local run command.",
+    "Define one versioned JSON API contract and configure the frontend development proxy to target the Django API.",
+    "Keep secrets and database configuration on the server; expose only explicitly public build-time settings to React."
+   ],
+   "Do not let an AI agent invent deployment secrets, duplicate business rules in both apps, or edit dependency versions without checking compatibility.",
+   "Start both processes, call a real API route through the frontend proxy, then run Django checks and a production frontend build.",
+   "ai",
+   [
+    "ai-assisted",
+    "django",
+    "react",
+    "scaffolding"
+   ]
+  ],
+  [
+   "Use an AI coding assistant to turn a feature brief into reviewable work",
+   "AI-Assisted Development",
+   "A vague feature request becomes safer to implement when its expected behavior and boundaries are explicit.",
+   [
+    "Ask for acceptance criteria, affected layers, data changes, security concerns and unresolved questions before requesting code.",
+    "Have the assistant propose a small file-by-file plan and identify the tests or manual checks that would prove each criterion.",
+    "Review each change against the original brief and keep unrelated refactors out of the same patch."
+   ],
+   "A plausible implementation can still change permissions, billing or data retention in ways the prompt did not authorize.",
+   "Compare the diff to the acceptance criteria, inspect edge cases and run the project’s existing validation commands.",
+   "ai",
+   [
+    "ai-assisted",
+    "code-review",
+    "planning"
+   ]
+  ],
+  [
+   "Generate Django models with AI and review database consequences",
+   "AI-Assisted Development",
+   "AI-generated models can look idiomatic while encoding the wrong ownership, deletion or uniqueness rules.",
+   [
+    "Describe entity ownership, lifecycle states, cardinality and retention requirements before asking for model code.",
+    "Check foreign-key deletion behavior, database constraints, indexes and decimal or timezone field choices explicitly.",
+    "Review the migration as a data change, not just a code artifact, before applying it to shared environments."
+   ],
+   "Do not accept a migration that silently drops data or uses application-only validation for an invariant that belongs in the database.",
+   "Create a clean test database, apply migrations, exercise duplicate and deletion cases, and inspect generated SQL for risky operations.",
+   "ai",
+   [
+    "ai-assisted",
+    "django",
+    "database"
+   ]
+  ],
+  [
+   "Ask AI to create a Django REST endpoint without bypassing permissions",
+   "AI-Assisted Development",
+   "A fast API scaffold is useful only when object ownership and authorization remain enforced on the server.",
+   [
+    "Specify request fields, response fields, authentication, object ownership and expected error statuses in the prompt.",
+    "Implement authorization in the queryset or permission layer instead of relying on hidden frontend controls.",
+    "Add positive, unauthenticated, cross-customer and invalid-input cases before treating the endpoint as complete."
+   ],
+   "Never paste production tokens, customer records or private logs into an unapproved AI service.",
+   "Call the endpoint as its owner and as a different user; verify both the response data and denial behavior.",
+   "drf",
+   [
+    "ai-assisted",
+    "django-rest-framework",
+    "api-security"
+   ]
+  ],
+  [
+   "Use AI to debug a production error without leaking customer data",
+   "AI-Assisted Development",
+   "A sanitized failure report can help explain a bug while protecting account details and credentials.",
+   [
+    "Reduce the report to the smallest reproducible stack trace, relevant code path and expected versus actual behavior.",
+    "Replace emails, tokens, domains, IPs and payload values with realistic placeholders before sharing the report.",
+    "Ask for competing hypotheses and a verification plan rather than accepting the first suggested fix."
+   ],
+   "Logs may contain authorization headers, payment references or personal data even when the visible exception looks harmless.",
+   "Reproduce the proposed fix locally with a regression case and confirm that logs and error responses still redact sensitive values.",
+   "ai",
+   [
+    "ai-assisted",
+    "privacy",
+    "debugging"
+   ]
+  ],
+  [
+   "Review AI-generated React components for accessibility",
+   "AI-Assisted Development",
+   "Generated interfaces often look complete but omit keyboard behavior, labels and meaningful focus states.",
+   [
+    "Ask for semantic elements and accessible names for every form control, icon-only button and interactive region.",
+    "Inspect keyboard order, focus visibility, error announcements and behavior at narrow viewport widths.",
+    "Use automated accessibility checks as a supplement to a keyboard-only and screen-reader spot check."
+   ],
+   "A green automated audit does not prove that task flow, language or focus behavior is usable.",
+   "Complete the component’s main task without a mouse and verify labels and validation messages are announced clearly.",
+   "react",
+   [
+    "ai-assisted",
+    "react",
+    "accessibility"
+   ]
+  ],
+  [
+   "Generate useful tests with AI instead of mirroring implementation details",
+   "AI-Assisted Development",
+   "Tests are valuable when they capture user-visible behavior and important failure boundaries.",
+   [
+    "Give the assistant the behavior contract and ask for boundary cases, not a copy of the implementation structure.",
+    "Prefer observable outputs and stable public interfaces over assertions on private helper calls.",
+    "Review generated fixtures for fake assumptions about authorization, dates, currency and provider outcomes."
+   ],
+   "A large test count can create false confidence if all tests repeat the same happy path.",
+   "Temporarily break the behavior under test and confirm the test fails for the intended reason.",
+   "ai",
+   [
+    "ai-assisted",
+    "testing",
+    "quality"
+   ]
+  ],
+  [
+   "Use AI to document an API from its actual schema",
+   "AI-Assisted Development",
+   "API documentation drifts when descriptions are written separately from request and response contracts.",
+   [
+    "Generate the schema from current serializers and routes, then ask AI to explain only fields present in that schema.",
+    "Mark authentication, ownership, idempotency, rate limits and failure responses where they apply.",
+    "Compare example payloads with the schema and exercise them against a local environment."
+   ],
+   "Do not publish fabricated endpoints, example credentials or claims about behavior that the implementation does not enforce.",
+   "Validate the OpenAPI document and run at least one documented request against the API.",
+   "drf",
+   [
+    "ai-assisted",
+    "api-documentation",
+    "openapi"
+   ]
+  ],
+  [
+   "Build an AI-assisted pull request review checklist",
+   "AI-Assisted Development",
+   "A repeatable review catches operational regressions that a style-only review misses.",
+   [
+    "Ask the reviewer to map changes to data access, authorization, external calls, retries and rollback behavior.",
+    "Require a concise list of concrete findings with file references and impact, not speculative rewrites.",
+    "Verify findings against the code and preserve human ownership of the merge decision."
+   ],
+   "AI review can miss repository conventions or misunderstand generated code; treat it as a second set of eyes.",
+   "Confirm each reported issue with a reproducible path and inspect critical paths even when the assistant finds none.",
+   "ai",
+   [
+    "ai-assisted",
+    "pull-requests",
+    "review"
+   ]
+  ],
+  [
+   "Keep AI-generated dependency changes reproducible",
+   "AI-Assisted Development",
+   "A generated package list is not a reliable dependency strategy until it is locked and installed cleanly.",
+   [
+    "Ask why each dependency is needed and whether the standard library or existing package already covers the use case.",
+    "Resolve versions with the project package manager and commit the lockfile that matches the chosen runtime.",
+    "Review package provenance, license, maintenance signals and transitive dependency changes."
+   ],
+   "Do not copy unverified install commands that pull packages with names similar to trusted libraries.",
+   "Build from a clean checkout using the lockfile and confirm CI uses the same package manager and runtime family.",
+   "ai",
+   [
+    "ai-assisted",
+    "dependencies",
+    "supply-chain"
+   ]
+  ],
+  [
+   "Use AI to plan a safe database migration",
+   "AI-Assisted Development",
+   "Large or destructive schema changes need a rollout sequence that keeps old and new application versions compatible.",
+   [
+    "Describe table size, read and write traffic, rollback limits and the application versions that will overlap.",
+    "Prefer expand, backfill, switch and contract steps when a direct change could lock or rewrite a busy table.",
+    "Make the backfill resumable and observable before asking an assistant to produce migration code."
+   ],
+   "A transaction around a large table rewrite can cause long locks or exhaust disk and replication capacity.",
+   "Test on a production-sized copy, measure lock time and verify both old and new code during the transition.",
+   "ai",
+   [
+    "ai-assisted",
+    "database-migrations",
+    "zero-downtime"
+   ]
+  ],
+  [
+   "Pair AI with a threat model before generating authentication code",
+   "AI-Assisted Development",
+   "Authentication code crosses browser, API, storage and recovery boundaries that a simple login form does not reveal.",
+   [
+    "List assets, actors, trust boundaries and abuse cases before generating implementation details.",
+    "Use maintained framework primitives for password hashing, sessions, CSRF and token validation.",
+    "Review reset, logout, rate-limit and account-enumeration behavior as part of the feature."
+   ],
+   "Do not invent cryptography or store reusable credentials in browser storage without a threat-based justification.",
+   "Test expired sessions, cross-site requests, repeated guesses, password reset and access after logout.",
+   "owasp",
+   [
+    "ai-assisted",
+    "authentication",
+    "threat-model"
+   ]
+  ],
+  [
+   "Use AI to explain unfamiliar legacy code before changing it",
+   "AI-Assisted Development",
+   "A guided code explanation can shorten onboarding without treating guesses as authoritative documentation.",
+   [
+    "Supply the smallest relevant modules and ask for data flow, side effects, callers and unknowns separately.",
+    "Check each claim against tests, route registration, model constraints and runtime configuration.",
+    "Record verified architectural facts and open questions in the project’s own documentation."
+   ],
+   "An explanation based on one file may miss middleware, signal handlers, task queues or database triggers.",
+   "Trace one real request end to end and compare the explanation with logs or a focused local run.",
+   "ai",
+   [
+    "ai-assisted",
+    "legacy-code",
+    "onboarding"
+   ]
+  ],
+  [
+   "Create AI prompts that protect secrets in developer workflows",
+   "AI-Assisted Development",
+   "Teams need an explicit rule for what code and diagnostics can leave their environment.",
+   [
+    "Classify source, logs, customer data and secrets before choosing an AI tool or workspace setting.",
+    "Use synthetic fixtures and remove tokens, cookies, connection strings and identifying data from prompts.",
+    "Document approved tools, retention settings and a path for reporting accidental disclosure."
+   ],
+   "Removing a visible password is insufficient if logs retain request headers or personal identifiers.",
+   "Inspect a sample prompt and its attached context before submission; rotate any credential that was exposed.",
+   "owasp",
+   [
+    "ai-assisted",
+    "secrets",
+    "privacy"
+   ]
+  ],
+  [
+   "Turn an AI-generated prototype into a production readiness review",
+   "AI-Assisted Development",
+   "A demo can hide missing access control, observability, backups and error handling behind a smooth happy path.",
+   [
+    "Inventory data flows, permissions, dependencies, environments and external services before launch.",
+    "Add durable error handling, health checks, migrations, monitoring and a tested recovery route.",
+    "Make a human owner responsible for operational behavior and the product claims shown to users."
+   ],
+   "Do not expose generated pages or APIs publicly until authorization and data retention have been reviewed.",
+   "Run the deployment checklist, verify backups can be restored and exercise a representative failure in staging.",
+   "django_deploy",
+   [
+    "ai-assisted",
+    "production-readiness",
+    "deployment"
+   ]
+  ],
+  [
+   "Use an AI agent to scaffold a feature branch safely",
+   "AI-Assisted Development",
+   "Repository agents work best when their permitted scope and completion conditions are narrow.",
+   [
+    "Start from a clean branch and state the exact task, files or boundaries, and commands the agent may run.",
+    "Ask it to report changed files, assumptions, validations and anything it could not verify.",
+    "Review the patch before granting access to deployment credentials or protected branches."
+   ],
+   "A broad agent instruction can produce unrelated changes or consume secrets available in the environment.",
+   "Check the full diff, run project validation independently and confirm no generated files or secrets were added.",
+   "ai",
+   [
+    "ai-assisted",
+    "agents",
+    "git"
+   ]
+  ],
+  [
+   "Use AI to compare hosting architectures without inventing requirements",
+   "AI-Assisted Development",
+   "Architecture advice is only useful when expected traffic, state, team skill and recovery needs are known.",
+   [
+    "Provide workload shape, data durability, latency, budget and operator constraints as explicit inputs.",
+    "Compare a small set of realistic options against the same requirements and show trade-offs.",
+    "Validate costs and provider limits from current provider documentation before committing."
+   ],
+   "A fashionable architecture can add operational work without improving the customer outcome.",
+   "Record why the chosen design fits current needs and what measurable signal would trigger a change.",
+   "ai",
+   [
+    "ai-assisted",
+    "architecture",
+    "hosting"
+   ]
+  ],
+  [
+   "Use AI to prepare a reliable incident handoff",
+   "AI-Assisted Development",
+   "A concise handoff should preserve evidence, customer impact, mitigations and the next safe action.",
+   [
+    "Summarize the timeline with timestamps, observed symptoms, affected systems and verified scope.",
+    "Separate facts from hypotheses and remove secrets or personal information from the handoff.",
+    "List current mitigation, rollback options and the owner of the next decision."
+   ],
+   "Do not let an AI-generated summary convert correlation into a confirmed root cause.",
+   "Compare the summary against source logs and incident notes before sharing it with responders.",
+   "ai",
+   [
+    "ai-assisted",
+    "incident-response",
+    "operations"
+   ]
+  ],
+  [
+   "Review AI-generated database queries for tenant isolation",
+   "AI-Assisted Development",
+   "A query can return valid rows while exposing another customer’s records.",
+   [
+    "Make the authenticated tenant or owner part of every read, update and delete predicate.",
+    "Check nested relations, aggregate queries, search endpoints and export jobs for the same boundary.",
+    "Add tests that seed two tenants and attempt cross-tenant access through each route."
+   ],
+   "Filtering only in the UI or after loading a broad queryset is not an authorization boundary.",
+   "Use a second tenant’s identifier in requests and verify no data, counts or side channels reveal its records.",
+   "drf",
+   [
+    "ai-assisted",
+    "multi-tenancy",
+    "authorization"
+   ]
+  ],
+  [
+   "Use AI to write a deployment runbook that matches the application",
+   "AI-Assisted Development",
+   "A generic runbook is dangerous when it omits the project’s actual release order and recovery steps.",
+   [
+    "Give the assistant verified commands, service names, migration policy and health checks from the repository.",
+    "Require pre-deploy checks, deploy order, post-deploy verification and rollback constraints.",
+    "Have an operator unfamiliar with the change follow the runbook in staging."
+   ],
+   "Never paste production secrets into generated docs or assume rollback is possible after an irreversible migration.",
+   "Run every command in a non-production environment and confirm the documented health signal detects a broken release.",
+   "django_deploy",
+   [
+    "ai-assisted",
+    "runbooks",
+    "release-management"
+   ]
+  ],
+  [
+   "Separate Django settings for local, test and production environments",
+   "Django & Python",
+   "Environment-specific settings should change deployment behavior without duplicating the application’s core configuration.",
+   [
+    "Keep shared settings in one base module and make environment modules override only intentional differences.",
+    "Load secrets from the environment and fail fast when production-required values are missing.",
+    "Set explicit allowed hosts, database, cache, email and static-file behavior per environment."
+   ],
+   "A development default such as DEBUG or a local SQLite database must not silently carry into production.",
+   "Run Django’s deployment checks with the production settings module and inspect the resolved settings without printing secrets.",
+   "django_deploy",
+   [
+    "django",
+    "configuration",
+    "python"
+   ]
+  ],
+  [
+   "Deploy Django behind a reverse proxy with correct HTTPS awareness",
+   "Django & Python",
+   "TLS often terminates before Django, so forwarded scheme and host headers must be configured deliberately.",
+   [
+    "Terminate HTTPS at a trusted proxy and ensure it replaces, rather than trusts arbitrary, forwarded headers.",
+    "Configure Django secure cookies, HTTPS redirects and proxy SSL settings to match that trusted topology.",
+    "Preserve the original host only from known proxy infrastructure."
+   ],
+   "Trusting client-supplied X-Forwarded-Proto or Host can weaken secure redirects and host validation.",
+   "Test HTTP-to-HTTPS behavior, secure cookie flags and spoofed forwarded headers at the public edge.",
+   "django_deploy",
+   [
+    "django",
+    "https",
+    "reverse-proxy"
+   ]
+  ],
+  [
+   "Structure a Django REST API with serializers and service boundaries",
+   "Django & Python",
+   "An API becomes easier to evolve when validation, authorization, persistence and response shape have clear owners.",
+   [
+    "Keep serializers responsible for request validation and stable response representation.",
+    "Put ownership checks in permissions or scoped querysets before retrieving protected objects.",
+    "Move multi-step business operations into a service or domain layer with explicit transaction boundaries."
+   ],
+   "Do not hide external provider calls inside serializer save methods where retries and side effects are hard to reason about.",
+   "Test invalid fields, cross-user access, database rollback and a normal successful request independently.",
+   "drf",
+   [
+    "django",
+    "api-design",
+    "rest-framework"
+   ]
+  ],
+  [
+   "Handle Django transactions around external provider calls",
+   "Django & Python",
+   "A network call inside a long database transaction can hold locks while the provider times out.",
+   [
+    "Persist an intent and idempotency key in a short transaction before calling the provider.",
+    "Perform the network request outside the database transaction and record the result in a second short transaction.",
+    "On ambiguous timeout, reconcile provider state before retrying an irreversible action."
+   ],
+   "A database rollback cannot undo a charge, email or remote account created by another system.",
+   "Simulate a timeout after provider success and confirm recovery does not issue a duplicate operation.",
+   "django",
+   [
+    "django",
+    "transactions",
+    "integrations"
+   ]
+  ],
+  [
+   "Build a resumable data migration in Django",
+   "Django & Python",
+   "Large backfills need progress and safe retries rather than one process-wide update that can exhaust resources.",
+   [
+    "Separate schema expansion from data transformation and make each batch bounded by a stable key.",
+    "Use historical models inside RunPython and provide a reverse strategy or explicitly mark the operation irreversible.",
+    "Track progress and make each batch idempotent so interrupted work can resume."
+   ],
+   "Do not import current application models into an old migration; future model changes can break historical deploys.",
+   "Run the migration on a representative copy, interrupt it mid-run, rerun it and verify final row counts.",
+   "django",
+   [
+    "django",
+    "migrations",
+    "data"
+   ]
+  ],
+  [
+   "Use Django select_related and prefetch_related for list endpoints",
+   "Django & Python",
+   "A serializer that follows relations can turn one page of results into hundreds of database queries.",
+   [
+    "Measure query count on realistic list sizes before changing the queryset.",
+    "Use select_related for single-valued foreign-key paths and prefetch_related for reverse or many-valued relations.",
+    "Keep pagination bounded so prefetching does not load the entire table."
+   ],
+   "Prefetching every relation can increase memory and return unused data.",
+   "Compare query counts and response time at the same page size before and after the optimization.",
+   "django",
+   [
+    "django",
+    "orm",
+    "performance"
+   ]
+  ],
+  [
+   "Add safe file uploads to a Django application",
+   "Django & Python",
+   "User uploads require storage, type validation, size limits and authorization beyond accepting a file field.",
+   [
+    "Set request and storage size limits and validate the actual content rather than trusting the filename extension.",
+    "Store uploads outside executable application paths and use randomized object names.",
+    "Scope download access to the file owner and apply malware scanning when the risk warrants it."
+   ],
+   "Do not serve untrusted HTML or SVG inline from the same origin as authenticated pages.",
+   "Upload oversized, mislabeled and unauthorized files and verify rejection, isolation and cleanup behavior.",
+   "django",
+   [
+    "django",
+    "uploads",
+    "security"
+   ]
+  ],
+  [
+   "Design Django background jobs to tolerate retries",
+   "Django & Python",
+   "Task queues deliver at least once in many failure scenarios, so handlers must tolerate repeat execution.",
+   [
+    "Give each logical job a stable idempotency key and persist its lifecycle state.",
+    "Separate retryable transport errors from permanent validation failures.",
+    "Use bounded exponential backoff, observable dead-letter handling and a reconciliation procedure."
+   ],
+   "A task retry should not send duplicate invoices, create repeated accounts or repeat an irreversible side effect.",
+   "Run the same job twice and simulate a worker crash after the external action but before local completion.",
+   "django",
+   [
+    "django",
+    "background-jobs",
+    "retries"
+   ]
+  ],
+  [
+   "Use Django management commands for repeatable operations",
+   "Django & Python",
+   "One-off operational scripts become safer when they use Django configuration and can be rerun deliberately.",
+   [
+    "Define arguments, dry-run behavior and validation before mutating records.",
+    "Use bounded querysets and transactions appropriate to the operation size.",
+    "Emit counts and actionable errors without logging secrets or personal data."
+   ],
+   "A management command run against the wrong settings module can change production data unexpectedly.",
+   "Exercise the dry run, empty input, partial failure and rerun cases against a disposable database.",
+   "django",
+   [
+    "django",
+    "management-commands",
+    "operations"
+   ]
+  ],
+  [
+   "Cache Django API responses without leaking private data",
+   "Django & Python",
+   "Caching can reduce repeated work, but user-specific responses need an explicit cache boundary.",
+   [
+    "Identify whether a response is public, per-user or per-tenant before choosing a cache key.",
+    "Include every response-varying input in the key and use explicit expiration or invalidation.",
+    "Avoid shared caches for authenticated responses unless cache partitioning is proven."
+   ],
+   "A correct response served to the wrong user is a security incident, not a performance improvement.",
+   "Request the same endpoint as two users and verify keys, headers and response bodies remain isolated.",
+   "django",
+   [
+    "django",
+    "caching",
+    "privacy"
+   ]
+  ],
+  [
+   "Configure Django static assets for production",
+   "Django & Python",
+   "Static files need a deterministic collection and serving path separate from request-time application code.",
+   [
+    "Set STATIC_ROOT and a production storage backend appropriate to the deployment.",
+    "Run collectstatic during release and serve immutable hashed assets through the configured web tier.",
+    "Keep user media storage and trusted application static files separate."
+   ],
+   "A deployment can succeed while templates still reference missing or stale static assets.",
+   "Inspect the built manifest, request CSS and JavaScript from the deployed hostname, and verify cache headers.",
+   "django_deploy",
+   [
+    "django",
+    "static-files",
+    "deployment"
+   ]
+  ],
+  [
+   "Set secure Django cookies and CSRF origins for a real domain",
+   "Django & Python",
+   "Cookie and CSRF settings must match the frontend origin and the HTTPS proxy arrangement.",
+   [
+    "Set secure session and CSRF cookies in production and enumerate trusted origins explicitly.",
+    "Keep CSRF protection enabled for browser-authenticated state-changing requests.",
+    "Separate API token flows from cookie-based browser flows rather than disabling checks globally."
+   ],
+   "Wildcard trusted origins or turning off CSRF to fix a deployment error can expose account actions.",
+   "Verify legitimate form requests succeed while cross-origin state-changing requests without a valid token fail.",
+   "django_deploy",
+   [
+    "django",
+    "csrf",
+    "cookies"
+   ]
+  ],
+  [
+   "Use PostgreSQL constraints to protect Django business invariants",
+   "Django & Python",
+   "Application validation alone cannot prevent concurrent requests from creating duplicate or invalid state.",
+   [
+    "Identify invariants such as unique ownership, nonnegative balances and one active resource per customer.",
+    "Represent them with unique, check or exclusion constraints where supported.",
+    "Translate expected integrity failures into clear application responses at transaction boundaries."
+   ],
+   "A pre-save existence check has a race between checking and inserting.",
+   "Issue concurrent requests for the same invariant and verify only one succeeds while the database remains consistent.",
+   "django",
+   [
+    "django",
+    "postgresql",
+    "constraints"
+   ]
+  ],
+  [
+   "Add structured logging to a Django service",
+   "Django & Python",
+   "Production debugging needs correlated events without turning logs into a store for secrets.",
+   [
+    "Include request or job identifiers, operation names, duration and outcome as structured fields.",
+    "Redact authorization headers, passwords, payment details and personal fields before emission.",
+    "Route exceptions to an alerting path while keeping customer-facing errors concise."
+   ],
+   "Logging entire request bodies can retain sensitive data long after the request ends.",
+   "Trigger a known error and inspect the log record for correlation fields and absence of secrets.",
+   "django_deploy",
+   [
+    "django",
+    "logging",
+    "observability"
+   ]
+  ],
+  [
+   "Test Django authentication and object ownership boundaries",
+   "Django & Python",
+   "Authentication tests must verify not only who can log in but also which records each identity can reach.",
+   [
+    "Create two users with separate resources and exercise every detail, list and mutation endpoint.",
+    "Test anonymous requests, expired credentials, role boundaries and object identifiers from another user.",
+    "Assert denied requests do not mutate state or reveal sensitive object existence."
+   ],
+   "Testing only the view’s happy path leaves queryset and nested serializer leaks undiscovered.",
+   "Run authorization cases through the public API layer using the same authentication mechanism as production.",
+   "drf",
+   [
+    "django",
+    "testing",
+    "authorization"
+   ]
+  ],
+  [
+   "Use Django signals only for decoupled side effects",
+   "Django & Python",
+   "Signals can obscure control flow when core business operations depend on implicit receivers.",
+   [
+    "Keep required business behavior in an explicit service where callers can see the sequence.",
+    "Reserve signals for genuinely decoupled reactions and use on_commit for work that must follow a successful commit.",
+    "Document receiver registration and prevent duplicate registration during application reloads."
+   ],
+   "A signal receiver that calls a provider before commit can act on data that later rolls back.",
+   "Test receiver count, transaction rollback behavior and whether repeated saves produce duplicate effects.",
+   "django",
+   [
+    "django",
+    "signals",
+    "architecture"
+   ]
+  ],
+  [
+   "Make Django email delivery asynchronous and observable",
+   "Django & Python",
+   "Transactional email can slow web requests and fail independently of the database operation that triggered it.",
+   [
+    "Persist an email intent or enqueue it after commit so rolled-back work is not announced.",
+    "Use a provider adapter with bounded retries and idempotent message keys where available.",
+    "Track accepted, bounced and permanently failed messages without logging message secrets."
+   ],
+   "Do not mark a customer action complete solely because an email was queued.",
+   "Test provider timeout, duplicate queue delivery, bounce handling and visible delivery status separately.",
+   "django",
+   [
+    "django",
+    "email",
+    "async"
+   ]
+  ],
+  [
+   "Run Django migrations safely in a container deployment",
+   "Django & Python",
+   "Multiple application replicas should not race to migrate the database during startup.",
+   [
+    "Run migration as a controlled release step or one-off job before sending traffic to the new code.",
+    "Use expand-and-contract changes when old and new replicas overlap.",
+    "Gate rollout on migration success and keep the previous application image available for code rollback."
+   ],
+   "Starting migrations independently in every web worker can create lock contention and confusing partial releases.",
+   "Deploy to staging with multiple replicas and confirm exactly one migration runner executes before health checks pass.",
+   "django_deploy",
+   [
+    "django",
+    "docker",
+    "migrations"
+   ]
+  ],
+  [
+   "Serve a Django API and React frontend from separate origins safely",
+   "Django & Python",
+   "Cross-origin browser requests need a narrow CORS policy that matches actual credential and cookie behavior.",
+   [
+    "List the exact frontend origins for development, preview and production.",
+    "Allow only required methods and headers and use credential settings only when cookie auth requires them.",
+    "Keep CSRF trusted origins and CORS origins conceptually separate."
+   ],
+   "CORS is not authentication; permissive origin rules do not protect the API from direct clients.",
+   "Inspect preflight responses from allowed and unlisted origins and verify authenticated requests still enforce authorization.",
+   "drf",
+   [
+    "django",
+    "react",
+    "cors"
+   ]
+  ],
+  [
+   "Choose between Django templates and a React frontend",
+   "Django & Python",
+   "A separate SPA adds deployment and API complexity that should solve a real product need.",
+   [
+    "Map interactive screens, SEO requirements, team skills and release ownership before selecting the UI architecture.",
+    "Use templates for server-rendered content and forms when client-side state does not justify a separate application.",
+    "Choose React when reusable interactive client behavior and API-driven screens offset the extra build and origin setup."
+   ],
+   "Do not adopt a second stack only because a starter template makes it easy.",
+   "Prototype one critical user journey and compare accessibility, metadata, build and maintenance costs.",
+   "django",
+   [
+    "django",
+    "react",
+    "architecture"
+   ]
+  ],
+  [
+   "Build a Django webhook endpoint with replay protection",
+   "Django & Python",
+   "A webhook must authenticate the sender and tolerate retries without duplicating a payment or provisioning action.",
+   [
+    "Verify the provider signature against the raw request body using a constant-time comparison.",
+    "Persist provider event IDs under a uniqueness constraint before processing business effects.",
+    "Acknowledge quickly and perform slow work through a durable queue after storing the event."
+   ],
+   "Do not trust a success field in an unsigned payload or accept replayed event IDs as new work.",
+   "Send invalid signatures, duplicate IDs, out-of-order events and transient worker failures in tests.",
+   "drf",
+   [
+    "django",
+    "webhooks",
+    "payments"
+   ]
+  ],
+  [
+   "Create a Django project for an existing PostgreSQL database",
+   "Django & Python",
+   "Connecting an application to an existing schema requires deliberate ownership of migrations and database constraints.",
+   [
+    "Inspect the schema and decide whether Django migrations will own it or map existing tables as unmanaged models.",
+    "Keep credentials outside source control and configure TLS and least-privilege database roles.",
+    "Start with read-only access where possible, then introduce writes with explicit transaction and rollback plans."
+   ],
+   "Running initial migrations against a shared database without reviewing generated operations can alter existing tables.",
+   "Use a restored database copy and compare migration plans before applying changes to the live schema.",
+   "django",
+   [
+    "django",
+    "postgresql",
+    "legacy"
+   ]
+  ],
+  [
+   "Manage Django secrets with environment-specific rotation",
+   "Django & Python",
+   "A secret is operational only when it can be rotated without code edits or accidental logging.",
+   [
+    "Load production secrets from the hosting secret manager or injected environment, never committed settings files.",
+    "Give each integration its own restricted credential and record an owner and rotation procedure.",
+    "Rotate by introducing the new credential, verifying traffic, then revoking the old one."
+   ],
+   "Changing a secret in one service while workers retain old environment values can create intermittent failures.",
+   "Search repository history and build artifacts for exposed values, then verify old credentials no longer authenticate.",
+   "django_deploy",
+   [
+    "django",
+    "secrets",
+    "operations"
+   ]
+  ],
+  [
+   "Profile a slow Django endpoint before adding a cache",
+   "Django & Python",
+   "A measured bottleneck usually points to a targeted fix with fewer invalidation risks than broad caching.",
+   [
+    "Record request duration, query count, database time and response size under representative load.",
+    "Inspect the query plan and serializer access pattern before changing indexes or ORM loading.",
+    "Optimize the dominant cost, then repeat the same measurement with production-like data."
+   ],
+   "A cache can hide an inefficient query while introducing stale or cross-user responses.",
+   "Compare p50 and tail latency, query count and correctness before and after the change.",
+   "django",
+   [
+    "django",
+    "profiling",
+    "performance"
+   ]
+  ],
+  [
+   "Build a React form that keeps server validation understandable",
+   "React & Frontend",
+   "A form should connect each field to clear validation feedback and preserve what the visitor already entered.",
+   [
+    "Model field values and server errors separately so a new submission can clear stale errors.",
+    "Associate labels, hints and error text with each control using stable IDs and ARIA relationships.",
+    "Show a pending state and prevent accidental duplicate submissions while the request is active."
+   ],
+   "Client validation improves feedback but must not replace server-side validation.",
+   "Submit invalid data with keyboard only and verify focus, error association and preserved values.",
+   "react",
+   [
+    "react",
+    "forms",
+    "accessibility"
+   ]
+  ],
+  [
+   "Choose local, URL or server state for a React screen",
+   "React & Frontend",
+   "State placement determines refresh behavior, shareability and which component owns updates.",
+   [
+    "Keep temporary visual state local to the component that uses it.",
+    "Use the URL for shareable filters, pagination and selected resources that should survive refresh.",
+    "Use a server cache for fetched data and centralize cross-page state only when multiple consumers need it."
+   ],
+   "Putting all state in a global store makes ownership and invalidation harder to understand.",
+   "Refresh, navigate backward, open a deep link and update data from a second component.",
+   "react",
+   [
+    "react",
+    "state-management",
+    "architecture"
+   ]
+  ],
+  [
+   "Fetch React data with cancellation and stale-response protection",
+   "React & Frontend",
+   "Fast route changes can let an older network response overwrite the screen for the latest selection.",
+   [
+    "Tie each request to the input or route that produced it.",
+    "Abort obsolete requests where supported and ignore results after their consumer has unmounted.",
+    "Represent loading, success, empty and failure states explicitly."
+   ],
+   "A loading spinner alone can hide a stale response or make an empty result look like an error.",
+   "Throttle and reorder responses in a test to confirm the latest request wins.",
+   "react",
+   [
+    "react",
+    "fetch",
+    "race-conditions"
+   ]
+  ],
+  [
+   "Split a React application into routes without over-bundling",
+   "React & Frontend",
+   "Route-level code splitting keeps rarely used tools from inflating the first screen download.",
+   [
+    "Inspect the production bundle and identify routes with large, separately loadable features.",
+    "Use lazy route modules with a deliberate loading fallback and handle chunk-load errors.",
+    "Preload only likely next steps when measurement shows it improves interaction."
+   ],
+   "Too many tiny chunks or a slow fallback can make navigation feel worse than one modest bundle.",
+   "Compare first-load JavaScript and route transition timings on a throttled mobile profile.",
+   "vite",
+   [
+    "react",
+    "code-splitting",
+    "performance"
+   ]
+  ],
+  [
+   "Use TypeScript discriminated unions for API loading states",
+   "React & Frontend",
+   "A single nullable object often permits impossible combinations such as an error and success payload at once.",
+   [
+    "Define a union for idle, loading, success and failure states.",
+    "Narrow on the state discriminator before reading state-specific fields.",
+    "Keep server response types separate from UI view models when transformation is needed."
+   ],
+   "Type assertions can silence a mismatch without validating the actual JSON from the server.",
+   "Compile after removing unsafe casts and exercise each state with representative API responses.",
+   "react",
+   [
+    "typescript",
+    "react",
+    "types"
+   ]
+  ],
+  [
+   "Build reusable React components without making every prop configurable",
+   "React & Frontend",
+   "A component is reusable when it captures a stable pattern, not when it exposes every styling decision as an option.",
+   [
+    "Extract repeated behavior or semantic structure that appears in more than one meaningful context.",
+    "Prefer a small, named prop surface and composition slots for genuine variation.",
+    "Keep page-specific orchestration outside visual primitives."
+   ],
+   "Premature abstraction makes components harder to scan and forces unrelated screens into one API.",
+   "Review actual call sites and confirm the abstraction reduces repeated decisions rather than hiding them.",
+   "react",
+   [
+    "react",
+    "components",
+    "architecture"
+   ]
+  ],
+  [
+   "Handle React error boundaries as part of route design",
+   "React & Frontend",
+   "A rendering failure should isolate the affected feature while offering a recovery path.",
+   [
+    "Place boundaries around route or feature regions whose failures should not take down the whole app.",
+    "Provide a concise fallback and a reset action when changing route or retrying can recover.",
+    "Report sanitized diagnostic details to the monitoring service."
+   ],
+   "Error boundaries do not catch every asynchronous or event-handler failure.",
+   "Force a render error in a nested feature and verify the rest of the site stays navigable.",
+   "react",
+   [
+    "react",
+    "errors",
+    "resilience"
+   ]
+  ],
+  [
+   "Use React keys to preserve the right list item state",
+   "React & Frontend",
+   "Stable keys help React associate an element with the same record after sorting or insertion.",
+   [
+    "Use a durable record identifier for rows that can reorder or change.",
+    "Do not use array positions when item state should travel with the item.",
+    "Keep keys unique within the rendered sibling list."
+   ],
+   "An index key can make input values or expanded state appear under the wrong record after a reorder.",
+   "Insert, remove and sort list entries while editing one item and confirm state stays attached correctly.",
+   "react",
+   [
+    "react",
+    "lists",
+    "rendering"
+   ]
+  ],
+  [
+   "Manage browser document titles and canonical URLs in a React SPA",
+   "React & Frontend",
+   "Client-side navigation must update page metadata while crawlers and shared links receive stable URLs.",
+   [
+    "Set a meaningful title, description and canonical URL for each indexable route.",
+    "Remove or reset route metadata when the component unmounts to avoid stale values.",
+    "Prefer server-rendered or prerendered HTML when reliable initial metadata is important to discovery."
+   ],
+   "A client effect updates metadata after JavaScript runs and does not replace a server redirect or rendered HTML.",
+   "Inspect both source HTML and rendered DOM on direct route loads and verify canonical URLs use one host.",
+   "seo",
+   [
+    "react",
+    "technical-seo",
+    "metadata"
+   ]
+  ],
+  [
+   "Build a Vite environment strategy for preview and production",
+   "React & Frontend",
+   "Build-time variables are public output, so environments need predictable values without exposing secrets.",
+   [
+    "Separate local, preview and production values using documented Vite modes.",
+    "Use the VITE_ prefix only for values safe to ship in browser assets.",
+    "Fail the production build when required public configuration is absent."
+   ],
+   "Never put API secrets, signing keys or private service credentials in frontend environment variables.",
+   "Search built assets for accidental credentials and verify each environment points at its intended API.",
+   "vite",
+   [
+    "vite",
+    "configuration",
+    "secrets"
+   ]
+  ],
+  [
+   "Deploy a Vite single-page app with working deep links",
+   "React & Frontend",
+   "A route may work after navigating from the homepage but return a server 404 when opened directly.",
+   [
+    "Build the static assets and serve the generated output directory from the production web tier.",
+    "Configure history fallback to the app entry document for client-side routes.",
+    "Keep real asset and API paths excluded from the fallback rule."
+   ],
+   "A catch-all rewrite can turn missing assets or API errors into an HTML response that is difficult to debug.",
+   "Open a nested route in a fresh tab, refresh it, and verify assets and API requests keep their correct content types.",
+   "vite",
+   [
+    "vite",
+    "deployment",
+    "routing"
+   ]
+  ],
+  [
+   "Make a responsive React navigation keyboard-accessible",
+   "React & Frontend",
+   "Responsive menus need the same clear state and reachable actions for touch, keyboard and assistive technology.",
+   [
+    "Use links for navigation and buttons for actions that change menu state.",
+    "Expose expanded state and connect the trigger to the menu region.",
+    "Close the menu after navigation and ensure focus remains sensible."
+   ],
+   "A visual menu that cannot be opened or dismissed with keyboard controls blocks some visitors.",
+   "Test narrow and wide layouts using Tab, Enter, Space and Escape, then confirm focus is visible.",
+   "mdn",
+   [
+    "react",
+    "navigation",
+    "accessibility"
+   ]
+  ],
+  [
+   "Format currency and dates in a React interface consistently",
+   "React & Frontend",
+   "Inconsistent formatting makes prices and timestamps difficult to compare across the same product flow.",
+   [
+    "Keep currency codes and ISO timestamps in data rather than preformatted strings.",
+    "Format with the browser internationalization APIs using an explicit locale and currency.",
+    "Respect the product’s actual settlement currency and avoid converting values only for display without labeling it."
+   ],
+   "A number sign or symbol alone can be ambiguous when multiple currencies are in use.",
+   "Check zero, decimal and large values plus timezone boundaries in multiple browser locales.",
+   "mdn",
+   [
+    "react",
+    "i18n",
+    "currency"
+   ]
+  ],
+  [
+   "Use optimistic updates in React only when rollback is clear",
+   "React & Frontend",
+   "Optimistic UI can make a quick action feel immediate, but only if failure restores trustworthy state.",
+   [
+    "Use optimism for reversible actions with a clear local prediction.",
+    "Keep the previous state long enough to restore it if the request fails.",
+    "Reconcile with the server response after success rather than assuming the prediction was exact."
+   ],
+   "Do not optimistically show a payment, domain registration or permission change as completed before server confirmation.",
+   "Simulate slow, rejected and duplicated requests and verify the UI and server state converge.",
+   "react",
+   [
+    "react",
+    "optimistic-ui",
+    "reliability"
+   ]
+  ],
+  [
+   "Organize CSS tokens in a growing React application",
+   "React & Frontend",
+   "Shared tokens reduce accidental variation in colors, spacing and type as pages expand.",
+   [
+    "Define semantic tokens for surface, text, border, action and status roles.",
+    "Use component-level styles for behavior and keep layout decisions near the page that owns them.",
+    "Remove tokens that are never consumed instead of preserving speculative design options."
+   ],
+   "A token named after one page or one temporary campaign is hard to reuse consistently.",
+   "Search actual styles and inspect high-contrast, hover, disabled and focus states after token changes.",
+   "mdn",
+   [
+    "react",
+    "css",
+    "design-systems"
+   ]
+  ],
+  [
+   "Prevent layout shift in React pages with remote content",
+   "React & Frontend",
+   "Unreserved images, ads or API-loaded panels can move content after a visitor starts reading.",
+   [
+    "Reserve image dimensions or aspect ratios before the asset loads.",
+    "Use stable skeleton geometry for asynchronous content and keep dynamic inserts below current reading position where possible.",
+    "Measure field layout shifts after deployment rather than relying only on one local screenshot."
+   ],
+   "A skeleton that differs greatly from final content can still cause a large shift.",
+   "Record layout-shift entries on mobile and verify image and font loading on a cold cache.",
+   "webdev",
+   [
+    "react",
+    "cls",
+    "web-vitals"
+   ]
+  ],
+  [
+   "Load large React tables without freezing the browser",
+   "React & Frontend",
+   "Rendering thousands of rows can consume main-thread time even when the API responds quickly.",
+   [
+    "Paginate or virtualize the rows only after measuring browser render and interaction cost.",
+    "Keep row components and derived sorting calculations stable where profiling shows repeated work.",
+    "Offer server-side filtering for data volumes that do not belong in browser memory."
+   ],
+   "Virtualization complicates focus, screen-reader navigation and browser find-in-page behavior.",
+   "Profile scroll and keyboard navigation with realistic row counts on a mid-range mobile device.",
+   "webdev",
+   [
+    "react",
+    "tables",
+    "performance"
+   ]
+  ],
+  [
+   "Add a React service worker without serving stale application code",
+   "React & Frontend",
+   "Offline caching helps only when deployments update assets and APIs in a predictable order.",
+   [
+    "Cache fingerprinted static assets and define a separate strategy for navigations and API responses.",
+    "Notify users when a new app version is ready if old and new clients cannot safely coexist.",
+    "Provide a recovery path that clears a broken cache without deleting user data."
+   ],
+   "Caching authenticated API responses in a shared service-worker cache can expose private data.",
+   "Deploy a new version over an old cached session and verify both current navigation and update behavior.",
+   "vite",
+   [
+    "react",
+    "pwa",
+    "caching"
+   ]
+  ],
+  [
+   "Test React user flows with accessible queries",
+   "React & Frontend",
+   "Tests that interact through labels and roles tend to catch usability regressions earlier than tests tied to class names.",
+   [
+    "Query controls by accessible role and name, as a user or assistive tool would.",
+    "Exercise loading, error and success states through the visible interface.",
+    "Mock network boundaries rather than internal component methods."
+   ],
+   "A test can pass while rendering inaccessible controls if it selects elements only by test IDs.",
+   "Rename a visual class and confirm behavior tests stay stable; remove a label and confirm the relevant test fails.",
+   "react",
+   [
+    "react",
+    "testing",
+    "accessibility"
+   ]
+  ],
+  [
+   "Reduce JavaScript sent to mobile visitors in a Vite app",
+   "React & Frontend",
+   "A smaller initial JavaScript path improves startup on slower devices and constrained networks.",
+   [
+    "Inspect source maps or bundle reports to find large libraries and duplicated dependencies.",
+    "Load infrequent tools on demand and prefer browser primitives when they meet the use case.",
+    "Set performance budgets that fail review when important chunks grow unexpectedly."
+   ],
+   "Tree-shaking cannot remove code that is dynamically reachable or side-effectful by design.",
+   "Compare compressed entry bundle size and interaction readiness on the same mobile test profile.",
+   "vite",
+   [
+    "vite",
+    "javascript",
+    "mobile-performance"
+   ]
+  ],
+  [
+   "Use React context without rerendering an entire application",
+   "React & Frontend",
+   "Context is useful for values needed widely, but broad rapidly changing values can rerender many consumers.",
+   [
+    "Use context for stable dependencies such as theme or a session service.",
+    "Split unrelated values and keep high-frequency local state near its consumers.",
+    "Profile before replacing context with a more complex state library."
+   ],
+   "Memoization can obscure data flow and does not repair an unnecessarily broad state boundary.",
+   "Use the React profiler to identify actual rerenders during the interaction that feels slow.",
+   "react",
+   [
+    "react",
+    "context",
+    "performance"
+   ]
+  ],
+  [
+   "Handle authentication redirects in a React application safely",
+   "React & Frontend",
+   "A return URL makes sign-in convenient but can create an open redirect if accepted without validation.",
+   [
+    "Allow only same-origin paths or a strict list of trusted destinations.",
+    "Preserve the requested path without copying access tokens into the URL.",
+    "Return to a known safe fallback when the target is malformed."
+   ],
+   "Do not navigate directly to arbitrary next or redirect query parameters.",
+   "Test absolute external URLs, protocol-relative paths, encoded separators and a normal internal route.",
+   "owasp",
+   [
+    "react",
+    "authentication",
+    "redirects"
+   ]
+  ],
+  [
+   "Create a React and TypeScript project that keeps API types honest",
+   "React & Frontend",
+   "Compile-time interfaces help developers but cannot validate untrusted JSON at runtime.",
+   [
+    "Define shared response contracts from an OpenAPI schema or a versioned API source.",
+    "Parse external JSON at the boundary and represent nullable or optional fields accurately.",
+    "Map API data into UI types when presentation needs a different shape."
+   ],
+   "Casting response data with `as` bypasses checks rather than proving the server returned that shape.",
+   "Feed malformed and older-version payloads to the parsing layer and confirm the UI fails safely.",
+   "react",
+   [
+    "typescript",
+    "api",
+    "contracts"
+   ]
+  ],
+  [
+   "Choose server or client components for a Next.js feature",
+   "Next.js",
+   "Rendering location affects data access, bundle size, interactivity and which environment can see a secret.",
+   [
+    "Start with server rendering for content that can be produced from trusted server data.",
+    "Add a client boundary only around interactive state or browser-only APIs.",
+    "Pass serializable, minimal props across that boundary."
+   ],
+   "A client component cannot safely hold a server credential just because its file was initially rendered on the server.",
+   "Inspect the production bundle and test a direct route load with JavaScript disabled or delayed where appropriate.",
+   "next",
+   [
+    "nextjs",
+    "rendering",
+    "architecture"
+   ]
+  ],
+  [
+   "Use Next.js metadata for canonical page information",
+   "Next.js",
+   "Route-aware metadata should be generated where the route data is known and should match the preferred public URL.",
+   [
+    "Define a metadata base from the canonical production origin.",
+    "Generate titles, descriptions and canonical paths from the same route data used for page content.",
+    "Avoid indexing preview or account-only screens."
+   ],
+   "A client-only title update may not be present in the initial response consumed by some crawlers.",
+   "Inspect response HTML for metadata and compare canonical values with sitemap entries.",
+   "seo",
+   [
+    "nextjs",
+    "metadata",
+    "canonical"
+   ]
+  ],
+  [
+   "Deploy a Next.js app with runtime environment variables",
+   "Next.js",
+   "Build-time and server runtime variables have different exposure and deployment behavior.",
+   [
+    "Keep server-only secrets out of public-prefixed variables.",
+    "Document which values are read during build and which can change at runtime.",
+    "Validate required configuration on server startup and use separate preview credentials."
+   ],
+   "A public environment variable is compiled into assets and must be treated as visible to every visitor.",
+   "Inspect output bundles and run a preview deployment with missing and valid server configuration.",
+   "next",
+   [
+    "nextjs",
+    "deployment",
+    "configuration"
+   ]
+  ],
+  [
+   "Design Next.js route handlers with explicit validation",
+   "Next.js",
+   "A route handler is an API boundary and needs the same validation and access checks as a separate backend.",
+   [
+    "Validate method, content type, body shape and size before business processing.",
+    "Authenticate the caller and scope database operations to authorized records.",
+    "Return stable status codes without exposing internal stack traces."
+   ],
+   "A hidden button or client-side form check does not protect a server route.",
+   "Call the route directly with missing fields, oversized data, no session and another user’s identifier.",
+   "next",
+   [
+    "nextjs",
+    "api",
+    "security"
+   ]
+  ],
+  [
+   "Prevent cache leaks in personalized Next.js pages",
+   "Next.js",
+   "Shared caching is safe only when the response does not depend on private user or tenant state.",
+   [
+    "Identify private inputs such as cookies, session identity and tenant before enabling a cache.",
+    "Set explicit cache behavior for authenticated data and avoid reusing one key across users.",
+    "Revalidate public content according to its update frequency."
+   ],
+   "A personalized response served from a shared cache can disclose private account information.",
+   "Request the same path under two sessions and verify response bodies and cache headers differ safely.",
+   "next",
+   [
+    "nextjs",
+    "caching",
+    "privacy"
+   ]
+  ],
+  [
+   "Build a Next.js sitemap from published content",
+   "Next.js",
+   "A sitemap should include indexable canonical URLs and omit drafts, private routes and redirects.",
+   [
+    "Query only published records and use the chosen HTTPS host consistently.",
+    "Set last-modified dates from meaningful content updates rather than changing every build.",
+    "Split sitemap files when the library grows beyond protocol limits."
+   ],
+   "Sitemap presence does not make a noindex, blocked or broken page eligible for search.",
+   "Compare a sample of sitemap URLs with live canonical, status and robots directives.",
+   "seo",
+   [
+    "nextjs",
+    "sitemap",
+    "technical-seo"
+   ]
+  ],
+  [
+   "Handle dynamic route not-found states in Next.js",
+   "Next.js",
+   "Unknown slugs should return a real not-found state instead of a successful page with empty content.",
+   [
+    "Resolve the slug using the same published-content filter used by the sitemap.",
+    "Return the framework not-found response when no public record exists.",
+    "Avoid exposing whether an unpublished or private record exists."
+   ],
+   "A soft 404 can waste crawl effort and confuse visitors even when the page looks empty.",
+   "Check missing, draft, future-dated and valid slugs by status code and rendered message.",
+   "next",
+   [
+    "nextjs",
+    "routing",
+    "content"
+   ]
+  ],
+  [
+   "Use Next.js image sizing to control layout and bandwidth",
+   "Next.js",
+   "Responsive image delivery needs known dimensions and a safe source allowlist.",
+   [
+    "Provide intrinsic dimensions or a stable aspect ratio for each image.",
+    "Allow only trusted image hosts and use responsive size hints based on layout.",
+    "Serve optimized formats when the infrastructure supports the transformation."
+   ],
+   "An overly broad remote image pattern can turn the image optimizer into an unintended proxy.",
+   "Check layout shift, image request size and source allowlist behavior at mobile and desktop widths.",
+   "webdev",
+   [
+    "nextjs",
+    "images",
+    "performance"
+   ]
+  ],
+  [
+   "Build a Next.js authentication callback with state validation",
+   "Next.js",
+   "OAuth callbacks need to bind the response to the browser session that initiated the sign-in.",
+   [
+    "Generate unpredictable state and store it in a secure short-lived cookie or server session.",
+    "Validate state, issuer and redirect URI before exchanging the authorization code.",
+    "Create the local session only after provider identity and account-linking rules pass."
+   ],
+   "Never accept a callback target or account identity from an unverified query parameter.",
+   "Replay a callback, alter state and try an existing email with a different provider identity.",
+   "owasp",
+   [
+    "nextjs",
+    "oauth",
+    "authentication"
+   ]
+  ],
+  [
+   "Stream large Next.js responses without blocking page rendering",
+   "Next.js",
+   "Streaming can reveal useful page regions earlier while slower data loads independently.",
+   [
+    "Separate content with different latency or criticality into boundary-sized server components.",
+    "Provide stable loading fallbacks that communicate what is still pending.",
+    "Avoid waterfalls by starting independent data requests before awaiting them."
+   ],
+   "Excessive boundaries can make the page jump between inconsistent partial states.",
+   "Throttle backend calls and inspect first content, error behavior and final layout on a slow connection.",
+   "next",
+   [
+    "nextjs",
+    "streaming",
+    "performance"
+   ]
+  ],
+  [
+   "Deploy a static Next.js export with realistic feature limits",
+   "Next.js",
+   "Static export can simplify hosting but excludes request-time server behavior that some routes require.",
+   [
+    "Inventory dynamic data, authentication, route handlers, image processing and rewrites before selecting export.",
+    "Move required runtime work to an API or compatible edge service.",
+    "Configure static hosting fallback and canonical URLs for generated routes."
+   ],
+   "A successful export does not mean server-only routes work from a static host.",
+   "Open every dynamic route directly from the deployed host and verify API-dependent flows separately.",
+   "next",
+   [
+    "nextjs",
+    "static-hosting",
+    "deployment"
+   ]
+  ],
+  [
+   "Improve Next.js Core Web Vitals with field measurements",
+   "Next.js",
+   "Lab improvements should be checked against real visits and route-specific user experience.",
+   [
+    "Identify the largest contentful element and interaction bottleneck for the affected route.",
+    "Use field data to prioritize devices and pages with actual user impact.",
+    "Ship one measurable change at a time and compare the same metric window."
+   ],
+   "A high Lighthouse score on one desktop run does not establish good mobile field performance.",
+   "Track LCP, INP and CLS for representative routes and correlate regressions with releases.",
+   "webdev",
+   [
+    "nextjs",
+    "core-web-vitals",
+    "performance"
+   ]
+  ],
+  [
+   "Build a Node.js API with graceful shutdown",
+   "Node.js",
+   "A process needs to stop accepting new work and finish or safely abandon active work during deploys.",
+   [
+    "Handle termination signals once and mark readiness false before closing listeners.",
+    "Stop queue consumers and wait for in-flight requests within a bounded deadline.",
+    "Close database and telemetry clients, then force exit only after the grace period."
+   ],
+   "Immediate process exit can interrupt writes, jobs or response streams during a rolling deploy.",
+   "Send a termination signal during active traffic and confirm requests drain or fail predictably.",
+   "node",
+   [
+    "nodejs",
+    "shutdown",
+    "reliability"
+   ]
+  ],
+  [
+   "Validate Node.js request bodies at the API boundary",
+   "Node.js",
+   "Static types do not validate JSON received over HTTP at runtime.",
+   [
+    "Parse the body with a schema that limits lengths, numeric ranges and allowed fields.",
+    "Reject unknown or malformed values before calling database or provider code.",
+    "Return field-level errors without echoing untrusted payloads."
+   ],
+   "Treating `req.body` as a trusted TypeScript interface leaves the network boundary unchecked.",
+   "Send malformed JSON, extra fields, oversized strings and boundary numeric values.",
+   "express",
+   [
+    "nodejs",
+    "validation",
+    "api-security"
+   ]
+  ],
+  [
+   "Keep an Express API behind a trusted proxy securely",
+   "Node.js",
+   "Proxy-aware request metadata can affect secure cookies, client IP rate limits and redirects.",
+   [
+    "Set proxy trust to the known topology or proxy ranges rather than enabling it indiscriminately.",
+    "Ensure the edge overwrites forwarded headers before sending requests upstream.",
+    "Use secure transport and explicit host validation at the public boundary."
+   ],
+   "Trusting arbitrary X-Forwarded-For lets clients spoof identity and evade controls.",
+   "Send direct and proxied requests with forged headers and inspect logs, rate limits and redirects.",
+   "express",
+   [
+    "express",
+    "reverse-proxy",
+    "security"
+   ]
+  ],
+  [
+   "Use Node.js streams for large uploads and downloads",
+   "Node.js",
+   "Streaming applies backpressure so large files do not need to sit entirely in memory.",
+   [
+    "Connect readable and writable streams with pipeline so errors and backpressure propagate.",
+    "Enforce size, timeout and content validation while bytes are flowing.",
+    "Write to a temporary destination and finalize only after the stream completes."
+   ],
+   "Buffering a full upload in memory can exhaust the process under concurrent traffic.",
+   "Test a slow client, interrupted connection and oversized body while monitoring memory use.",
+   "node",
+   [
+    "nodejs",
+    "streams",
+    "uploads"
+   ]
+  ],
+  [
+   "Configure Node.js process health checks for orchestration",
+   "Node.js",
+   "Liveness and readiness answer different questions and should not trigger needless restart loops.",
+   [
+    "Use liveness to detect a process that cannot make progress.",
+    "Use readiness to include required dependencies and remove a draining instance from traffic.",
+    "Keep checks fast, bounded and free of state-changing work."
+   ],
+   "A database outage should not necessarily cause every application process to restart continuously.",
+   "Break one dependency and confirm readiness changes while liveness behavior remains intentional.",
+   "node",
+   [
+    "nodejs",
+    "health-checks",
+    "operations"
+   ]
+  ],
+  [
+   "Manage Node.js dependency upgrades with lockfile review",
+   "Node.js",
+   "A reproducible install depends on the lockfile and a reviewed dependency graph.",
+   [
+    "Use the same package manager and install mode in local, CI and production builds.",
+    "Review major version changes and transitive packages before merging lockfile updates.",
+    "Run audit and compatibility checks using the project’s supported runtime."
+   ],
+   "Blindly applying automated fixes can introduce breaking major versions or unmaintained packages.",
+   "Install from a clean checkout and build with the exact CI runtime and lockfile.",
+   "node",
+   [
+    "nodejs",
+    "npm",
+    "dependencies"
+   ]
+  ],
+  [
+   "Handle Node.js background jobs idempotently",
+   "Node.js",
+   "Queue delivery can repeat when workers crash after completing an external action.",
+   [
+    "Assign a durable job key and store operation state outside worker memory.",
+    "Make handlers safe to rerun or reconcile the provider before issuing a second action.",
+    "Use bounded retries and route permanent failures to an operator-visible queue."
+   ],
+   "An in-memory completed flag disappears when the process restarts.",
+   "Kill a worker after its provider call and confirm redelivery does not duplicate the effect.",
+   "node",
+   [
+    "nodejs",
+    "queues",
+    "idempotency"
+   ]
+  ],
+  [
+   "Structure a NestJS module around a clear feature boundary",
+   "Node.js",
+   "Nest modules help organize providers and controllers when dependencies reflect stable responsibilities.",
+   [
+    "Keep controllers focused on transport concerns and move business decisions into injectable providers.",
+    "Export only providers that another module genuinely needs.",
+    "Use explicit interface tokens at infrastructure boundaries that need replacement in tests."
+   ],
+   "One giant shared module makes dependency direction and ownership hard to follow.",
+   "Inspect the dependency graph and test a feature provider without booting unrelated modules.",
+   "nest",
+   [
+    "nestjs",
+    "architecture",
+    "modules"
+   ]
+  ],
+  [
+   "Add request-scoped correlation IDs to a Node.js service",
+   "Node.js",
+   "A request identifier connects gateway, application and downstream logs for one user-visible operation.",
+   [
+    "Accept a validated ID from a trusted gateway or generate a new unpredictable identifier.",
+    "Propagate it through async context and outbound service calls.",
+    "Return the ID in safe error responses and include it in structured logs."
+   ],
+   "Never reuse a client-controlled correlation ID as an authorization token or expose secret context with it.",
+   "Trace one request across an error and verify all records share the same ID without logging credentials.",
+   "node",
+   [
+    "nodejs",
+    "logging",
+    "observability"
+   ]
+  ],
+  [
+   "Prevent unhandled promise rejections from hiding API failures",
+   "Node.js",
+   "Asynchronous route work must reach the HTTP error boundary or a durable background-job handler.",
+   [
+    "Await or return every request promise and use framework-supported async error propagation.",
+    "Map known domain errors to stable responses and report unexpected errors with a correlation ID.",
+    "Keep process-level rejection handlers as last-resort telemetry, not normal control flow."
+   ],
+   "Continuing with unknown process state after an unhandled rejection can create silent data inconsistency.",
+   "Force rejected promises in each route path and confirm they reach the intended error boundary.",
+   "express",
+   [
+    "nodejs",
+    "async",
+    "error-handling"
+   ]
+  ],
+  [
+   "Use rate limits without trusting spoofable client IPs",
+   "Node.js",
+   "Abuse controls need identity sources that cannot be changed by an arbitrary request header.",
+   [
+    "Configure trusted proxy ranges before deriving client addresses.",
+    "Apply layered limits by account, endpoint and source where the threat model requires them.",
+    "Return retry guidance and avoid a single global threshold that blocks unrelated users."
+   ],
+   "A limiter keyed only by attacker-controlled headers is easy to evade.",
+   "Test forwarded-header spoofing, authenticated bursts and shared NAT users.",
+   "express",
+   [
+    "nodejs",
+    "rate-limiting",
+    "security"
+   ]
+  ],
+  [
+   "Design Express error middleware that preserves useful diagnostics",
+   "Node.js",
+   "Central error handling keeps response formats consistent and avoids leaking internal stack details.",
+   [
+    "Pass errors through the middleware chain with their original cause intact.",
+    "Map expected validation and authorization failures to safe public messages.",
+    "Log unexpected failures once with request context and return a generic server response."
+   ],
+   "Returning raw exception messages can expose SQL, file paths or upstream credentials.",
+   "Trigger known and unknown errors and compare client output with sanitized server logs.",
+   "express",
+   [
+    "express",
+    "errors",
+    "logging"
+   ]
+  ],
+  [
+   "Deploy an Express service behind NGINX",
+   "Node.js",
+   "The proxy and application must agree on TLS, timeouts, request sizes and health behavior.",
+   [
+    "Forward only required headers and configure upstream timeouts for the API’s real request profile.",
+    "Limit request body size and terminate TLS at the intended layer.",
+    "Use graceful application shutdown when NGINX removes an upstream during deploy."
+   ],
+   "Mismatched proxy timeouts can make clients retry an operation that the application already completed.",
+   "Test long requests, large payloads, forwarded scheme and deploy drain behavior from the public path.",
+   "nginx",
+   [
+    "express",
+    "nginx",
+    "deployment"
+   ]
+  ],
+  [
+   "Choose Express middleware order deliberately",
+   "Node.js",
+   "Middleware order determines which requests are parsed, authenticated, limited and observed.",
+   [
+    "Assign each middleware a clear stage such as request ID, security headers, body parsing or route authorization.",
+    "Place cheap rejection controls before expensive parsing or database work when appropriate.",
+    "Keep the final error handler after route registration."
+   ],
+   "A route placed before authentication or size limits can bypass the intended boundary.",
+   "Inspect the registered stack and send requests that should be rejected at each stage.",
+   "express",
+   [
+    "express",
+    "middleware",
+    "architecture"
+   ]
+  ],
+  [
+   "Build versioned REST endpoints in Node.js",
+   "Node.js",
+   "Versioning provides a controlled path for breaking response or validation changes.",
+   [
+    "Version only when a consumer-facing compatibility boundary is needed.",
+    "Keep shared domain logic below the versioned transport adapters.",
+    "Publish deprecation timing and migration guidance before removing a version."
+   ],
+   "Duplicating all business logic per API version causes behavior to drift.",
+   "Run the same domain tests through each active version and document contract differences.",
+   "express",
+   [
+    "nodejs",
+    "rest",
+    "api-versioning"
+   ]
+  ],
+  [
+   "Protect Node.js environment configuration from accidental exposure",
+   "Node.js",
+   "Server and browser configuration live in different trust zones.",
+   [
+    "Load secrets at runtime from a protected environment or secret manager.",
+    "Expose a separate allowlist of public settings to frontend builds.",
+    "Validate required values at process start and report missing variable names without their values."
+   ],
+   "Printing all process environment variables during startup can leak credentials into log retention systems.",
+   "Search build artifacts and startup logs for secret values and test missing configuration behavior.",
+   "node",
+   [
+    "nodejs",
+    "secrets",
+    "configuration"
+   ]
+  ],
+  [
+   "Deploy Laravel with cached configuration safely",
+   "PHP & Laravel",
+   "Laravel optimization commands improve production startup only when deployment configuration is complete.",
+   [
+    "Set production environment values through the deployment secret store.",
+    "Run the supported config, route and view cache commands as part of the release.",
+    "Clear or rebuild caches when a release changes environment-dependent settings."
+   ],
+   "Do not commit a generated configuration cache that may contain secrets or belong to another environment.",
+   "Build a clean release artifact and verify the app uses the intended URL, database and mail settings.",
+   "laravel",
+   [
+    "laravel",
+    "deployment",
+    "configuration"
+   ]
+  ],
+  [
+   "Use Laravel queues for work outside the web request",
+   "PHP & Laravel",
+   "Email, image processing and provider calls can exceed request timeouts or block page response.",
+   [
+    "Move slow work into a queued job with a stable identifier.",
+    "Configure retry limits, backoff and failed-job monitoring for the queue driver.",
+    "Make the job idempotent when a retry can repeat an external effect."
+   ],
+   "A queue worker is a separately managed process and will not start merely because the web app has a queue configuration.",
+   "Stop a worker during a job, restart it and verify safe recovery and visible failure reporting.",
+   "laravel",
+   [
+    "laravel",
+    "queues",
+    "background-jobs"
+   ]
+  ],
+  [
+   "Validate Laravel requests with explicit Form Requests",
+   "PHP & Laravel",
+   "Named request validation keeps field rules and authorization visible near the endpoint boundary.",
+   [
+    "Define required, nullable, format and size rules with the correct semantics.",
+    "Use the authorization method or policy for access decisions, not only field validation.",
+    "Return a stable validation shape that the client can map to fields."
+   ],
+   "A valid payload does not imply the authenticated user is allowed to modify the target resource.",
+   "Exercise malformed values and a valid payload submitted for another user’s record.",
+   "laravel",
+   [
+    "laravel",
+    "validation",
+    "authorization"
+   ]
+  ],
+  [
+   "Apply Laravel policies to every resource action",
+   "PHP & Laravel",
+   "Policies centralize resource authorization but only work when each relevant action invokes them.",
+   [
+    "Define view, update, delete and administrative abilities separately.",
+    "Authorize after resolving the resource through the caller’s permitted scope.",
+    "Use policy tests for owner, peer and elevated-role cases."
+   ],
+   "An unguarded API route can bypass a policy used by the web controller.",
+   "Enumerate routes and verify each resource action denies unauthorized identities.",
+   "laravel",
+   [
+    "laravel",
+    "policies",
+    "security"
+   ]
+  ],
+  [
+   "Run PHP applications with Composer production dependencies",
+   "PHP & Laravel",
+   "Production installs should reproduce the reviewed dependency graph without development tooling.",
+   [
+    "Commit composer.lock for applications and use Composer’s production install options in release builds.",
+    "Run platform requirement checks against the actual PHP extensions and runtime.",
+    "Keep development dependencies out of the web image when they are not needed."
+   ],
+   "Updating dependencies during a production container start makes releases non-reproducible.",
+   "Build twice from the same lockfile and compare installed package versions and generated artifacts.",
+   "php",
+   [
+    "php",
+    "composer",
+    "dependencies"
+   ]
+  ],
+  [
+   "Protect Laravel sessions behind HTTPS",
+   "PHP & Laravel",
+   "Session cookie policy must match the public HTTPS origin and the trusted proxy topology.",
+   [
+    "Use secure, HTTP-only and suitable SameSite cookie settings for the authentication flow.",
+    "Set trusted proxies narrowly so scheme detection cannot be spoofed.",
+    "Regenerate session identifiers after authentication and privilege changes."
+   ],
+   "A secure-cookie flag is ineffective if proxy configuration makes the app believe requests are HTTP.",
+   "Inspect Set-Cookie over the live HTTPS path and test session fixation and cross-site flows.",
+   "laravel",
+   [
+    "laravel",
+    "sessions",
+    "https"
+   ]
+  ],
+  [
+   "Use Laravel database transactions around multi-model changes",
+   "PHP & Laravel",
+   "Related rows should commit together when they represent one local business operation.",
+   [
+    "Identify the invariant and wrap its local database writes in one transaction.",
+    "Keep external HTTP or payment calls outside the transaction and persist an intent for recovery.",
+    "Use row locks or database constraints for concurrent updates."
+   ],
+   "A transaction does not make email, storage or a remote API part of the same atomic operation.",
+   "Force an exception halfway through local writes and confirm full rollback; separately test provider timeout recovery.",
+   "laravel",
+   [
+    "laravel",
+    "transactions",
+    "database"
+   ]
+  ],
+  [
+   "Serve Laravel public files without exposing application internals",
+   "PHP & Laravel",
+   "The document root should expose only intended public assets and entry points.",
+   [
+    "Point the web server at Laravel’s public directory rather than the repository root.",
+    "Keep environment files, vendor code and storage outside direct web access.",
+    "Use controlled storage links for public uploads and authorization checks for private files."
+   ],
+   "A misconfigured document root can reveal source, environment files or dependency metadata.",
+   "Request common sensitive paths and verify they return denial or not-found responses.",
+   "laravel",
+   [
+    "laravel",
+    "nginx",
+    "security"
+   ]
+  ],
+  [
+   "Plan Laravel zero-downtime schema changes",
+   "PHP & Laravel",
+   "Rolling releases may run old and new code against the same database during a deployment.",
+   [
+    "Add backward-compatible columns or tables before deploying code that uses them.",
+    "Backfill in batches and switch reads and writes only after the new representation is ready.",
+    "Remove old schema only after all old application versions are gone."
+   ],
+   "A direct rename or non-null column addition can break existing workers during rollout.",
+   "Run old and new application versions against the transition schema in a staging release rehearsal.",
+   "laravel",
+   [
+    "laravel",
+    "migrations",
+    "zero-downtime"
+   ]
+  ],
+  [
+   "Configure Laravel scheduled tasks without duplicate execution",
+   "PHP & Laravel",
+   "Scheduled jobs can overlap or run on every application replica unless their coordination is explicit.",
+   [
+    "Choose one scheduler entry point and ensure the process is invoked reliably.",
+    "Use overlap protection or a distributed lock for jobs that cannot run concurrently.",
+    "Make periodic work idempotent and emit last-success and failure signals."
+   ],
+   "A scheduler lock without expiration can also leave work permanently blocked after a crash.",
+   "Run multiple scheduler instances in staging and verify only the intended number of job executions occur.",
+   "laravel",
+   [
+    "laravel",
+    "scheduler",
+    "operations"
+   ]
+  ],
+  [
+   "Deploy Symfony with environment-specific cache and secrets",
+   "PHP & Laravel",
+   "Symfony production mode compiles configuration and routes that depend on the target environment.",
+   [
+    "Set production secrets through a protected deployment mechanism.",
+    "Warm the cache using the production environment during the build or release stage.",
+    "Run health checks after cache creation and clear stale artifacts on rollback."
+   ],
+   "A cache built with development values can retain the wrong service configuration.",
+   "Inspect the release environment, execute console checks and verify a rollback restores the matching cache state.",
+   "symfony",
+   [
+    "symfony",
+    "deployment",
+    "configuration"
+   ]
+  ],
+  [
+   "Use PHP-FPM pools to isolate web application processes",
+   "PHP & Laravel",
+   "FPM worker limits affect memory use, request queuing and isolation between applications.",
+   [
+    "Estimate worker memory using measured requests rather than the host’s total RAM.",
+    "Set process limits and timeouts that match request duration and available capacity.",
+    "Use separate pools and Unix users when multiple applications should not share process privileges."
+   ],
+   "Too many children can trigger memory pressure; too few can create long request queues.",
+   "Load test representative routes while observing process memory, queue length and 5xx rate.",
+   "php",
+   [
+    "php",
+    "php-fpm",
+    "capacity"
+   ]
+  ],
+  [
+   "Build a FastAPI endpoint with Pydantic input and output models",
+   "FastAPI & Flask",
+   "Explicit models validate incoming data and keep response contracts from exposing internal fields.",
+   [
+    "Define request types with bounds and domain-level validation.",
+    "Use response models to serialize only fields clients are allowed to see.",
+    "Keep database persistence and external calls in testable application functions."
+   ],
+   "Returning an ORM object directly can expose newly added fields unintentionally.",
+   "Test invalid payloads and confirm sensitive model fields never appear in the response schema.",
+   "fastapi",
+   [
+    "fastapi",
+    "pydantic",
+    "api"
+   ]
+  ],
+  [
+   "Deploy FastAPI behind an ASGI server and reverse proxy",
+   "FastAPI & Flask",
+   "An ASGI app needs a process manager, trusted proxy configuration and coordinated worker capacity.",
+   [
+    "Run the supported ASGI server with explicit worker and timeout settings.",
+    "Terminate HTTPS at a configured edge and trust forwarded headers only from that proxy.",
+    "Expose a health endpoint that checks application readiness without doing expensive work."
+   ],
+   "Increasing workers can multiply memory use and connection pools beyond database capacity.",
+   "Test graceful shutdown, forwarded HTTPS URLs and concurrent load at the deployment worker count.",
+   "fastapi",
+   [
+    "fastapi",
+    "asgi",
+    "deployment"
+   ]
+  ],
+  [
+   "Manage FastAPI database sessions per request",
+   "FastAPI & Flask",
+   "Database sessions should have a clear lifetime and close on both successful and failed requests.",
+   [
+    "Create a dependency that yields a session and reliably closes it after request processing.",
+    "Keep transaction commit decisions in the service operation that owns the invariant.",
+    "Avoid sharing mutable session objects across concurrent async tasks."
+   ],
+   "An async route does not make a blocking database driver nonblocking.",
+   "Simulate exceptions and concurrent requests while checking for leaked connections and partial commits.",
+   "fastapi",
+   [
+    "fastapi",
+    "sqlalchemy",
+    "database"
+   ]
+  ],
+  [
+   "Use Flask application factories for multiple environments",
+   "FastAPI & Flask",
+   "An application factory makes configuration and extension setup explicit for tests and deployment.",
+   [
+    "Create the app from a config object rather than global import-time state.",
+    "Initialize extensions after configuration and register blueprints by feature.",
+    "Use a test configuration with isolated database and external-service adapters."
+   ],
+   "Importing a global production app during tests can connect to real integrations or shared data.",
+   "Create two differently configured app instances in one test process and confirm isolation.",
+   "flask",
+   [
+    "flask",
+    "application-factory",
+    "testing"
+   ]
+  ],
+  [
+   "Protect Flask sessions with strong signing configuration",
+   "FastAPI & Flask",
+   "Signed client-side sessions depend on a secret key that must be protected and rotated carefully.",
+   [
+    "Load a high-entropy secret from a protected runtime source.",
+    "Set secure cookie flags and session lifetime to match the user journey.",
+    "Rotate keys with a planned invalidation or key-overlap strategy."
+   ],
+   "A weak or committed secret lets an attacker forge session contents.",
+   "Check production cookies, repository history and behavior after key rotation.",
+   "flask",
+   [
+    "flask",
+    "sessions",
+    "secrets"
+   ]
+  ],
+  [
+   "Add background work to a FastAPI service without blocking requests",
+   "FastAPI & Flask",
+   "Long jobs need durable execution when the API process restarts or times out.",
+   [
+    "Use in-process background tasks only for short work whose loss is acceptable.",
+    "Send durable work to a queue with a tracked job identifier and retry policy.",
+    "Expose job status through an authorized endpoint rather than holding an HTTP request open."
+   ],
+   "A response saying a background task was scheduled does not guarantee the task will survive process termination.",
+   "Restart workers during queued and active jobs and verify retry, status and idempotency behavior.",
+   "fastapi",
+   [
+    "fastapi",
+    "background-tasks",
+    "queues"
+   ]
+  ],
+  [
+   "Deploy Flask with production configuration rather than the dev server",
+   "FastAPI & Flask",
+   "The built-in development server is for local work, not a production process manager.",
+   [
+    "Select a production WSGI server supported by the application and deployment environment.",
+    "Disable debug mode and configure logging, proxy behavior and request limits.",
+    "Run behind a reverse proxy with HTTPS and graceful worker restart settings."
+   ],
+   "A debug traceback can disclose source and configuration details to visitors.",
+   "Verify DEBUG is off, the server process survives worker restart and public errors hide internals.",
+   "flask",
+   [
+    "flask",
+    "wsgi",
+    "deployment"
+   ]
+  ],
+  [
+   "Design a FastAPI dependency override for external services in tests",
+   "FastAPI & Flask",
+   "External service adapters should be replaceable so tests do not spend money or depend on network state.",
+   [
+    "Inject a provider client through a dependency boundary.",
+    "Override that dependency with deterministic success, timeout and rejection behavior in tests.",
+    "Reset overrides after each test to avoid cross-test leakage."
+   ],
+   "A test that contacts a live payment or registrar service can mutate real customer or account state.",
+   "Run the suite with network access disabled and confirm every provider path uses a controlled fake.",
+   "fastapi",
+   [
+    "fastapi",
+    "testing",
+    "dependency-injection"
+   ]
+  ],
+  [
+   "Create a Spring Boot REST endpoint with request validation",
+   "Java & Spring",
+   "A typed request DTO helps define the input contract but still needs bean validation and authorization.",
+   [
+    "Define DTO constraints for required, bounded and well-formed fields.",
+    "Apply validation at the controller boundary and map errors to a stable response shape.",
+    "Authorize the operation against the authenticated principal and resource owner."
+   ],
+   "A valid Java object does not prove a caller may update the referenced entity.",
+   "Test invalid fields, unauthenticated requests and cross-user resource identifiers.",
+   "spring",
+   [
+    "spring-boot",
+    "validation",
+    "rest"
+   ]
+  ],
+  [
+   "Configure Spring Boot profiles without storing secrets in YAML",
+   "Java & Spring",
+   "Profiles separate environment behavior, while credentials should be injected through secret management.",
+   [
+    "Keep common defaults in shared configuration and isolate deliberate profile differences.",
+    "Inject secrets at runtime and fail startup when required production properties are missing.",
+    "Avoid echoing resolved configuration values into logs."
+   ],
+   "A profile name is not a security boundary if production credentials are bundled in the artifact.",
+   "Inspect packaged resources and startup logs, then launch with an intentionally missing secret.",
+   "spring",
+   [
+    "spring-boot",
+    "configuration",
+    "secrets"
+   ]
+  ],
+  [
+   "Use Spring transactions at the service boundary",
+   "Java & Spring",
+   "The transaction should cover related local writes, not a slow remote provider interaction.",
+   [
+    "Place transaction boundaries around the business operation that owns the invariant.",
+    "Persist a durable intent before external work and update local status after reconciliation.",
+    "Choose propagation and isolation based on observed concurrency needs."
+   ],
+   "A network timeout inside a transaction can hold database connections without undoing remote effects.",
+   "Force a provider timeout and confirm locks release promptly while recovery can resume safely.",
+   "spring",
+   [
+    "spring",
+    "transactions",
+    "integrations"
+   ]
+  ],
+  [
+   "Build a Spring Boot container with a predictable runtime",
+   "Java & Spring",
+   "A production image should contain a reproducible artifact and a supported Java runtime without build credentials.",
+   [
+    "Build the application artifact in a controlled stage and copy only runtime output into the final image.",
+    "Run as a non-root user and expose a health endpoint suited to orchestration.",
+    "Keep runtime configuration external to the image."
+   ],
+   "A large image and root process increase deployment and security costs.",
+   "Inspect image layers for credentials, run as the configured user and exercise shutdown behavior.",
+   "spring",
+   [
+    "spring-boot",
+    "docker",
+    "containers"
+   ]
+  ],
+  [
+   "Use Spring Boot Actuator endpoints safely",
+   "Java & Spring",
+   "Operational health endpoints help monitoring but can disclose environment or management data.",
+   [
+    "Expose only the minimum health and metrics endpoints required by operations.",
+    "Protect management routes with network and authentication controls.",
+    "Separate readiness from liveness checks where the platform supports it."
+   ],
+   "Publicly exposing environment, heap dump or configuration endpoints can reveal sensitive internals.",
+   "Scan public routes and verify unauthenticated users can reach only deliberately public health data.",
+   "spring",
+   [
+    "spring-boot",
+    "actuator",
+    "security"
+   ]
+  ],
+  [
+   "Tune HikariCP connection pools from workload evidence",
+   "Java & Spring",
+   "A connection pool should fit database capacity and request concurrency rather than scale with CPU count alone.",
+   [
+    "Measure connection acquisition wait, transaction duration and database limits.",
+    "Set maximum connections and timeouts so one service cannot exhaust the shared database.",
+    "Account for every replica when calculating total pool capacity."
+   ],
+   "A large per-process pool multiplied by autoscaled replicas can overwhelm the database.",
+   "Load test at expected replica count and monitor pool saturation and database active sessions.",
+   "spring",
+   [
+    "spring-boot",
+    "database",
+    "capacity"
+   ]
+  ],
+  [
+   "Write Spring integration tests against the application boundary",
+   "Java & Spring",
+   "Integration tests should verify routing, validation, serialization and persistence together where that contract matters.",
+   [
+    "Use a realistic test configuration with isolated external dependencies.",
+    "Exercise HTTP requests and database behavior rather than only invoking a private method.",
+    "Keep fixtures small and make cleanup deterministic."
+   ],
+   "A test database shared with developers can leak or corrupt data between runs.",
+   "Run tests repeatedly and in parallel against disposable data stores.",
+   "spring",
+   [
+    "spring-boot",
+    "testing",
+    "integration"
+   ]
+  ],
+  [
+   "Handle Spring Boot shutdown and in-flight work",
+   "Java & Spring",
+   "Graceful shutdown helps rolling deployments finish requests while releasing threads and connections.",
+   [
+    "Mark the instance unready when termination begins.",
+    "Bound how long active requests and message consumers may drain.",
+    "Close executors and clients after accepted work has completed or been safely requeued."
+   ],
+   "An unbounded drain can stall a deployment; an immediate stop can duplicate or lose work.",
+   "Terminate the process during an active request and queued message, then verify the recovery path.",
+   "spring",
+   [
+    "spring-boot",
+    "shutdown",
+    "reliability"
+   ]
+  ],
+  [
+   "Build ASP.NET Core APIs with endpoint validation",
+   ".NET Development",
+   "An API contract should reject malformed input before business logic and provide predictable problem responses.",
+   [
+    "Define typed request models and explicit validation rules.",
+    "Map validation and domain failures to consistent problem details.",
+    "Authorize access to the requested resource independently from model validity."
+   ],
+   "Nullable reference types do not validate untrusted JSON by themselves.",
+   "Test invalid bodies, missing credentials and access to a resource owned by another user.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "api",
+    "validation"
+   ]
+  ],
+  [
+   "Configure ASP.NET Core forwarded headers behind a proxy",
+   ".NET Development",
+   "The app needs the correct original scheme and client information when an edge proxy terminates TLS.",
+   [
+    "Configure only known proxy networks or addresses as trusted forwarders.",
+    "Ensure the edge removes client-provided forwarded headers before adding its own.",
+    "Apply HTTPS redirects and secure cookies based on the trusted forwarded scheme."
+   ],
+   "Trusting arbitrary forwarded headers can affect host generation, HTTPS and audit records.",
+   "Test direct and proxied requests with spoofed headers and check generated URLs and cookies.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "reverse-proxy",
+    "https"
+   ]
+  ],
+  [
+   "Use ASP.NET Core dependency injection for external provider clients",
+   ".NET Development",
+   "Provider adapters are easier to test when their lifetime, configuration and failure behavior are explicit.",
+   [
+    "Register typed HTTP clients with bounded timeouts and resilience policies appropriate to the operation.",
+    "Keep secrets in protected runtime configuration and avoid singleton objects that capture user state.",
+    "Inject interfaces or adapters into application services."
+   ],
+   "A retry policy on a non-idempotent payment or registration request can duplicate a charge.",
+   "Use a fake handler for success, timeout and provider rejection, and verify retry safety for each operation.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "dependency-injection",
+    "http-clients"
+   ]
+  ],
+  [
+   "Choose scoped services and database contexts correctly in ASP.NET Core",
+   ".NET Development",
+   "Service lifetime mistakes can leak state between requests or dispose dependencies too early.",
+   [
+    "Use scoped lifetimes for request-bound database contexts and services that depend on them.",
+    "Keep singleton services stateless and do not capture scoped dependencies directly.",
+    "Use a scope factory when background work needs a fresh request-independent scope."
+   ],
+   "A long-lived worker must not reuse a request-scoped context across jobs.",
+   "Run concurrent requests and background tasks while checking data isolation and disposed-object errors.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "dependency-injection",
+    "lifecycle"
+   ]
+  ],
+  [
+   "Deploy ASP.NET Core with health checks and graceful shutdown",
+   ".NET Development",
+   "A container platform needs a reliable readiness signal and a bounded process drain during replacement.",
+   [
+    "Expose a minimal readiness endpoint that checks only dependencies needed to serve traffic.",
+    "Use separate liveness and readiness semantics where orchestration supports both.",
+    "Set shutdown timeout and ensure background consumers stop or requeue work."
+   ],
+   "A dependency outage should not trigger an endless liveness restart loop without a recovery plan.",
+   "Remove an instance from readiness, terminate it under load and verify clean drain behavior.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "health-checks",
+    "containers"
+   ]
+  ],
+  [
+   "Manage Entity Framework Core migrations in a release pipeline",
+   ".NET Development",
+   "Schema changes must be coordinated with app rollout and production data size.",
+   [
+    "Review generated migration operations and SQL before applying them.",
+    "Run one controlled migration step rather than letting every web replica race at startup.",
+    "Prefer backward-compatible changes during rolling releases."
+   ],
+   "A generated drop or table rebuild can destroy data or hold locks longer than expected.",
+   "Apply the migration to a production-sized staging copy and verify rollback limitations explicitly.",
+   "dotnet",
+   [
+    "entity-framework",
+    "migrations",
+    "deployment"
+   ]
+  ],
+  [
+   "Protect ASP.NET Core configuration and data-protection keys",
+   ".NET Development",
+   "The app needs protected secret injection and persistent key storage when cookies must survive instance changes.",
+   [
+    "Keep connection strings and API keys outside source and public container layers.",
+    "Persist and protect data-protection keys across replicas and deployments when shared authentication requires it.",
+    "Restrict access to the key store and plan rotation."
+   ],
+   "Ephemeral per-container keys can invalidate cookies on restart or make replicas unable to decrypt them.",
+   "Restart one replica and test cookie continuity while confirming another service cannot access the key store.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "secrets",
+    "authentication"
+   ]
+  ],
+  [
+   "Add structured logs and trace IDs to ASP.NET Core APIs",
+   ".NET Development",
+   "A supportable API should connect requests and downstream calls without capturing private payloads.",
+   [
+    "Create a request identifier at the trusted edge or application boundary.",
+    "Log operation, duration and outcome as structured fields.",
+    "Redact tokens, passwords, personal information and payment data before recording exceptions."
+   ],
+   "Logging a full object graph can serialize credentials unexpectedly.",
+   "Trigger a representative failure and verify correlation across services with no sensitive fields.",
+   "dotnet",
+   [
+    "aspnet-core",
+    "logging",
+    "observability"
+   ]
+  ],
+  [
+   "Build a Go HTTP server with request deadlines",
+   "Go, Rust & Rails",
+   "Deadlines prevent slow clients or downstream calls from occupying resources indefinitely.",
+   [
+    "Set server read, write and idle timeouts based on endpoint behavior.",
+    "Propagate request context deadlines into database and outbound HTTP calls.",
+    "Return promptly when the client disconnects and stop associated work when safe."
+   ],
+   "A timeout at the proxy alone may leave application work and database queries running.",
+   "Use a slow client and stalled downstream service to verify cancellation and resource release.",
+   "go",
+   [
+    "golang",
+    "http",
+    "timeouts"
+   ]
+  ],
+  [
+   "Use Go contexts to cancel downstream work",
+   "Go, Rust & Rails",
+   "Context cancellation communicates that a request or job is no longer useful to keep processing.",
+   [
+    "Pass context explicitly through service and repository calls.",
+    "Set bounded deadlines for external work and always call cancellation functions.",
+    "Check cancellation before starting expensive follow-on actions."
+   ],
+   "Storing request contexts in long-lived structs can outlive or cross the original request.",
+   "Cancel a parent operation mid-call and confirm database and HTTP work stop promptly.",
+   "go",
+   [
+    "golang",
+    "context",
+    "reliability"
+   ]
+  ],
+  [
+   "Tune Go database connection pools across replicas",
+   "Go, Rust & Rails",
+   "Pool defaults can multiply into too many database connections when the service scales horizontally.",
+   [
+    "Set maximum open and idle connections based on the database budget.",
+    "Set connection lifetime and idle limits to match network and database behavior.",
+    "Include every replica and background worker in the total connection calculation."
+   ],
+   "A locally reasonable pool size can exceed the database limit after autoscaling.",
+   "Load test at expected replica count and monitor wait time, open connections and database saturation.",
+   "postgres",
+   [
+    "golang",
+    "database",
+    "capacity"
+   ]
+  ],
+  [
+   "Build a Rust web service with explicit error boundaries",
+   "Go, Rust & Rails",
+   "Typed errors improve internal reasoning but should map to stable public API behavior.",
+   [
+    "Define domain errors separately from transport and database errors.",
+    "Convert expected failures to intentional status codes at the handler boundary.",
+    "Log unexpected causes with a correlation ID without serializing private inputs."
+   ],
+   "Returning debug formatting from an error type can expose internals in a production response.",
+   "Exercise validation, missing resource, dependency failure and unexpected panic paths.",
+   "rust",
+   [
+    "rust",
+    "errors",
+    "api-design"
+   ]
+  ],
+  [
+   "Handle Rust async task cancellation in a web service",
+   "Go, Rust & Rails",
+   "Dropped futures and request cancellation can affect whether side effects finish or are abandoned.",
+   [
+    "Distinguish cancellable read work from operations that must reach a durable state.",
+    "Persist intent before spawning work that must survive request completion.",
+    "Use bounded task tracking and graceful shutdown for background tasks."
+   ],
+   "Fire-and-forget tasks in a process may disappear during deploy or panic.",
+   "Cancel requests and terminate the process around task boundaries to verify recovery semantics.",
+   "rust",
+   [
+    "rust",
+    "async",
+    "reliability"
+   ]
+  ],
+  [
+   "Deploy Ruby on Rails with production secrets and assets",
+   "Go, Rust & Rails",
+   "A Rails release depends on environment configuration, asset compilation and a process that serves production traffic.",
+   [
+    "Provide credentials through the deployment secret mechanism and disable development diagnostics.",
+    "Precompile assets using the correct release configuration.",
+    "Run behind a production application server and reverse proxy with health and shutdown behavior."
+   ],
+   "Building assets or credentials from a developer environment can bake incorrect values into the release.",
+   "Build from a clean checkout and test public assets, HTTPS redirects and error pages after deployment.",
+   "rails",
+   [
+    "rails",
+    "deployment",
+    "assets"
+   ]
+  ],
+  [
+   "Use Rails strong parameters as one part of authorization",
+   "Go, Rust & Rails",
+   "Permitted fields prevent mass assignment but do not determine whether a user owns the target record.",
+   [
+    "Permit only fields clients are allowed to change.",
+    "Load records through the current user’s authorized scope.",
+    "Use policies or explicit checks for role-specific actions."
+   ],
+   "Permitting an admin-looking field is dangerous even if the UI never exposes it.",
+   "Submit unpermitted fields and another user’s record ID directly to the controller.",
+   "rails",
+   [
+    "rails",
+    "authorization",
+    "mass-assignment"
+   ]
+  ],
+  [
+   "Run Rails background jobs idempotently",
+   "Go, Rust & Rails",
+   "A job can run more than once after retries, worker failure or queue redelivery.",
+   [
+    "Use a stable job key for operations that represent one logical action.",
+    "Make database changes transactional and reconcile external side effects before repeating them.",
+    "Monitor dead jobs and define a replay procedure."
+   ],
+   "A retry count does not prove an external provider did not complete the previous attempt.",
+   "Force failure after the external call and confirm the retry does not duplicate the customer-visible result.",
+   "rails",
+   [
+    "rails",
+    "active-job",
+    "idempotency"
+   ]
+  ],
+  [
+   "Use Rails database constraints alongside model validations",
+   "Go, Rust & Rails",
+   "Model validations help users, while database constraints protect against races and non-Rails writers.",
+   [
+    "Translate critical uniqueness and range invariants into database constraints.",
+    "Keep model validation messages for clear form feedback.",
+    "Handle expected constraint violations at the service boundary."
+   ],
+   "Two concurrent requests can both pass a uniqueness validation before either commits.",
+   "Race duplicate writes and verify only one row persists with a useful application response.",
+   "postgres",
+   [
+    "rails",
+    "database",
+    "constraints"
+   ]
+  ],
+  [
+   "Scaffold a Flutter app with a feature-first folder structure",
+   "Flutter & Cross-platform",
+   "Feature-first organization keeps UI, state and data access close to the user capability they support.",
+   [
+    "Create shared app setup and separate feature folders for screens, models and repositories.",
+    "Keep platform configuration and generated files distinct from handwritten business logic.",
+    "Add one vertical slice before creating abstractions for features that do not exist yet."
+   ],
+   "A folder architecture copied from a large app can create unnecessary layers in a small prototype.",
+   "Trace one screen action from widget through repository to its data source and back.",
+   "flutter",
+   [
+    "flutter",
+    "architecture",
+    "scaffolding"
+   ]
+  ],
+  [
+   "Use Flutter repositories to isolate remote and local data",
+   "Flutter & Cross-platform",
+   "A repository gives the UI one data contract while remote and cached sources change independently.",
+   [
+    "Define repository methods around user actions rather than raw endpoint names.",
+    "Keep serialization and network concerns in data-source adapters.",
+    "Represent loading, empty, stale and failed states explicitly."
+   ],
+   "A repository should not conceal inconsistent sources or silently return stale values as fresh.",
+   "Test offline, timeout, cache hit and refresh cases with a fake data source.",
+   "flutter",
+   [
+    "flutter",
+    "repositories",
+    "offline"
+   ]
+  ],
+  [
+   "Manage Flutter screen state without coupling widgets to HTTP",
+   "Flutter & Cross-platform",
+   "Widgets are easier to reuse when state transitions and service calls are not buried in build methods.",
+   [
+    "Choose a state holder that fits the app’s size and team conventions.",
+    "Move asynchronous operations into a notifier, bloc or view model with explicit states.",
+    "Keep widget rendering deterministic from the current state."
+   ],
+   "Starting requests during every widget rebuild can create duplicate calls and visual flicker.",
+   "Rebuild the widget repeatedly and verify one user action causes one intended request.",
+   "flutter",
+   [
+    "flutter",
+    "state-management",
+    "ui"
+   ]
+  ],
+  [
+   "Handle Flutter deep links across cold and warm app starts",
+   "Flutter & Cross-platform",
+   "A link must route correctly whether the app is already open or needs to launch from scratch.",
+   [
+    "Define URL patterns and validate incoming path and query parameters.",
+    "Configure platform association files and app intent declarations.",
+    "Route unauthorized or missing resources to a safe sign-in or not-found destination."
+   ],
+   "A deep link containing an account ID is not proof that the current user may access it.",
+   "Test installed and fresh-install flows on both platforms, including expired sessions and malformed links.",
+   "flutter",
+   [
+    "flutter",
+    "deep-links",
+    "mobile"
+   ]
+  ],
+  [
+   "Secure Flutter tokens with platform-backed storage",
+   "Flutter & Cross-platform",
+   "Mobile credentials should use operating-system protected storage rather than ordinary preferences.",
+   [
+    "Use a maintained secure-storage plugin backed by Keychain or Android Keystore.",
+    "Keep access tokens short-lived where possible and rotate refresh credentials deliberately.",
+    "Clear sensitive values on logout and account removal."
+   ],
+   "Obfuscating a token or storing it in ordinary local preferences does not protect it.",
+   "Inspect app storage, test device backup and logout, and verify revoked credentials stop working.",
+   "flutter",
+   [
+    "flutter",
+    "mobile-security",
+    "tokens"
+   ]
+  ],
+  [
+   "Optimize Flutter lists without breaking accessibility",
+   "Flutter & Cross-platform",
+   "Large scrollable lists need efficient item construction and accessible labels for actions.",
+   [
+    "Use lazy list builders for long collections and stable keys for mutable rows.",
+    "Avoid expensive synchronous work inside each item builder.",
+    "Give icon-only controls semantic labels and preserve reasonable touch targets."
+   ],
+   "Aggressive item caching can increase memory and retain sensitive row data longer than expected.",
+   "Profile scrolling on a lower-end device and navigate the list with platform accessibility tools.",
+   "flutter",
+   [
+    "flutter",
+    "performance",
+    "accessibility"
+   ]
+  ],
+  [
+   "Build Flutter forms with focus and validation in mind",
+   "Flutter & Cross-platform",
+   "Forms on mobile must support keyboard navigation, helpful errors and resilient state during network delays.",
+   [
+    "Use input formatters only for presentation; validate authoritative rules in the backend too.",
+    "Move focus to the first actionable error and associate messages with their fields.",
+    "Disable repeat submission while preserving entered values after recoverable failure."
+   ],
+   "A format mask can reject valid international names or phone numbers if it encodes assumptions too early.",
+   "Test screen readers, hardware keyboard navigation, invalid input and slow submission on multiple sizes.",
+   "flutter",
+   [
+    "flutter",
+    "forms",
+    "accessibility"
+   ]
+  ],
+  [
+   "Prepare Flutter flavors for development, staging and production",
+   "Flutter & Cross-platform",
+   "Separate flavors help ensure builds use the right API, bundle identifier and visual environment.",
+   [
+    "Define distinct build configurations and app IDs for non-production environments.",
+    "Inject environment-specific public endpoints without shipping server secrets in the app.",
+    "Show a clear non-production indicator in debug and staging builds."
+   ],
+   "A release signed for production can still point at a staging API if build configuration is ambiguous.",
+   "Inspect the installed build’s resolved endpoint, application ID and signing identity before release.",
+   "flutter",
+   [
+    "flutter",
+    "environments",
+    "release"
+   ]
+  ],
+  [
+   "Release a Flutter app with reproducible versioning",
+   "Flutter & Cross-platform",
+   "App stores and support teams need a version and build number that map to source and release notes.",
+   [
+    "Set a deliberate semantic product version and monotonically increasing platform build number.",
+    "Record the source revision and build environment with the release artifact.",
+    "Test the signed artifact through the intended beta distribution path."
+   ],
+   "A successful debug build does not prove a release build has correct signing, permissions or assets.",
+   "Install the release artifact on a clean device and exercise upgrade from the currently shipped version.",
+   "flutter",
+   [
+    "flutter",
+    "release",
+    "versioning"
+   ]
+  ],
+  [
+   "Use React Native navigation with durable deep links",
+   "Flutter & Cross-platform",
+   "Navigation state must handle app links and platform lifecycle without trusting arbitrary route parameters.",
+   [
+    "Define route patterns and map external URLs through a validated linking configuration.",
+    "Restore navigation state only when it is compatible with the active account.",
+    "Handle expired authentication before opening protected screens."
+   ],
+   "Persisted navigation state can point to content a signed-out or different user cannot see.",
+   "Test cold start, warm start, malformed link and account switch on Android and iOS.",
+   "react",
+   [
+    "react-native",
+    "navigation",
+    "deep-links"
+   ]
+  ],
+  [
+   "Reduce React Native bundle startup cost",
+   "Flutter & Cross-platform",
+   "Mobile JavaScript startup depends on bundle size, initialization work and device capability.",
+   [
+    "Measure startup on a representative low-end device before changing architecture.",
+    "Defer optional screens and expensive initialization until the user needs them.",
+    "Remove duplicated packages and avoid synchronous work on the startup path."
+   ],
+   "A small downloaded bundle can still block on expensive parsing or initialization.",
+   "Compare cold-start time and interaction readiness across release builds on the same devices.",
+   "react",
+   [
+    "react-native",
+    "performance",
+    "mobile"
+   ]
+  ],
+  [
+   "Share validation rules between React Native and a backend safely",
+   "Flutter & Cross-platform",
+   "Client rules improve feedback, while the server remains authoritative for data and permissions.",
+   [
+    "Share a schema only where client and server runtimes can use the same contract reliably.",
+    "Keep authorization, pricing and inventory decisions on the server.",
+    "Version mobile API contracts because installed clients may remain active for months."
+   ],
+   "A mobile release cannot immediately update every installed client after a breaking API change.",
+   "Run old supported app payloads against the new backend and verify compatibility and server enforcement.",
+   "react",
+   [
+    "react-native",
+    "api-versioning",
+    "validation"
+   ]
+  ],
+  [
+   "Handle offline mode in a cross-platform mobile app",
+   "Flutter & Cross-platform",
+   "Offline support needs a clear difference between cached information and queued actions.",
+   [
+    "Label cached data with freshness and synchronization state.",
+    "Queue only actions that can be safely replayed with an idempotency key.",
+    "Resolve conflicts explicitly when server state changed while the device was offline."
+   ],
+   "Do not tell users a payment or domain registration succeeded while only a local queue entry exists.",
+   "Disable network access, queue an action, reconnect and verify replay or a clear conflict state.",
+   "flutter",
+   [
+    "mobile",
+    "offline",
+    "sync"
+   ]
+  ],
+  [
+   "Test mobile app upgrades with persistent local data",
+   "Flutter & Cross-platform",
+   "Installed users retain databases, preferences and credentials across app versions.",
+   [
+    "Define migration paths for every persistent schema change.",
+    "Test upgrades from at least the current released version and a clean install.",
+    "Keep recovery behavior for interrupted migrations and invalid cached data."
+   ],
+   "Testing only clean installation misses data-loss bugs affecting existing customers.",
+   "Install an older signed build with representative data, upgrade it and verify user state and account security.",
+   "flutter",
+   [
+    "mobile",
+    "database-migrations",
+    "testing"
+   ]
+  ],
+  [
+   "Handle push notification links without leaking private content",
+   "Flutter & Cross-platform",
+   "Notifications should route users to authorized content without exposing sensitive data on a lock screen.",
+   [
+    "Send a minimal opaque reference rather than full private details in the notification payload.",
+    "Fetch current content after the user opens the app and recheck authorization.",
+    "Provide a safe fallback when the resource was removed or access expired."
+   ],
+   "A notification payload can be visible outside the application and may be replayed.",
+   "Inspect locked-device previews and open stale or cross-account notification links.",
+   "flutter",
+   [
+    "mobile",
+    "notifications",
+    "privacy"
+   ]
+  ],
+  [
+   "Structure an Android app with UI and data layers",
+   "Android Development",
+   "Layer boundaries keep Android framework classes out of core business and data logic.",
+   [
+    "Let Activities or Compose destinations coordinate navigation and visible state.",
+    "Put data operations in repositories and keep business decisions in appropriate domain or data components.",
+    "Expose narrow interfaces between modules and avoid storing data in entry-point components."
+   ],
+   "A UI component should not become the long-lived source of truth for account data.",
+   "Rotate the device, recreate the process and verify state is restored from the correct data layer.",
+   "android",
+   [
+    "android",
+    "architecture",
+    "kotlin"
+   ]
+  ],
+  [
+   "Use Kotlin coroutines without blocking the Android main thread",
+   "Android Development",
+   "Network and database work must not block frame rendering or become detached from screen lifecycle.",
+   [
+    "Use suspend APIs and dispatchers appropriate to CPU or blocking work.",
+    "Tie UI collection to a lifecycle-aware scope.",
+    "Propagate cancellation when the screen is no longer observing a result."
+   ],
+   "Launching untracked global coroutines can update a screen after its owner has disappeared.",
+   "Navigate away during a slow request and verify cancellation or safe state handling.",
+   "android",
+   [
+    "android",
+    "kotlin",
+    "coroutines"
+   ]
+  ],
+  [
+   "Build adaptive Android layouts for phones and tablets",
+   "Android Development",
+   "A responsive Android interface should adapt to window size rather than assume one portrait phone layout.",
+   [
+    "Use window size classes or responsive constraints to select appropriate navigation and pane layouts.",
+    "Keep content readable when text scale and display density change.",
+    "Test foldable posture, rotation and multi-window behavior where relevant."
+   ],
+   "Testing only one emulator size misses clipped controls and unreachable actions on larger windows.",
+   "Use a set of compact, expanded and resized windows with accessibility font scaling.",
+   "android",
+   [
+    "android",
+    "adaptive-design",
+    "accessibility"
+   ]
+  ],
+  [
+   "Store Android credentials using Keystore-backed encryption",
+   "Android Development",
+   "Sensitive app data should be protected by platform key facilities and a deliberate token lifecycle.",
+   [
+    "Use Android Keystore-backed keys through supported security libraries.",
+    "Avoid storing long-lived reusable secrets when a short-lived credential will work.",
+    "Handle backup, device lock and logout behavior for encrypted data."
+   ],
+   "Hard-coded encryption keys in the APK do not protect stored data from an attacker who can inspect the app.",
+   "Inspect app backups and test token revocation, device restore and account logout flows.",
+   "android",
+   [
+    "android",
+    "security",
+    "keystore"
+   ]
+  ],
+  [
+   "Manage Android background work with WorkManager",
+   "Android Development",
+   "Deferrable work should survive process death while respecting network, battery and retry constraints.",
+   [
+    "Use immediate foreground work only when the user-visible operation requires it.",
+    "Set constraints and unique work policies to avoid duplicate schedules.",
+    "Make workers idempotent and expose meaningful progress or failure."
+   ],
+   "A background worker can be retried after a process crash and must not repeat a one-time side effect blindly.",
+   "Force-stop or kill the app during work and verify eventual completion or a recoverable failure.",
+   "android",
+   [
+    "android",
+    "background-work",
+    "reliability"
+   ]
+  ],
+  [
+   "Plan Android app signing and Play release tracks",
+   "Android Development",
+   "Signing identity and staged release tracks determine who receives a build and how updates are recognized.",
+   [
+    "Protect signing credentials in a managed release environment.",
+    "Use internal or closed testing before broad rollout and validate store metadata.",
+    "Track version code and artifact digest alongside source revision."
+   ],
+   "A debug-signed artifact cannot update the production application package.",
+   "Install from the intended test track, update an older version and confirm package identity and permissions.",
+   "android",
+   [
+    "android",
+    "release",
+    "signing"
+   ]
+  ],
+  [
+   "Request Android permissions only when a feature needs them",
+   "Android Development",
+   "Just-in-time permission requests help users understand why sensitive device access is needed.",
+   [
+    "Explain the feature before opening the system permission prompt.",
+    "Request only the narrow permission scope required.",
+    "Provide a useful path when the user denies or later revokes access."
+   ],
+   "A permission denial must not trap users or trigger repeated prompts without context.",
+   "Test first grant, denial, permanent denial and settings revocation with the feature in use.",
+   "android",
+   [
+    "android",
+    "permissions",
+    "privacy"
+   ]
+  ],
+  [
+   "Use Room migrations for Android local databases",
+   "Android Development",
+   "Local schema upgrades must preserve user-created data across app installations.",
+   [
+    "Version schema changes and write explicit migration paths.",
+    "Avoid destructive fallback for data that users expect to keep.",
+    "Test migration with realistic old database fixtures."
+   ],
+   "A migration that works from version one may fail for users upgrading from several releases behind.",
+   "Upgrade fixtures from each supported prior schema and verify row counts and indexes.",
+   "android",
+   [
+    "android",
+    "room",
+    "database"
+   ]
+  ],
+  [
+   "Test Android accessibility with TalkBack and large text",
+   "Android Development",
+   "Accessible controls need meaningful semantics, focus order and layouts that survive text scaling.",
+   [
+    "Provide labels and state descriptions for custom controls.",
+    "Keep touch targets and focus order usable across screens.",
+    "Check large font and display scaling for truncation and hidden actions."
+   ],
+   "A screenshot review cannot verify announcements or focus semantics.",
+   "Complete primary tasks with TalkBack and maximum supported font scaling on a real device or emulator.",
+   "android",
+   [
+    "android",
+    "accessibility",
+    "testing"
+   ]
+  ],
+  [
+   "Structure a SwiftUI app with observable state",
+   "iOS Development",
+   "SwiftUI views are easier to maintain when state ownership and data flow are explicit.",
+   [
+    "Keep transient view state local and move shared feature state to a deliberate model owner.",
+    "Pass values down and actions up through clear bindings or observable models.",
+    "Separate persistence and network responsibilities from view composition."
+   ],
+   "Creating a new observable object during every view update can reset state or duplicate work.",
+   "Navigate between screens, recreate views and confirm state changes originate from one intended source.",
+   "ios",
+   [
+    "ios",
+    "swiftui",
+    "architecture"
+   ]
+  ],
+  [
+   "Use Swift concurrency for network requests without blocking UI",
+   "iOS Development",
+   "Async work should keep the main actor responsive and cancel when its screen no longer needs results.",
+   [
+    "Use async APIs and isolate UI mutations to the main actor.",
+    "Tie task lifetime to the view or feature lifecycle where appropriate.",
+    "Propagate cancellation and distinguish it from a real network failure."
+   ],
+   "An uncancelled request can update the wrong account or screen after navigation.",
+   "Navigate away during a delayed response and verify cancellation or identity checks prevent stale updates.",
+   "ios",
+   [
+    "ios",
+    "swift",
+    "concurrency"
+   ]
+  ],
+  [
+   "Protect iOS credentials with Keychain and account lifecycle rules",
+   "iOS Development",
+   "Keychain storage protects credentials at rest, but applications still need clear scope and revocation behavior.",
+   [
+    "Store only credentials required for the session and choose accessibility based on device lock needs.",
+    "Clear or replace credentials on logout, account switch and server-side revocation.",
+    "Avoid syncing sensitive tokens unless the product explicitly needs that behavior."
+   ],
+   "A token remaining in Keychain after logout can silently restore a supposedly ended session.",
+   "Switch accounts, reboot, restore a backup and revoke a token while verifying access behavior.",
+   "ios",
+   [
+    "ios",
+    "keychain",
+    "security"
+   ]
+  ],
+  [
+   "Configure universal links for an iOS app",
+   "iOS Development",
+   "Universal links require coordinated app entitlements and a domain association file served over HTTPS.",
+   [
+    "Set the associated domains entitlement for the exact hostnames.",
+    "Publish the apple-app-site-association file with correct content type and app identifiers.",
+    "Route only validated paths and require normal authorization for private resources."
+   ],
+   "Owning a matching URL does not authorize access to the record named in that URL.",
+   "Install from a real distribution build and test app-installed, app-absent and expired-session flows.",
+   "ios",
+   [
+    "ios",
+    "universal-links",
+    "routing"
+   ]
+  ],
+  [
+   "Prepare an iOS app for TestFlight and App Store distribution",
+   "iOS Development",
+   "A release requires a stable bundle identity, signing setup, build number and accurate store information.",
+   [
+    "Configure bundle ID, version, build string, icons and capabilities before upload.",
+    "Use protected signing assets in CI and limit who can access them.",
+    "Upload to TestFlight and exercise the release configuration before submission."
+   ],
+   "Changing app identity or capabilities late can invalidate existing distribution and user upgrade paths.",
+   "Install a TestFlight build over the prior version and verify entitlements, notifications and backend environment.",
+   "ios",
+   [
+    "ios",
+    "testflight",
+    "release"
+   ]
+  ],
+  [
+   "Handle iOS background tasks with expiration in mind",
+   "iOS Development",
+   "Background execution is constrained and can end when the system needs resources.",
+   [
+    "Use the appropriate background task API for the user-visible job.",
+    "Persist enough progress to resume after expiration or process termination.",
+    "Finish promptly and avoid assuming the task runs at an exact time."
+   ],
+   "A scheduled background request is not a guarantee of immediate execution.",
+   "Simulate task expiration and relaunch, then confirm work resumes without duplicate side effects.",
+   "ios",
+   [
+    "ios",
+    "background",
+    "reliability"
+   ]
+  ],
+  [
+   "Test iOS dynamic type and VoiceOver navigation",
+   "iOS Development",
+   "Text resizing and assistive navigation reveal layout and semantics problems that fixed screenshots miss.",
+   [
+    "Use semantic controls and meaningful accessibility labels for custom elements.",
+    "Support text styles that scale and avoid truncating key actions.",
+    "Group or order elements according to the user’s task."
+   ],
+   "Adding labels to every decorative view can make VoiceOver navigation more confusing.",
+   "Complete core flows with VoiceOver and the largest accessibility text size on small and large screens.",
+   "ios",
+   [
+    "ios",
+    "accessibility",
+    "testing"
+   ]
+  ],
+  [
+   "Manage iOS app permissions and privacy descriptions accurately",
+   "iOS Development",
+   "System permission prompts should explain a feature’s real need and match the app’s privacy behavior.",
+   [
+    "Request access only at the feature point where it is needed.",
+    "Write purpose descriptions in plain language that match actual data use.",
+    "Handle denial and revocation without blocking unrelated app features."
+   ],
+   "A broad permission request at first launch can undermine trust before a feature is used.",
+   "Test grant, denial and later revocation for each permission-sensitive feature.",
+   "ios",
+   [
+    "ios",
+    "privacy",
+    "permissions"
+   ]
+  ],
+  [
+   "Design PostgreSQL indexes from real query patterns",
+   "Databases & Data",
+   "Indexes speed selected reads but add storage and write cost, so they should match measured access paths.",
+   [
+    "Capture the actual filter, join and ordering columns used by slow queries.",
+    "Inspect EXPLAIN plans with representative data and statistics.",
+    "Add the smallest index that supports the query and measure write overhead."
+   ],
+   "An index on every field can slow inserts and increase maintenance work.",
+   "Compare query plans, latency and table write performance before and after the index.",
+   "postgres",
+   [
+    "postgresql",
+    "indexes",
+    "performance"
+   ]
+  ],
+  [
+   "Add a PostgreSQL index without blocking production writes",
+   "Databases & Data",
+   "Index creation strategy depends on database version, table size and migration tooling.",
+   [
+    "Review the database’s concurrent index capability and its transaction restrictions.",
+    "Use a deployment step that can run outside a long schema transaction when required.",
+    "Detect and clean up invalid indexes after interrupted operations."
+   ],
+   "A regular index build can block writes on a busy table for longer than expected.",
+   "Rehearse on a production-sized copy and inspect lock behavior and index validity after failure.",
+   "postgres",
+   [
+    "postgresql",
+    "migrations",
+    "availability"
+   ]
+  ],
+  [
+   "Use PostgreSQL EXPLAIN ANALYZE to find slow queries",
+   "Databases & Data",
+   "A query plan shows which scans and joins the database chose for actual data and statistics.",
+   [
+    "Run EXPLAIN first when a statement could mutate data; ANALYZE executes the query.",
+    "Compare estimated and actual row counts to find selectivity or stale-statistics issues.",
+    "Check buffer activity and join strategy before forcing planner settings."
+   ],
+   "Running EXPLAIN ANALYZE on a destructive query performs the mutation unless wrapped safely.",
+   "Capture plan output on representative data and compare a small query change under the same conditions.",
+   "postgres",
+   [
+    "postgresql",
+    "query-plans",
+    "performance"
+   ]
+  ],
+  [
+   "Plan PostgreSQL backups with tested restore objectives",
+   "Databases & Data",
+   "A backup is useful only when the team knows how much data may be lost and can restore it in time.",
+   [
+    "Choose logical, physical or managed backups based on database size and recovery objectives.",
+    "Protect backup access separately from the live database credentials.",
+    "Schedule restore rehearsals and record achieved recovery time and data point."
+   ],
+   "A successful backup job can still produce an unusable or incomplete restore.",
+   "Restore into an isolated environment and verify schema, row counts and application-level invariants.",
+   "postgres",
+   [
+    "postgresql",
+    "backups",
+    "disaster-recovery"
+   ]
+  ],
+  [
+   "Use MySQL transactions and isolation levels deliberately",
+   "Databases & Data",
+   "Isolation controls which concurrent changes a transaction can observe and which anomalies remain possible.",
+   [
+    "Identify the invariant and read/write sequence before choosing transaction boundaries.",
+    "Use constraints and row locks where the invariant must survive concurrency.",
+    "Keep transactions short and avoid network waits while locks are held."
+   ],
+   "Default isolation behavior can vary by engine and application assumptions.",
+   "Run concurrent transaction tests that attempt conflicting updates and verify final state.",
+   "mysql",
+   [
+    "mysql",
+    "transactions",
+    "concurrency"
+   ]
+  ],
+  [
+   "Add safe MySQL schema changes to a live application",
+   "Databases & Data",
+   "Online schema capabilities and locking behavior depend on the exact operation and server version.",
+   [
+    "Inspect the planned operation and supported online algorithm for the deployed MySQL version.",
+    "Test against a copy with representative table size and concurrent writes.",
+    "Deploy compatible application code around the schema transition."
+   ],
+   "A migration labeled online can still wait on metadata locks or consume substantial IO.",
+   "Observe lock wait, replication lag and application error rate during a rehearsal.",
+   "mysql",
+   [
+    "mysql",
+    "migrations",
+    "availability"
+   ]
+  ],
+  [
+   "Choose Redis data structures for cache and queue use",
+   "Databases & Data",
+   "Redis structures have different atomic operations, expiration behavior and memory profiles.",
+   [
+    "Model the operation first: key-value lookup, set membership, sorted ranking or stream consumption.",
+    "Choose expiration and eviction behavior that matches the product’s correctness needs.",
+    "Use atomic commands or scripts for invariants spanning multiple keys."
+   ],
+   "A cache value and a queue event have different loss and durability expectations.",
+   "Test expiration, memory pressure, duplicate delivery and restart behavior for the selected use case.",
+   "redis",
+   [
+    "redis",
+    "data-structures",
+    "caching"
+   ]
+  ],
+  [
+   "Avoid cache stampedes in a high-traffic application",
+   "Databases & Data",
+   "Many simultaneous misses can overwhelm the database while all requests recompute the same expensive value.",
+   [
+    "Use request coalescing or a bounded lock around cache refresh.",
+    "Serve a still-valid stale value while refreshing when product correctness allows it.",
+    "Add jitter to expiration and protect the origin with concurrency limits."
+   ],
+   "A cache lock without an expiry or owner token can block refresh indefinitely.",
+   "Expire a hot key under load and observe origin concurrency, response latency and stale-data policy.",
+   "redis",
+   [
+    "redis",
+    "caching",
+    "resilience"
+   ]
+  ],
+  [
+   "Design idempotent data imports for retryable jobs",
+   "Databases & Data",
+   "Imports fail partway through and need to resume without creating duplicates or dropping newer values.",
+   [
+    "Choose a stable external key and enforce uniqueness at the database layer.",
+    "Validate and normalize each batch before writing it.",
+    "Track source version or update time so stale imports cannot overwrite newer changes."
+   ],
+   "Using row order as an identity makes reruns unsafe when the source adds or reorders records.",
+   "Interrupt an import mid-batch, rerun it and compare final data with a clean full import.",
+   "postgres",
+   [
+    "database",
+    "imports",
+    "idempotency"
+   ]
+  ],
+  [
+   "Use database connection pooling without multiplying beyond capacity",
+   "Databases & Data",
+   "Every process and replica contributes to database connection demand.",
+   [
+    "Calculate peak pool totals across web, worker, admin and migration processes.",
+    "Set connection acquisition timeouts and monitor wait duration.",
+    "Scale app concurrency only when the database has headroom."
+   ],
+   "Increasing application replicas can exhaust the database even when each instance’s pool looks small.",
+   "Load test at the expected maximum replica count and compare pool wait with database CPU and active sessions.",
+   "postgres",
+   [
+    "database",
+    "pooling",
+    "capacity"
+   ]
+  ],
+  [
+   "Keep database credentials least-privileged by application role",
+   "Databases & Data",
+   "A compromised application should not automatically gain owner or administrative powers over the database.",
+   [
+    "Use separate roles for migrations, runtime reads and background maintenance where feasible.",
+    "Grant only required schemas, tables and operations to the web role.",
+    "Rotate credentials and audit grants as the application evolves."
+   ],
+   "Using one superuser connection string in every service expands the impact of a leak.",
+   "Inspect grants from the runtime identity and prove denied administrative operations fail.",
+   "postgres",
+   [
+    "database",
+    "least-privilege",
+    "security"
+   ]
+  ],
+  [
+   "Paginate database-backed APIs with stable ordering",
+   "Databases & Data",
+   "Offset pagination can become slow or inconsistent as tables grow and new rows arrive.",
+   [
+    "Define a deterministic sort with a unique tie-breaker.",
+    "Use cursor or keyset pagination for large, frequently changing collections.",
+    "Bound page size and filter only fields the endpoint supports."
+   ],
+   "Unstable ordering can duplicate or skip records between pages.",
+   "Insert rows between page requests and verify continuation semantics with the actual query plan.",
+   "postgres",
+   [
+    "database",
+    "pagination",
+    "api"
+   ]
+  ],
+  [
+   "Build a smaller production Docker image with multi-stage builds",
+   "DevOps & CI/CD",
+   "Build tools and compilers need not ship in the runtime image for a typical web service.",
+   [
+    "Install dependencies and compile assets in a builder stage.",
+    "Copy only runtime artifacts and required libraries into the final stage.",
+    "Pin base image families and rebuild regularly for security updates."
+   ],
+   "A smaller image can still contain secrets copied in an earlier layer.",
+   "Inspect image layers and run the final container without build tools or credentials.",
+   "docker",
+   [
+    "docker",
+    "containers",
+    "supply-chain"
+   ]
+  ],
+  [
+   "Run application containers as a non-root user",
+   "DevOps & CI/CD",
+   "A process with unnecessary privileges increases damage if the application is compromised.",
+   [
+    "Create a dedicated runtime user and assign only required file permissions.",
+    "Use read-only root filesystems where the application supports them.",
+    "Provide writable mounts only for explicit temporary or data paths."
+   ],
+   "Changing the user can break startup if files or bound ports assume root ownership.",
+   "Inspect effective container identity and exercise uploads, logs and graceful shutdown.",
+   "docker",
+   [
+    "docker",
+    "security",
+    "least-privilege"
+   ]
+  ],
+  [
+   "Separate Docker build configuration from runtime secrets",
+   "DevOps & CI/CD",
+   "Build arguments and image layers can preserve values that developers thought were temporary.",
+   [
+    "Use build secrets only for private dependency retrieval and avoid copying them into layers.",
+    "Inject service credentials at runtime through the orchestrator’s secret mechanism.",
+    "Keep public frontend build values clearly separate from server secrets."
+   ],
+   "Deleting a secret in a later layer does not remove it from earlier image layers.",
+   "Scan the final image history and extracted filesystem for known secret patterns.",
+   "docker",
+   [
+    "docker",
+    "secrets",
+    "containers"
+   ]
+  ],
+  [
+   "Create a GitHub Actions deployment with least-privilege permissions",
+   "DevOps & CI/CD",
+   "A workflow token should receive only the repository and cloud permissions needed for one release.",
+   [
+    "Set explicit job permissions and pin third-party actions to reviewed versions or commit SHAs.",
+    "Use protected environments for production credentials and require the intended branch or review gate.",
+    "Prefer short-lived OIDC identity over long-lived cloud keys when the provider supports it."
+   ],
+   "A workflow triggered by untrusted pull-request code should not receive production deployment credentials.",
+   "Inspect token permissions and run a pull-request workflow that attempts to access protected secrets.",
+   "actions",
+   [
+    "github-actions",
+    "ci-cd",
+    "security"
+   ]
+  ],
+  [
+   "Cache CI dependencies without reusing unsafe build artifacts",
+   "DevOps & CI/CD",
+   "Caching dependencies can reduce build time, while application output should still be tied to the source revision.",
+   [
+    "Key dependency caches by lockfile and relevant runtime version.",
+    "Avoid restoring executable artifacts from untrusted branches into privileged release jobs.",
+    "Measure cache hit rate and keep a clean-install fallback."
+   ],
+   "A stale cache can conceal a missing dependency declaration or incompatible binary.",
+   "Run a periodic clean build with cache disabled and compare the artifact and tests.",
+   "actions",
+   [
+    "github-actions",
+    "ci",
+    "caching"
+   ]
+  ],
+  [
+   "Run database migrations as a controlled deployment step",
+   "DevOps & CI/CD",
+   "Schema changes should run once in a coordinated release before application traffic relies on them.",
+   [
+    "Build a migration artifact and review its operations before release.",
+    "Run one migration job with appropriate database access and bounded execution.",
+    "Gate application rollout on successful completion and keep rollback constraints visible."
+   ],
+   "Running the migration automatically in every web replica can race or prolong startup.",
+   "Test failure before, during and after migration on a deployment rehearsal with multiple replicas.",
+   "docker",
+   [
+    "ci-cd",
+    "database-migrations",
+    "release"
+   ]
+  ],
+  [
+   "Use blue-green releases when an application needs fast rollback",
+   "DevOps & CI/CD",
+   "Two compatible application environments can reduce deployment risk when traffic can switch cleanly.",
+   [
+    "Deploy the candidate release to an isolated green environment.",
+    "Run health and business-flow checks before moving traffic.",
+    "Keep the old environment available until data and background work are compatible."
+   ],
+   "A traffic switch cannot reverse an incompatible destructive database migration.",
+   "Practice switch and rollback with a real stateful operation and observe session behavior.",
+   "docker",
+   [
+    "deployment",
+    "blue-green",
+    "rollback"
+   ]
+  ],
+  [
+   "Design rollback plans for stateful web releases",
+   "DevOps & CI/CD",
+   "Code rollback is straightforward only when database, queue and external side effects remain compatible.",
+   [
+    "List irreversible changes and data migrations before deployment.",
+    "Use backward-compatible schema transitions and versioned message formats.",
+    "Define compensating actions for external effects that cannot be rolled back."
+   ],
+   "A previous container image does not restore a database or reverse a registrar purchase.",
+   "Rehearse rollback with representative data and record which actions require manual reconciliation.",
+   "docker",
+   [
+    "deployment",
+    "rollback",
+    "reliability"
+   ]
+  ],
+  [
+   "Separate liveness and readiness checks in a container platform",
+   "DevOps & CI/CD",
+   "Liveness restarts stuck processes; readiness removes instances that are not ready to receive traffic.",
+   [
+    "Keep liveness independent of transient external dependencies where possible.",
+    "Include critical dependencies in readiness with short bounded checks.",
+    "Set startup grace and failure thresholds for actual initialization time."
+   ],
+   "Using one dependency-heavy endpoint for liveness can cause a fleet restart during an outage.",
+   "Simulate process deadlock and database outage separately and verify orchestrator actions differ as intended.",
+   "docker",
+   [
+    "health-checks",
+    "orchestration",
+    "reliability"
+   ]
+  ],
+  [
+   "Add useful metrics and logs before increasing service replicas",
+   "DevOps & CI/CD",
+   "Scaling without observability can multiply a bottleneck while hiding where time and failures accumulate.",
+   [
+    "Track request volume, error rate, latency, queue depth and resource saturation.",
+    "Correlate logs with traces using request IDs while redacting secrets.",
+    "Define alerts around user impact and an operator response, not every noisy metric."
+   ],
+   "High-cardinality labels such as user IDs can create expensive and privacy-invasive telemetry.",
+   "Trigger representative traffic and failure cases and confirm dashboards show the actual bottleneck.",
+   "node",
+   [
+    "observability",
+    "metrics",
+    "logging"
+   ]
+  ],
+  [
+   "Manage production secrets in a CI/CD release pipeline",
+   "DevOps & CI/CD",
+   "Release credentials should be scoped, short-lived and unavailable to untrusted build contexts.",
+   [
+    "Store secrets in an access-controlled environment or external secret manager.",
+    "Use separate credentials per environment and rotate with an overlap plan.",
+    "Mask values in logs and block deployments from untrusted refs."
+   ],
+   "A masked log does not make it safe to print or transform credentials in arbitrary shell commands.",
+   "Audit workflow permissions, test a denied deployment path and scan artifacts and logs for secret values.",
+   "actions",
+   [
+    "ci-cd",
+    "secrets",
+    "operations"
+   ]
+  ],
+  [
+   "Deploy static frontend assets with cache-safe filenames",
+   "DevOps & CI/CD",
+   "Fingerprinting lets immutable assets cache efficiently while HTML can point at the newest release.",
+   [
+    "Publish hashed assets before the HTML that references them.",
+    "Set long cache lifetimes for fingerprinted files and short revalidation for entry HTML.",
+    "Retain prior assets briefly during rolling deploys and open browser sessions."
+   ],
+   "Deleting old hashed chunks immediately can break visitors whose HTML references them.",
+   "Deploy a second version while a first-version tab is open and test route navigation and lazy-loaded chunks.",
+   "vite",
+   [
+    "static-hosting",
+    "cdn",
+    "deployment"
+   ]
+  ],
+  [
+   "Choose shared hosting, VPS or managed application hosting by workload",
+   "Hosting & Deployment",
+   "The right service depends on runtime control, traffic shape and who will operate updates and recovery.",
+   [
+    "List required runtimes, background workers, database needs and access boundaries.",
+    "Estimate predictable capacity and the team’s maintenance skills.",
+    "Compare restore, upgrade and support responsibilities, not only advertised storage."
+   ],
+   "A VPS transfers patching, firewall, backup and incident duties to the customer unless managed explicitly.",
+   "Map a real application release and recovery path to each candidate before selecting one.",
+   "django_deploy",
+   [
+    "hosting",
+    "vps",
+    "shared-hosting"
+   ]
+  ],
+  [
+   "Deploy a Python web app from cPanel without confusing the web root",
+   "Hosting & Deployment",
+   "A Python application needs a supported runtime, WSGI or ASGI entry point and a safe public document root.",
+   [
+    "Confirm the hosting account supports the Python version and process model your framework needs.",
+    "Install dependencies in an isolated environment and configure the application startup entry point.",
+    "Expose only static files and intended public routes; keep source and environment files outside direct web access."
+   ],
+   "A Python app manager in a control panel does not guarantee support for background workers or long-lived sockets.",
+   "Deploy a minimal health route, test static assets and verify private configuration paths are not web-accessible.",
+   "django_deploy",
+   [
+    "python",
+    "cpanel",
+    "deployment"
+   ]
+  ],
+  [
+   "Serve a PHP application from the correct cPanel document root",
+   "Hosting & Deployment",
+   "Only the public entry directory should be reachable directly by web requests.",
+   [
+    "Point the domain to the framework’s public or web directory.",
+    "Keep Composer files, environment secrets and application source outside that document root.",
+    "Set file permissions for the runtime user without making directories world-writable."
+   ],
+   "Moving the entire project into a public folder can expose configuration and dependency files.",
+   "Request environment files, source manifests and storage paths directly and confirm they are denied.",
+   "laravel",
+   [
+    "php",
+    "cpanel",
+    "security"
+   ]
+  ],
+  [
+   "Configure HTTPS and renewal checks for a hosted domain",
+   "Hosting & Deployment",
+   "A certificate must cover the hostnames visitors use and renew before it expires.",
+   [
+    "Issue certificates for the root and required subdomains after DNS points to the correct service.",
+    "Redirect HTTP to HTTPS only after certificate validation succeeds.",
+    "Monitor expiry and test renewal automation rather than assuming it ran."
+   ],
+   "A certificate for the root host does not automatically cover every subdomain.",
+   "Check the certificate chain, hostname coverage, renewal logs and both HTTP and HTTPS behavior.",
+   "mdn",
+   [
+    "hosting",
+    "https",
+    "ssl"
+   ]
+  ],
+  [
+   "Back up a cPanel website and prove a restore works",
+   "Hosting & Deployment",
+   "A backup needs website files, databases and any application configuration required to restore service.",
+   [
+    "Identify every data store and uploaded-file path the site uses.",
+    "Keep copies outside the account or server that could fail with the source.",
+    "Rehearse restoring to an isolated location and record recovery time."
+   ],
+   "A backup stored only on the same hosting account may be lost with the account.",
+   "Restore a copy, connect it to a test database and verify key customer flows.",
+   "django_deploy",
+   [
+    "cpanel",
+    "backups",
+    "recovery"
+   ]
+  ],
+  [
+   "Set up scheduled jobs without overlapping cPanel cron runs",
+   "Hosting & Deployment",
+   "Scheduled tasks can outlast their interval and run twice if locks and timeouts are ignored.",
+   [
+    "Use an explicit interpreter and absolute script path for the account environment.",
+    "Add a lock or idempotency guard for jobs that must not overlap.",
+    "Capture bounded logs and alert on repeated failure."
+   ],
+   "A cron entry can silently fail because it runs with a different PATH and environment than an interactive shell.",
+   "Run with the configured account user, inspect exit status and test the overlap case.",
+   "cpanel",
+   [
+    "cpanel",
+    "cron",
+    "operations"
+   ]
+  ],
+  [
+   "Move a hosted application between providers with a rollback window",
+   "Hosting & Deployment",
+   "A safe migration keeps the old service available while DNS and data move to the new environment.",
+   [
+    "Inventory runtime versions, environment variables, databases, uploads, email and scheduled tasks.",
+    "Copy and validate data before lowering TTL and switching traffic.",
+    "Keep the old host intact until requests and writes are verified on the destination."
+   ],
+   "Changing DNS before the destination is ready can split visitors between incomplete environments.",
+   "Test the new host through a temporary hostname and preserve a clear DNS rollback plan.",
+   "django_deploy",
+   [
+    "hosting",
+    "migration",
+    "dns"
+   ]
+  ],
+  [
+   "Run a Node.js app on hosting with an explicit process manager",
+   "Hosting & Deployment",
+   "A production Node process needs restart policy, environment configuration and logs beyond a terminal session.",
+   [
+    "Use the provider’s supported process manager or service unit rather than an interactive shell.",
+    "Set bounded memory and restart behavior and make shutdown graceful.",
+    "Keep logs rotated and secrets outside the process command line."
+   ],
+   "A process started with `nohup` by hand may stop on deploy or fill the disk with unrotated logs.",
+   "Reboot the host, force a crash and confirm the service restarts and reports its health.",
+   "node",
+   [
+    "nodejs",
+    "hosting",
+    "process-management"
+   ]
+  ],
+  [
+   "Size a VPS for an application and its database",
+   "Hosting & Deployment",
+   "A server plan should account for concurrent workers, memory peaks, disk growth and backup overhead.",
+   [
+    "Measure typical and peak memory for web and background processes.",
+    "Budget database cache, connection pools, logs, uploads and operating-system headroom.",
+    "Set alerts before disk, memory or CPU exhaustion affects customer traffic."
+   ],
+   "Adding swap or more CPU does not solve a workload that has an unbounded queue or query.",
+   "Load test a representative workload and review saturation and recovery behavior under a restart.",
+   "django_deploy",
+   [
+    "vps",
+    "capacity-planning",
+    "hosting"
+   ]
+  ],
+  [
+   "Configure NGINX static caching without caching personalized HTML",
+   "Hosting & Deployment",
+   "Static assets and account-specific responses have different cache safety requirements.",
+   [
+    "Cache fingerprinted files with immutable headers and serve them efficiently.",
+    "Keep personalized pages private or correctly partitioned by authentication context.",
+    "Forward API and dynamic routes to the application with the expected headers."
+   ],
+   "A broad cache rule can serve one user’s HTML or account data to another visitor.",
+   "Test cache headers and body differences across anonymous and authenticated requests.",
+   "nginx",
+   [
+    "nginx",
+    "caching",
+    "security"
+   ]
+  ],
+  [
+   "Check hosting resources before launching a production application",
+   "Hosting & Deployment",
+   "A plan that fits today’s code may fail if its process, connection or outbound-request limits are not understood.",
+   [
+    "Verify runtime, memory, CPU, process, request timeout and database connection limits.",
+    "Estimate resource use at expected concurrency and identify expansion options.",
+    "Confirm backup, restore and support responsibilities in writing."
+   ],
+   "Marketing labels such as unlimited do not describe finite CPU, memory or process capacity.",
+   "Run a load test within provider terms and inspect account resource metrics before launch.",
+   "django_deploy",
+   [
+    "hosting",
+    "capacity",
+    "launch-checklist"
+   ]
+  ],
+  [
+   "Add secure authentication to a React and Django application",
+   "Security & Performance",
+   "Authentication needs server-side authorization, secure session or token handling and clear cross-origin rules.",
+   [
+    "Choose cookie sessions or a documented token flow based on clients and threat model.",
+    "Enforce permissions on every Django endpoint; hide UI controls only for presentation.",
+    "Configure HTTPS, CSRF and narrowly scoped CORS for production origins."
+   ],
+   "A hidden React button does not prevent a direct API request.",
+   "Test anonymous, wrong-role and expired-session requests against protected endpoints.",
+   "drf",
+   [
+    "django",
+    "react",
+    "authentication"
+   ]
+  ],
+  [
+   "Store secrets safely in a Django and React deployment",
+   "Security & Performance",
+   "Build-time frontend variables are public; private credentials belong only in server-side secret storage.",
+   [
+    "Classify keys by whether browser code must see them.",
+    "Inject server secrets through the deployment environment or secret manager.",
+    "Rotate exposed credentials and remove secrets from source history and build artifacts."
+   ],
+   "A VITE_ or REACT_APP_ prefix makes a value available to browser code.",
+   "Search the built asset bundle and repository for known secret patterns before release.",
+   "django_deploy",
+   [
+    "secrets",
+    "django",
+    "react"
+   ]
+  ],
+  [
+   "Protect file uploads in a web application",
+   "Security & Performance",
+   "Uploads require size limits, type validation, safe storage and authorization checks.",
+   [
+    "Limit request size and validate file contents rather than trusting the filename.",
+    "Store uploads outside executable web roots and generate opaque object names.",
+    "Apply access controls, malware review where appropriate and retention rules."
+   ],
+   "An extension or browser-supplied MIME type alone does not prove a file is safe.",
+   "Try oversized, renamed and unauthorized uploads and confirm they are rejected or isolated.",
+   "owasp",
+   [
+    "uploads",
+    "web-security",
+    "storage"
+   ]
+  ],
+  [
+   "Harden a public API against common web risks",
+   "Security & Performance",
+   "A secure API combines object-level authorization, input validation, throttling and safe error handling.",
+   [
+    "Authorize access to each requested object, not just to the endpoint.",
+    "Validate schemas and constrain query depth, size and expensive operations.",
+    "Add throttling, safe errors, audit logs and dependency updates."
+   ],
+   "Authentication without object-level checks can still expose another customer’s records.",
+   "Attempt cross-account object access and malformed or oversized requests in a controlled environment.",
+   "owasp",
+   [
+    "api-security",
+    "owasp",
+    "backend"
+   ]
+  ],
+  [
+   "Set Content Security Policy without breaking a production site",
+   "Security & Performance",
+   "A Content Security Policy can reduce script injection impact when built from actual application dependencies.",
+   [
+    "Inventory scripts, styles, frames and connection endpoints used by the site.",
+    "Begin with report-only mode and review violations from real user journeys.",
+    "Enforce a narrow policy with nonces or hashes for inline code where needed."
+   ],
+   "Copying a strict policy without testing can block payments, analytics or application code.",
+   "Exercise login, checkout, embedded support and key pages with browser console reporting enabled.",
+   "owasp",
+   [
+    "csp",
+    "security-headers",
+    "web-security"
+   ]
+  ],
+  [
+   "Improve Core Web Vitals on a React website",
+   "Security & Performance",
+   "Measure real-user loading, responsiveness and layout stability before choosing an optimization.",
+   [
+    "Use field data to find affected templates, devices and entry pages.",
+    "Optimize the largest content element, long main-thread tasks and unstable dimensions.",
+    "Deploy one change at a time and compare field metrics after enough traffic arrives."
+   ],
+   "A high Lighthouse lab score does not guarantee good real-user field data.",
+   "Review CrUX or Search Console field reports alongside repeatable lab traces.",
+   "webdev",
+   [
+    "react",
+    "core-web-vitals",
+    "performance"
+   ]
+  ],
+  [
+   "Find and reduce JavaScript bundle cost in a Vite app",
+   "Security & Performance",
+   "Bundle analysis helps identify oversized dependencies and code that users do not need on the first route.",
+   [
+    "Measure production chunks and identify duplicated or unexpectedly large packages.",
+    "Split route-level code and replace heavy dependencies only when behavior remains correct.",
+    "Re-measure compressed transfer size and interaction responsiveness on target devices."
+   ],
+   "Adding many tiny chunks can increase request and startup overhead on some networks.",
+   "Compare cold-load traces and interactions before and after the change on a representative mobile device.",
+   "vite",
+   [
+    "vite",
+    "javascript",
+    "performance"
+   ]
+  ],
+  [
+   "Cache API responses safely without leaking user data",
+   "Security & Performance",
+   "Caching policy must account for whether a response is public, personalized or permission-sensitive.",
+   [
+    "Mark public immutable resources and personalized responses with appropriate cache directives.",
+    "Include relevant variation keys when shared caching is intentional.",
+    "Purge or version content when permissions or underlying data change."
+   ],
+   "A shared cache key that ignores user identity can disclose one customer’s response to another.",
+   "Test two authenticated accounts and inspect cache headers and response bodies through the actual proxy.",
+   "mdn",
+   [
+    "http-caching",
+    "api",
+    "security"
+   ]
+  ],
+  [
+   "Tune PostgreSQL indexes from real query plans",
+   "Security & Performance",
+   "Indexes should address measured query patterns and be checked against write and storage costs.",
+   [
+    "Capture slow queries and inspect EXPLAIN ANALYZE with representative parameters.",
+    "Add the smallest useful index, including composite order matching filters and sorting.",
+    "Measure query latency, write overhead and index size after the change."
+   ],
+   "An index on every field increases write cost and may not match the query predicate.",
+   "Compare plans and latency under representative data volume before and after migration.",
+   "postgres",
+   [
+    "postgresql",
+    "database",
+    "performance"
+   ]
+  ],
+  [
+   "Use Redis caching with explicit expiry and invalidation",
+   "Security & Performance",
+   "A cache needs a clear key, freshness policy and behavior when Redis is unavailable.",
+   [
+    "Cache repeatable reads using versioned keys that include relevant tenant or locale context.",
+    "Set TTLs and invalidate on writes when stale data would mislead users.",
+    "Keep the database as the source of truth and define a safe cache-outage path."
+   ],
+   "Caching authorization-sensitive data under a shared key can expose private results.",
+   "Test expiry, write invalidation, concurrent requests and the application’s Redis outage behavior.",
+   "redis",
+   [
+    "redis",
+    "caching",
+    "backend"
+   ]
+  ],
+  [
+   "Plan zero-downtime database migrations for a growing application",
+   "Security & Performance",
+   "Safe schema changes allow old and new application versions to run during a rolling release.",
+   [
+    "Add backward-compatible columns or tables before deploying code that uses them.",
+    "Backfill in bounded batches and observe locks, replication lag and error rates.",
+    "Remove obsolete schema only after old code is gone and a rollback window has passed."
+   ],
+   "Renaming or dropping a live column in the same release can break running workers.",
+   "Exercise the migration against production-sized staging data and verify rollback or forward recovery.",
+   "django_deploy",
+   [
+    "database-migrations",
+    "deployment",
+    "reliability"
+   ]
+  ],
+  [
+   "Monitor a production web app with useful health checks",
+   "Security & Performance",
+   "A useful monitor checks whether users can complete important work, not only whether a process exists.",
+   [
+    "Separate liveness from readiness and avoid making liveness depend on every downstream service.",
+    "Track latency, error rate, saturation and key business actions without logging secrets.",
+    "Route actionable alerts to an owner and document a first-response runbook."
+   ],
+   "A noisy alert that nobody owns becomes background noise during a real incident.",
+   "Simulate dependency failure and verify checks, dashboards and alerts explain the failure accurately.",
+   "django_deploy",
+   [
+    "monitoring",
+    "observability",
+    "reliability"
+   ]
+  ],
+  [
+   "Configure custom domains and HTTPS for a React frontend and Django API",
+   "Domains & DNS",
+   "A clean split such as www for the frontend and api for Django needs deliberate DNS, TLS and CORS configuration.",
+   [
+    "Point each hostname to its intended hosting endpoint and confirm DNS records at authoritative nameservers.",
+    "Issue certificates for every public hostname and redirect HTTP to HTTPS.",
+    "Set Django allowed hosts, trusted origins and frontend API URL to the exact production origins."
+   ],
+   "Changing DNS alone does not provision TLS or update application origin controls.",
+   "Test both hostnames, certificate names, redirects, browser preflight requests and API health after propagation.",
+   "django_deploy",
+   [
+    "custom-domain",
+    "dns",
+    "django",
+    "react"
+   ]
+  ],
+  [
+   "Choose DNS records for a website, email and API subdomain",
+   "Domains & DNS",
+   "A domain’s apex, www, mail and API hosts can route to different providers and require distinct records.",
+   [
+    "Map every hostname to its service before editing the zone.",
+    "Use A or AAAA for addresses, CNAME where permitted and provider-specified MX/TXT records for mail.",
+    "Lower TTL before planned migration and preserve SPF, DKIM and DMARC records."
+   ],
+   "Replacing nameservers without copying mail and verification records can interrupt email and ownership checks.",
+   "Query authoritative DNS and send/receive test mail after the change.",
+   "mdn",
+   [
+    "dns",
+    "domain",
+    "email"
+   ]
+  ],
+  [
+   "Create a technical SEO checklist for a JavaScript-rendered website",
+   "Technical SEO",
+   "Search engines need stable URLs, useful rendered content, crawlable links and accurate metadata.",
+   [
+    "Render important pages server-side or ensure essential content is available to crawlers reliably.",
+    "Use unique titles, canonical URLs, descriptive links and intentional status codes.",
+    "Publish an accurate sitemap and monitor indexing and crawl errors in Search Console."
+   ],
+   "Client-side route changes without crawlable links or correct canonical URLs can hide pages or create duplicates.",
+   "Inspect rendered HTML, URL Inspection, canonical selection and sitemap response for representative routes.",
+   "seo",
+   [
+    "technical-seo",
+    "javascript",
+    "indexing"
+   ]
+  ],
+  [
+   "Write useful title tags and descriptions for service pages",
+   "Technical SEO",
+   "Search snippets should identify the actual service and match the page’s content and customer intent.",
+   [
+    "Give each page a distinct title naming its service and audience or location where relevant.",
+    "Write a concise description that explains the page’s value without repeating keywords.",
+    "Review the rendered result and update pages whose snippet no longer matches the offer."
+   ],
+   "Search engines may generate a different snippet when page text better answers the query.",
+   "Check for duplicate titles and descriptions and compare snippets for the pages that attract impressions.",
+   "seo",
+   [
+    "seo",
+    "metadata",
+    "service-pages"
+   ]
+  ],
+  [
+   "Build a sitemap that helps search engines discover published articles",
+   "Technical SEO",
+   "A sitemap should list canonical, indexable URLs that return successfully and avoid drafts or redirects.",
+   [
+    "Generate entries from published records and use the canonical production origin.",
+    "Exclude drafts, noindex pages, duplicate parameter URLs and redirected locations.",
+    "Submit the sitemap and monitor processing and discovered-page status."
+   ],
+   "A sitemap is a discovery hint, not a guarantee that every listed page will be indexed.",
+   "Fetch the XML, verify each URL and compare submitted versus indexed pages in Search Console.",
+   "seo",
+   [
+    "sitemap",
+    "technical-seo",
+    "blog"
+   ]
+  ],
+  [
+   "Use canonical URLs to consolidate duplicate page variants",
+   "Technical SEO",
+   "Canonical tags help indicate the preferred version when content is reachable through multiple URLs.",
+   [
+    "Choose a stable HTTPS hostname and consistent trailing-slash policy.",
+    "Point equivalent pages to the preferred URL and link internally to that version.",
+    "Keep canonical targets indexable and consistent with redirects and sitemap entries."
+   ],
+   "A canonical tag is a signal and can be ignored when site signals conflict.",
+   "Inspect rendered canonical tags, redirects, internal links and sitemap URL consistency.",
+   "seo",
+   [
+    "canonical",
+    "duplicate-content",
+    "technical-seo"
+   ]
+  ],
+  [
+   "Redirect a mistyped domain safely to the canonical website",
+   "Domains & DNS",
+   "A typo domain can capture visitors only when it is registered, controlled and configured to redirect safely.",
+   [
+    "Confirm ownership and acquire a typo domain where legally and commercially appropriate.",
+    "Point it to controlled infrastructure with a valid certificate for that typo hostname.",
+    "Use a permanent redirect to the matching canonical page and monitor analytics and abuse reports."
+   ],
+   "DNS cannot redirect by itself, and an unowned typo domain cannot be configured by the website owner.",
+   "Verify HTTPS first, then confirm one-hop redirects, preserved paths and the canonical domain in Search Console.",
+   "seo",
+   [
+    "domain",
+    "redirects",
+    "seo"
+   ]
+  ],
+  [
+   "Point a Namecheap domain to web hosting without breaking email",
+   "Domains & DNS",
+   "A website move can succeed while mail stops working if the domain's MX and email-authentication records are lost.",
+   [
+    "Confirm which DNS provider is authoritative before editing records; changing nameservers moves DNS control to a different service.",
+    "Add the web host's required A, AAAA or CNAME records while keeping the existing MX, SPF, DKIM and DMARC records unless the mail provider says to replace them.",
+    "Lower TTL ahead of a planned migration when possible, verify the new website over HTTPS, then test sending and receiving email."
+   ],
+   "Do not replace the whole DNS zone with a hosting preset unless you have copied every required mail and verification record.",
+   "Check the authoritative nameservers and live records, then test the apex, www host and a real mailbox after caches have had time to refresh.",
+   "namecheap_dns",
+   [
+    "namecheap",
+    "dns",
+    "hosting",
+    "email",
+    "domain"
+   ]
+  ],
+  [
+   "A, AAAA, CNAME, MX and TXT records explained for business websites",
+   "Domains & DNS",
+   "Choosing a DNS record becomes easier when you start with the service a hostname must reach.",
+   [
+    "Use A for an IPv4 address and AAAA for an IPv6 address; use CNAME for a hostname alias where the DNS provider permits it.",
+    "Use MX records to route email and TXT records for provider verification and email policies such as SPF, DKIM and DMARC.",
+    "Use CAA records to restrict which certificate authorities may issue certificates only after confirming the policy with your TLS provider."
+   ],
+   "A CNAME at the zone apex can conflict with other records; use the DNS provider's supported apex-alias option or the records the target service specifies.",
+   "Query the authoritative zone for each hostname and verify website, email and certificate issuance after changes propagate.",
+   "namecheap_dns",
+   [
+    "dns-records",
+    "a-record",
+    "cname",
+    "mx",
+    "txt",
+    "business-website"
+   ]
+  ],
+  [
+   "Set up SPF, DKIM and DMARC for a domain email address",
+   "Domains & DNS",
+   "Email authentication records help receiving mail systems evaluate whether messages were authorized and protected from spoofing.",
+   [
+    "Get the exact SPF, DKIM selector and DMARC policy values from the mailbox or sending provider you use.",
+    "Publish one SPF TXT policy per hostname, add the provider's DKIM TXT or CNAME selector records, and begin DMARC with a reporting policy suited to your rollout.",
+    "Check for duplicate SPF records and monitor DMARC reports before tightening enforcement."
+   ],
+   "DNS values are provider-specific, and copying sample records from another domain can break legitimate email delivery.",
+   "Use the mail provider's domain verification and authentication checks, inspect authoritative TXT lookups, and send test messages to more than one recipient provider.",
+   "namecheap_email_dns",
+   [
+    "spf",
+    "dkim",
+    "dmarc",
+    "business-email",
+    "dns"
+   ]
+  ],
+  [
+   "Understand DNS TTL and propagation during a website migration",
+   "Domains & DNS",
+   "DNS changes are cached for a period, so users can reach different destinations while resolvers refresh their answers.",
+   [
+    "Record the current zone and identify the authoritative DNS provider before making a change.",
+    "Set a lower TTL ahead of a planned move where the provider allows it, then update only the records required for the new host.",
+    "Keep the old service available during the transition and monitor authoritative answers and user-facing availability."
+   ],
+   "Lowering TTL immediately before a change does not clear values already cached under the previous TTL.",
+   "Query the authoritative nameserver and multiple public resolvers, then check site availability from more than one network before retiring the old host.",
+   "namecheap_dns",
+   [
+    "dns-ttl",
+    "dns-propagation",
+    "website-migration",
+    "hosting"
+   ]
+  ],
+  [
+   "Compare shared, managed WordPress and VPS hosting by workload",
+   "Hosting & Deployment",
+   "The right hosting plan depends on how much server control, maintenance and resource isolation a site needs.",
+   [
+    "Choose shared hosting for a site that fits the provider's account limits and benefits from a managed control panel.",
+    "Choose managed WordPress when WordPress-specific updates, caching or tools are part of the included service and worth the plan cost.",
+    "Choose a VPS when you need operating-system control or custom services and have a plan for patching, monitoring and recovery."
+   ],
+   "A VPS provides control but does not automatically provide expert operations, backups or application security.",
+   "Compare included websites or accounts, storage, transfer limits, backup cadence, SSL, mailbox limits, renewal pricing and support boundaries using the provider's current plan catalog.",
+   "namecheap_shared",
+   [
+    "shared-hosting",
+    "managed-wordpress",
+    "vps",
+    "hosting-comparison"
+   ]
+  ],
+  [
+   "Plan a hosting migration with DNS and SEO checks",
+   "Hosting & Deployment",
+   "Moving a site to a new host changes infrastructure even when the public URLs stay the same.",
+   [
+    "Prepare the new host, copy the site and database, and test pages, forms, redirects, HTTPS and scheduled jobs before changing DNS.",
+    "Change the required DNS records while preserving mail routing and verification records; keep the old host available during the transition.",
+    "Monitor crawl access, server errors, latency and search traffic after the move, and retire the old host only when requests reach the new one."
+   ],
+   "Changing DNS is only one step: an incomplete copy, missing TLS certificate or blocked crawler can cause user and search problems.",
+   "Follow a staging checklist, inspect logs and Search Console after the cutover, and verify important URLs still return the intended status and content.",
+   "google_host_move",
+   [
+    "hosting-migration",
+    "dns",
+    "technical-seo",
+    "website-move"
+   ]
+  ],
+  [
+   "Build a MERN application with clear API and data boundaries",
+   "MERN Stack",
+   "MongoDB, Express, React and Node.js work well together when browser code, API rules and data access remain separate.",
+   [
+    "Define the API contract and validation rules before connecting React screens to Express routes.",
+    "Keep MongoDB access in server-side modules and validate all request data before queries or writes.",
+    "Configure environment-specific origins, secrets and database credentials outside the browser bundle."
+   ],
+   "A shared JavaScript language does not make browser input trustworthy or server secrets safe to expose.",
+   "Exercise authenticated and unauthenticated API paths, invalid payloads, database failures and a production build with source maps reviewed.",
+   "express",
+   [
+    "mern",
+    "mongodb",
+    "express",
+    "react",
+    "nodejs"
+   ]
+  ],
+  [
+   "Secure authentication in a MERN application",
+   "MERN Stack",
+   "A React interface can improve usability, but authorization must be enforced by the Express API for every protected operation.",
+   [
+    "Choose a session or token strategy and document expiry, rotation, storage and revocation behaviour.",
+    "Enforce identity and resource ownership in server middleware and query boundaries rather than hiding client controls.",
+    "Apply CSRF protections when using cookies, rate-limit sensitive routes and avoid logging credentials or tokens."
+   ],
+   "Putting a token in local storage does not secure an API that fails to check ownership on the server.",
+   "Test expired credentials, cross-user resource access, CSRF where applicable, brute-force limits and logout or revocation behaviour.",
+   "express",
+   [
+    "mern",
+    "authentication",
+    "api-security",
+    "express"
+   ]
+  ],
+  [
+   "Structure a production-ready Node and Express API",
+   "MERN Stack",
+   "A maintainable Express service benefits from explicit routing, validation, error handling and operational boundaries.",
+   [
+    "Separate route definitions, request schemas, business rules and persistence adapters into focused modules.",
+    "Use a central error handler that returns safe client messages while preserving diagnostic context in server logs.",
+    "Add health checks, graceful shutdown, request identifiers and environment-based configuration."
+   ],
+   "Returning raw exception messages can leak paths, queries, secrets or internal infrastructure details.",
+   "Verify malformed requests, not-found routes, dependency outages, shutdown during requests and consistent error response shapes.",
+   "express",
+   [
+    "nodejs",
+    "express",
+    "api-design",
+    "operations"
+   ]
+  ],
+  [
+   "Choose MongoDB document boundaries from access patterns",
+   "MERN Stack",
+   "MongoDB schemas should reflect how the application reads and updates data, including ownership and growth limits.",
+   [
+    "List the main queries and update flows before deciding which values to embed or reference.",
+    "Set validation and unique indexes for invariants that must hold even when requests race.",
+    "Plan for document growth, pagination and retention before a collection becomes large."
+   ],
+   "Embedding unbounded histories in a single document can cause growth and update contention problems.",
+   "Test representative queries with explain plans, duplicate writes, large records and concurrent updates using realistic data.",
+   "mongodb",
+   [
+    "mongodb",
+    "data-modeling",
+    "indexes",
+    "mern"
+   ]
+  ],
+  [
+   "Deploy a MERN application with separate frontend and API origins",
+   "MERN Stack",
+   "A split deployment lets React assets and a Node API scale independently, provided origins, HTTPS and configuration are explicit.",
+   [
+    "Build React assets with a public API base URL that contains no private credentials.",
+    "Deploy Express behind HTTPS and configure an explicit CORS allowlist for the real frontend origins.",
+    "Use managed secrets, health checks, database network restrictions and a rollback-ready release process."
+   ],
+   "Wildcard CORS and development API URLs can expose data or break production requests.",
+   "Check browser preflight requests, TLS, API health, database connectivity, static asset caching and rollback behaviour.",
+   "express",
+   [
+    "mern",
+    "deployment",
+    "cors",
+    "hosting"
+   ]
+  ],
+  [
+   "Design accessible navigation without relying on a JavaScript framework",
+   "Frontend & Web Design",
+   "Semantic HTML, keyboard support and visible focus states make navigation usable across devices and assistive technology.",
+   [
+    "Use links for navigation and buttons for actions, with labels that describe their destinations.",
+    "Support keyboard focus and activation, and make expanded menu state available with appropriate attributes.",
+    "Test the navigation at narrow widths, zoomed text sizes and with a keyboard before adding animation."
+   ],
+   "A menu that works only on hover excludes touch users and many keyboard users.",
+   "Navigate every item using only the keyboard, inspect focus visibility and test at mobile widths with zoom enabled.",
+   "webdev",
+   [
+    "accessibility",
+    "navigation",
+    "html",
+    "responsive-design"
+   ]
+  ],
+  [
+   "Create responsive layouts with CSS Grid and Flexbox",
+   "Frontend & Web Design",
+   "Responsive layouts should adapt to content and available space rather than target a small set of device widths.",
+   [
+    "Define the content hierarchy and natural minimum widths before choosing breakpoints.",
+    "Use Grid for two-dimensional page regions and Flexbox for one-dimensional alignment and wrapping.",
+    "Allow text and controls to reflow without clipping when zoomed or translated."
+   ],
+   "Fixed-width cards and breakpoint rules tied to popular devices often fail at intermediate sizes.",
+   "Resize continuously, test long labels and translated copy, and confirm there is no horizontal overflow at narrow viewport widths.",
+   "webdev",
+   [
+    "css",
+    "responsive-design",
+    "layout",
+    "frontend"
+   ]
+  ],
+  [
+   "Build a reusable design system with accessible color and type tokens",
+   "Frontend & Web Design",
+   "A small set of semantic design tokens keeps typography, spacing and contrast consistent as a site grows.",
+   [
+    "Define tokens by purpose such as text, surface, border, action and focus rather than by component name.",
+    "Check text and control contrast for every theme and interactive state.",
+    "Document type scale, spacing rules and component examples so teams use tokens consistently."
+   ],
+   "Color alone should not communicate errors, selection or status, and brand colors may not meet contrast needs on every surface.",
+   "Run contrast checks on rendered components and inspect hover, focus, disabled, error and dark-theme states.",
+   "webdev",
+   [
+    "design-systems",
+    "css",
+    "accessibility",
+    "typography"
+   ]
+  ],
+  [
+   "Improve web form usability with clear labels and helpful errors",
+   "Frontend & Web Design",
+   "Well-designed forms explain what information is needed, preserve user input and make correction straightforward.",
+   [
+    "Associate every control with a persistent label and state any required format before submission.",
+    "Validate on the server as well as the client and connect errors to fields with accessible descriptions.",
+    "Preserve valid entries when a request fails and move focus to a useful summary or invalid field."
+   ],
+   "Placeholder text is not a reliable replacement for a label, and client checks can be bypassed.",
+   "Complete the form with keyboard and screen reader support, submit invalid data and verify errors identify both the field and correction.",
+   "webdev",
+   [
+    "forms",
+    "ux",
+    "accessibility",
+    "html"
+   ]
+  ],
+  [
+   "Use progressive enhancement for resilient web experiences",
+   "Frontend & Web Design",
+   "A useful page should preserve its core content and actions when optional scripts are slow, blocked or unavailable.",
+   [
+    "Render meaningful headings, links and form controls in the document structure.",
+    "Add JavaScript for enhancements such as live feedback without replacing essential browser navigation.",
+    "Provide loading, error and empty states for interactions that depend on remote services."
+   ],
+   "A blank client-rendered shell makes outages and slow connections look like a broken site.",
+   "Disable JavaScript and throttle the network to confirm core content, navigation and recovery guidance remain available.",
+   "webdev",
+   [
+    "progressive-enhancement",
+    "performance",
+    "html",
+    "resilience"
+   ]
+  ],
+  [
+   "Improve perceived page speed with image and font choices",
+   "Frontend & Web Design",
+   "The largest visible content and layout stability often depend on how images and fonts are requested and sized.",
+   [
+    "Size responsive images close to their rendered dimensions and provide width and height to reserve layout space.",
+    "Load only the font weights and character subsets actually used, with sensible fallback fonts.",
+    "Prioritize the main above-the-fold visual while deferring offscreen media."
+   ],
+   "Loading every image and font eagerly can delay rendering and create layout shifts on mobile connections.",
+   "Measure real-user Core Web Vitals and inspect network waterfalls on a constrained mobile profile.",
+   "webdev",
+   [
+    "web-performance",
+    "images",
+    "fonts",
+    "core-web-vitals"
+   ]
+  ],
+  [
+   "Select a JavaScript frontend framework from product requirements",
+   "Vue, Angular & Svelte",
+   "Vue, Angular and Svelte can all support production interfaces; team skills, ecosystem needs and application constraints should guide the choice.",
+   [
+    "List required routing, form, data-fetching, localization and accessibility capabilities.",
+    "Prototype one representative user flow rather than comparing hello-world examples.",
+    "Compare upgrade paths, ecosystem maintenance, build output and hiring or support needs."
+   ],
+   "Framework popularity alone does not determine the best fit, and framework code does not replace browser fundamentals.",
+   "Build and measure the same representative flow, test keyboard behaviour and document the operational trade-offs before committing.",
+   "webdev",
+   [
+    "vue",
+    "angular",
+    "svelte",
+    "javascript"
+   ]
+  ],
+  [
+   "Create a maintainable Vue application structure",
+   "Vue, Angular & Svelte",
+   "Vue projects stay easier to change when components, composables, routes and API boundaries each have a clear role.",
+   [
+    "Keep reusable presentation components independent of page-specific data loading.",
+    "Move shared reactive logic into composables with explicit inputs and cleanup behaviour.",
+    "Centralize API error handling and route-level loading, empty and failure states."
+   ],
+   "A single global component or state store for unrelated concerns makes dependencies hard to reason about.",
+   "Trace a feature from route to API and back, then test navigation, cancellation and server errors.",
+   "webdev",
+   [
+    "vue",
+    "frontend-architecture",
+    "javascript"
+   ]
+  ],
+  [
+   "Plan an Angular feature with standalone components and typed services",
+   "Vue, Angular & Svelte",
+   "Typed boundaries and focused features help Angular applications remain understandable as teams and route areas grow.",
+   [
+    "Group components, services and tests around user-facing features.",
+    "Keep HTTP access in typed services and map transport data into view-friendly state deliberately.",
+    "Use framework-supported forms and validation while preserving accessible labels and error messages."
+   ],
+   "A generated project structure does not guarantee that feature dependencies or state ownership are clear.",
+   "Test route-level lazy loading, invalid form states, API failure handling and keyboard navigation in the rendered feature.",
+   "webdev",
+   [
+    "angular",
+    "typescript",
+    "frontend-architecture"
+   ]
+  ],
+  [
+   "Build a small interactive Svelte feature with accessible state",
+   "Vue, Angular & Svelte",
+   "Svelte keeps many interactions concise, but semantic controls and understandable state transitions still matter.",
+   [
+    "Model the user-visible states and transitions before writing event handlers.",
+    "Use native links, buttons and form controls wherever their behaviour matches the interaction.",
+    "Keep asynchronous loading and failure states explicit and prevent stale requests from overwriting newer results."
+   ],
+   "Concise component syntax does not prevent race conditions or inaccessible custom controls.",
+   "Test keyboard operation, repeated activation, slow responses and navigation away while a request is pending.",
+   "webdev",
+   [
+    "svelte",
+    "javascript",
+    "accessibility",
+    "frontend"
+   ]
+  ]
+ ],
+ "domain_service_titles": [
+  "A, AAAA, CNAME, MX and TXT records explained for business websites",
+  "Compare shared, managed WordPress and VPS hosting by workload",
+  "Plan a hosting migration with DNS and SEO checks",
+  "Point a Namecheap domain to web hosting without breaking email",
+  "Set up SPF, DKIM and DMARC for a domain email address",
+  "Understand DNS TTL and propagation during a website migration"
+ ]
+}
