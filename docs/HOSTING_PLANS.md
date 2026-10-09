@@ -19,6 +19,15 @@ later from staff tools without a migration.
 
 All prices include 16% VAT and renew at the same price (no introductory discount that jumps at renewal).
 
+Every plan includes, as published by 20i for its reseller platform: unlimited bandwidth, free SSL (including
+wildcard), global Anycast CDN, web application firewall, DDoS protection, malware scanning, two-factor sign-in,
+WordPress manager and staging, WP-CLI, SSH, Git, PHP version control, DNS management, webmail, autoresponders,
+spam filtering, DKIM and free website migration. Backup retention and data-centre location are **not** advertised
+until confirmed in the 20i account.
+
+The limits are targets: each must be configured as a 20i package type and verified by staff before the plan can be
+bought (until then the site shows "pending activation" and checkout stays closed).
+
 ## Currencies
 
 USD is the base and default. Following the inaracresttechnologies.com pattern, customers can switch the display
@@ -32,15 +41,6 @@ v1's Frankfurter/ECB source publishes no KES, UGX, TZS or RWF rates. A cart hold
 The managed VPS and dedicated server plans were KnownHost hardware configurations; migration
 `0005_retire_knownhost_infrastructure.sql` withdraws them (and any KnownHost packages) until infrastructure products are
 defined on 20i.
-
-Every plan includes, as published by 20i for its reseller platform: unlimited bandwidth, free SSL (including
-wildcard), global Anycast CDN, web application firewall, DDoS protection, malware scanning, two-factor sign-in,
-WordPress manager and staging, WP-CLI, SSH, Git, PHP version control, DNS management, webmail, autoresponders,
-spam filtering, DKIM and free website migration. Backup retention and data-centre location are **not** advertised
-until confirmed in the 20i account.
-
-The limits are targets: each must be configured as a 20i package type and verified by staff before the plan can be
-bought (until then the site shows "pending activation" and checkout stays closed).
 
 ## Why these prices
 
