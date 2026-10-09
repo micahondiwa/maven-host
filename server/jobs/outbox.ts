@@ -2,8 +2,9 @@ import {randomUUID} from 'node:crypto'
 import type {Pool,PoolClient} from 'pg'
 export type OutboxEvent={id:string;event_id:string;event_name:string;payload:Record<string,unknown>;attempts:number;locked_at:Date}
 export async function enqueueOutbox(client:PoolClient,event:{eventId:string;name:string;payload:Record<string,unknown>;occurredAt:Date},dedupeKey:string|null=null){
- return (await client.query<OutboxEvent>(`INSERT INTO core_events_outbox(id,event_id,occurred_at,event_name,payload,dedupe_key)
- VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(dedupe_key) DO UPDATE SET dedupe_key=EXCLUDED.dedupe_key RETURNING *`,[randomUUID(),event.eventId,event.occurredAt,event.name,JSON.stringify(event.payload),dedupeKey])).rows[0]
+ // The Django schema has no column defaults, so every value is supplied as the ORM did.
+ return (await client.query<OutboxEvent>(`INSERT INTO core_events_outbox(id,event_id,occurred_at,event_name,payload,dedupe_key,status,attempts,available_at,last_error,created_at,updated_at)
+ VALUES($1,$2,$3,$4,$5,$6,'pending',0,CURRENT_TIMESTAMP,'',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP) ON CONFLICT(dedupe_key) DO UPDATE SET dedupe_key=EXCLUDED.dedupe_key RETURNING *`,[randomUUID(),event.eventId,event.occurredAt,event.name,JSON.stringify(event.payload),dedupeKey])).rows[0]
 }
 export async function claimOutbox(pool:Pool):Promise<OutboxEvent|null>{
  const client=await pool.connect()
