@@ -20,7 +20,7 @@ export type FieldOptions<T> = {
   required?: boolean
   allowNull?: boolean
   default?: T | (() => T)
-  validate?: (value: T) => T | void
+  validate?(value: T): T | void
 }
 
 export abstract class Field<T> {

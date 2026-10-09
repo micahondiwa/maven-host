@@ -47,4 +47,9 @@ export function isSafeExternalUrl(value: string): boolean {
 }
 
 export const CONTACT = { email: 'info@maven-host.com', emailHref: 'mailto:info@maven-host.com', whatsapp: WHATSAPP_NUMBER }
+/** Shared with Inara Crest Technologies (inaracresttechnologies.com/contact). */
+export const OFFICE = {
+  headOffice: ['Darosa Plaza, First Floor, Karen Road', 'P.O. Box 103876 – 00101, Nairobi'],
+  liaisonOffice: 'Kisumu',
+}
 export const INARA_CREST = { home: 'https://www.inaracresttechnologies.com/', developers: 'https://www.inaracresttechnologies.com/developers' }

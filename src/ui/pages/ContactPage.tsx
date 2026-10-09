@@ -1,4 +1,4 @@
-import { CONTACT, INARA_CREST, whatsappUrl } from '../lib/site'
+import { CONTACT, INARA_CREST, OFFICE, whatsappUrl } from '../lib/site'
 import { useState, type FormEvent } from 'react'
 import { useSearchParams } from '@/lib/navigation'
 import { ArrowRight, BriefcaseBusiness, LifeBuoy, Mail, MessageSquareText } from 'lucide-react'
@@ -91,6 +91,7 @@ export function ContactPage() {
               <MessageSquareText className="size-5 text-maven-bright" />
               <p className="mt-3 text-sm font-semibold">Prefer a direct conversation?</p>
               <p className="mt-1 text-sm leading-6 text-white/75">Contact the MavenHost team directly for account, domain and hosting questions.</p><a href={CONTACT.emailHref} className="mt-3 block text-sm font-semibold text-white">{CONTACT.email}</a><a href={whatsappUrl()} target="_blank" rel="noreferrer" className="mt-2 block text-sm font-semibold text-maven-bright">Message on WhatsApp<span className="sr-only"> (opens in a new tab)</span></a>
+              <address className="mt-4 text-sm not-italic leading-6 text-white/75"><span className="block text-xs font-semibold uppercase tracking-wider text-white/60">Head office</span>{OFFICE.headOffice.map((line) => <span key={line} className="block">{line}</span>)}<span className="mt-2 block text-xs font-semibold uppercase tracking-wider text-white/60">Liaison office</span><span className="block">{OFFICE.liaisonOffice}</span></address>
             </div>
           </div>
 

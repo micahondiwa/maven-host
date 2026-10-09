@@ -1,8 +1,8 @@
 import { SocialIcon } from './SocialIcon'
 import { Link } from '@/lib/navigation'
-import { Mail } from 'lucide-react'
+import { Mail, MapPin } from 'lucide-react'
 import { BrandLogo } from './BrandLogo'
-import { CONTACT, INARA_CREST, SOCIAL_LINKS, isSafeExternalUrl, socialHandle } from '../lib/site'
+import { CONTACT, INARA_CREST, OFFICE, SOCIAL_LINKS, isSafeExternalUrl, socialHandle } from '../lib/site'
 
 const COLUMNS: { heading: string; links: { label: string; to: string }[] }[] = [
   {
@@ -82,6 +82,10 @@ export function SiteFooter() {
               <Mail className="size-4" /> {CONTACT.email}
             </a>
           </div>
+          <address className="mt-4 flex gap-2 text-sm not-italic leading-6 text-white/75">
+            <MapPin className="mt-1 size-4 shrink-0" />
+            <span>{OFFICE.headOffice.map((line) => <span key={line} className="block">{line}</span>)}<span className="block">Liaison office: {OFFICE.liaisonOffice}</span></span>
+          </address>
 
           <div className="mt-6">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/75">Follow MavenHost</p>
