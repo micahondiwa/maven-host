@@ -1,6 +1,7 @@
 import 'server-only'
 import { query, type Queryable, database } from '../db'
 import { ValidationError, notFound } from '../http/errors'
+import { ACTIVE_HOSTING_SUPPLIER, transactableSuppliers } from './suppliers'
 
 /** Port of apps/hosting/api/views/catalog.py and services/product_availability.py. */
 
@@ -34,9 +35,7 @@ type PackageRow = { hosting_plan_id: number; verified_entitlements: unknown; is_
 const isScalar = (value: unknown) => ['string', 'number', 'boolean'].includes(typeof value)
 const publicSubset = (source: Json) => Object.fromEntries(Object.entries(source).filter(([key, value]) => PUBLIC_ENTITLEMENT_KEYS.has(key) && isScalar(value)))
 
-export function knownHostTransactionsEnabled() {
-  return process.env.KNOWNHOST_ENABLED === 'true' && process.env.KNOWNHOST_TRANSACTIONS_ENABLED === 'true'
-}
+const SERVER_PANELS = ['cpanel', 'directadmin', 'plesk', 'cloudpanel']
 
 /** `verified_packages(plan)`: packages that may actually be provisioned for a plan. */
 export async function verifiedPackages(planIds: number[], db: Queryable = database()): Promise<PackageRow[]> {
@@ -48,28 +47,27 @@ export async function verifiedPackages(planIds: number[], db: Queryable = databa
        JOIN hosting_hostingprovider prov ON prov.id = pkg.provider_id
       WHERE pkg.hosting_plan_id = ANY($1) AND pkg.is_active AND pkg.is_provider_verified AND pkg.is_provisionable
         AND pkg.last_verified_at IS NOT NULL AND prov.is_active AND pkg.package_name <> ''
-        AND prov.supplier_code <> 'centralnic'
-        AND EXISTS (SELECT 1 FROM hosting_server s WHERE s.provider_id = prov.id AND s.status = 'online')
-        AND ($2 OR prov.supplier_code <> 'knownhost')
+        AND prov.supplier_code = ANY($2::text[])
+        AND (NOT prov.provider_type = ANY($3::text[]) OR EXISTS (SELECT 1 FROM hosting_server s WHERE s.provider_id = prov.id AND s.status = 'online'))
         AND (NOT plan.requires_verified_mapping OR (
               jsonb_typeof(pkg.verified_entitlements -> 'websites') = 'number' AND (pkg.verified_entitlements ->> 'websites')::numeric > 0
           AND jsonb_typeof(pkg.verified_entitlements -> 'storage_mb') = 'number' AND (pkg.verified_entitlements ->> 'storage_mb')::numeric > 0))
         AND (plan.plan_type <> 'reseller' OR pkg.is_reseller_package)
       ORDER BY pkg.hosting_plan_id, pkg.is_default DESC, pkg.id`,
-    [planIds, knownHostTransactionsEnabled()],
+    [planIds, transactableSuppliers(), SERVER_PANELS],
     db,
   )
 }
 
 function proposedComparisonFeatures(plan: PlanRow): Json {
   const targets = plan.target_entitlements
-  if (!targets || typeof targets !== 'object' || !['wholesale_shared', 'reseller', 'infrastructure'].includes(targets.agreement as string) || targets.supplier !== 'knownhost') return {}
+  if (!targets || typeof targets !== 'object' || !['wholesale_shared', 'reseller', 'infrastructure'].includes(targets.agreement as string) || targets.supplier !== ACTIVE_HOSTING_SUPPLIER) return {}
   return publicSubset(targets)
 }
 
 function publicResellerOffers(plan: PlanRow): Json[] {
   const targets = plan.target_entitlements ?? {}
-  if (targets.supplier !== 'knownhost' || !['reseller', 'wholesale_shared', 'infrastructure'].includes(targets.agreement as string)) return []
+  if (targets.supplier !== ACTIVE_HOSTING_SUPPLIER || !['reseller', 'wholesale_shared', 'infrastructure'].includes(targets.agreement as string)) return []
   const offers = Array.isArray(targets.public_offers) ? (targets.public_offers as Json[]) : []
   return offers.map((offer) => Object.fromEntries(Object.entries(offer).filter(([key]) => OFFER_KEYS.has(key))))
 }

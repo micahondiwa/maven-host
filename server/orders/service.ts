@@ -11,6 +11,7 @@ import { calculatePrice, currencyByCode, defaultPricingRule, type Currency } fro
 import { assertSupplierReady, permittedPrice } from '../domains/routing'
 import { OpenproviderRegistrar } from '../domains/registrars/openprovider'
 import { verifiedPackages } from '../hosting/catalog'
+import { ACTIVE_HOSTING_SUPPLIER } from '../hosting/suppliers'
 import { createInvoiceFromOrder, onInvoiceSettled } from '../billing/service'
 
 /** Port of apps/orders (cart, catalog, checkout, workflow) and the billing hand-off. */
@@ -35,7 +36,7 @@ type Product = { id: string; product_type: 'domain' | 'hosting'; name: string; d
 
 function cartSelectable(plan: { is_active: boolean; target_entitlements: Record<string, unknown> }) {
   const targets = plan.target_entitlements ?? {}
-  return Boolean(plan.is_active && targets.supplier === 'knownhost' && ['reseller', 'wholesale_shared', 'infrastructure'].includes(targets.agreement as string) && targets.public_offers)
+  return Boolean(plan.is_active && targets.supplier === ACTIVE_HOSTING_SUPPLIER && ['reseller', 'wholesale_shared', 'infrastructure'].includes(targets.agreement as string) && targets.public_offers)
 }
 
 export async function hostingPurchasable(planId: number, db?: Queryable) {

@@ -2,6 +2,8 @@ import 'server-only'
 import type { OutboxEvent } from './outbox'
 import { executeTrialActivation, executeTrialExpiry } from '../websites/trials'
 import { handleFulfillmentRequested } from '../orders/fulfillment'
+import { processOperation } from '../hosting/service'
+import { deliverHostingEvent, HOSTING_EVENTS } from '../hosting/events'
 
 /**
  * Durable event handlers by event name (apps/core/events registrations). Events without a handler fail and retry with
@@ -13,5 +15,7 @@ const generation = (payload: Payload) => (payload.deployment_generation === unde
 export const OUTBOX_HANDLERS = new Map<string, (event: OutboxEvent) => Promise<void>>([
   ['websites.trial.deploy.requested', (event) => executeTrialActivation(String(event.payload.trial_id), generation(event.payload))],
   ['orders.fulfillment.requested', (event) => handleFulfillmentRequested(event.payload)],
+  ['hosting.operation.requested', (event) => processOperation(String(event.payload.operation_id))],
   ['websites.trial.expiry.requested', (event) => executeTrialExpiry(String(event.payload.trial_id), generation(event.payload))],
+  ...Object.keys(HOSTING_EVENTS).map((name) => [name, deliverHostingEvent] as const),
 ])

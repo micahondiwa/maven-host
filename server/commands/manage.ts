@@ -8,6 +8,7 @@ import { commands as accountCommands } from './accounts'
 import { commands as websiteCommands } from './websites'
 import { commands as domainCommands } from './domains'
 import { commands as blogCommands } from './blog'
+import { commands as hostingCommands } from './hosting'
 
 export type Command = { help: string; run: (args: string[]) => Promise<void> }
 
@@ -33,6 +34,7 @@ const commands: Record<string, Command> = {
   ...websiteCommands,
   ...domainCommands,
   ...blogCommands,
+  ...hostingCommands,
 }
 
 async function main() {
