@@ -263,7 +263,7 @@ export async function logout(): Promise<void> {
 // Public domain search (marketing homepage)
 // ---------------------------------------------------------------------------
 
-export type DomainPrice = { product_id: number; usd: string }
+export type DomainPrice = { product_id: number; usd: string; kes?: string }
 
 export type DomainSearchSuggestion = {
   domain: string
@@ -732,11 +732,19 @@ export type CartItem = {
 
 export type CartSummary = {
   cart_id: string
+  currency: string
   items: CartItem[]
   subtotal: string
   discount: string
   tax: string
   total: string
+}
+
+export type DisplayCurrency = { code: string; name: string; symbol: string; decimal_places: number; payment: boolean; rate: string | null; rate_updated_at: string | null }
+export type CurrencyCatalog = { base: string; default: string; payment_currencies: string[]; currencies: DisplayCurrency[]; attribution: { label: string; url: string } }
+
+export async function listCurrencies(): Promise<CurrencyCatalog> {
+  return request<CurrencyCatalog>('/currencies/', { auth: false })
 }
 
 export async function getCart(): Promise<CartSummary> {
@@ -747,7 +755,7 @@ export async function addDomainToCart(params: {
   resource_id: string | number
   billing_cycle?: string
   domain: string
-  currency?: 'USD'
+  currency?: 'USD' | 'KES'
 }): Promise<{ cart_id: string; item_id: string }> {
   return request('/orders/cart/', {
     method: 'POST',

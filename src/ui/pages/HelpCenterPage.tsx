@@ -8,7 +8,7 @@ import { whatsappUrl } from '../lib/site'
 
 const GETTING_STARTED = [
   { icon: BookOpen, title: 'Find and register a domain', body: 'Search a name, review available extensions and current prices, then add a supported registration to your cart. A lookup does not reserve the name.', to: '/domains' },
-  { icon: ServerCog, title: 'Choose a hosting plan', body: 'Compare published web, VPS, dedicated and email configurations by workload and included resources.', to: '/hosting' },
+  { icon: ServerCog, title: 'Choose a hosting plan', body: 'Compare web and email hosting plans by websites, storage, mailboxes and included features.', to: '/hosting' },
   { icon: ShieldCheck, title: 'Protect your account and services', body: 'Use a unique password, keep your account email current and verify changes to DNS, billing and hosting credentials.', to: '/services#account-security' },
   { icon: DatabaseZap, title: 'Connect a domain with DNS', body: 'Point web traffic and email records to the correct services. Change one record at a time and keep a copy of the existing zone.', to: '/services#dns-records' },
 ]

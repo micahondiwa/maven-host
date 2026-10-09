@@ -7,7 +7,7 @@ import { enqueueOutbox } from '../jobs/outbox'
 import { dispatchOnCommit } from '../events/bus'
 import { encryptSecret } from '../lib/fernet'
 import { pythonDumps } from '../lib/python-json'
-import { calculatePrice, currencyByCode, defaultPricingRule, type Currency } from '../pricing/engine'
+import { calculatePrice, currencyByCode, defaultPricingRule, PAYMENT_CURRENCIES, type Currency } from '../pricing/engine'
 import { assertSupplierReady, permittedPrice } from '../domains/routing'
 import { OpenproviderRegistrar } from '../domains/registrars/openprovider'
 import { verifiedPackages } from '../hosting/catalog'
@@ -79,7 +79,8 @@ async function domainProduct(resourceId: string, currencyCode: string | null, db
   assertSupplierReady(price.registrar_slug)
   const rule = await defaultPricingRule(db)
   if (!rule) throw invalid('No active default pricing rule is configured.')
-  const target = await currencyByCode(currencyCode || 'USD', db)
+  if (currencyCode && !PAYMENT_CURRENCIES.includes(currencyCode.toUpperCase())) throw invalid(`Payments are accepted in ${PAYMENT_CURRENCIES.join(' or ')}.`)
+  const target = await currencyByCode((currencyCode || 'USD').toUpperCase(), db)
   if (!target) throw notFound('No Currency matches the given query.')
   const supplierCurrency = (await queryOne<Currency>('SELECT * FROM currencies_currency WHERE id = $1', [price.currency_id], db))!
   const quote = await calculatePrice({ supplierPrice: price.price, supplierCurrency, targetCurrency: target, rule }, db)
@@ -125,6 +126,18 @@ export async function resolveCart(db: Queryable, customerId: string | null, gues
   return (await queryOne<{ id: string }>('SELECT id FROM orders_cart WHERE guest_token_hash = $1', [hash], db))!.id
 }
 
+/** Currency of the items already in a cart: domains keep it on the item, hosting prices carry their own currency. */
+async function cartCurrency(db: Queryable, items: Pick<CartItemRow, 'product_type' | 'resource_id' | 'configuration'>[]): Promise<string | null> {
+  for (const item of items) {
+    if (item.product_type === 'domain') return typeof item.configuration?.currency === 'string' ? item.configuration.currency : 'USD'
+    if (item.product_type === 'hosting' && /^\d+$/.test(item.resource_id)) {
+      const row = await queryOne<{ code: string }>('SELECT c.code FROM hosting_hostingplanprice p JOIN currencies_currency c ON c.id = p.currency_id WHERE p.id = $1', [Number(item.resource_id)], db)
+      if (row) return row.code
+    }
+  }
+  return null
+}
+
 const itemTotal = (item: Pick<CartItemRow, 'unit_price' | 'quantity' | 'discount'>) => D(item.unit_price).mul(item.quantity).sub(item.discount)
 
 export async function cartSummary(db: Queryable, cartId: string) {
@@ -145,13 +158,17 @@ export async function cartSummary(db: Queryable, cartId: string) {
   }
   const subtotal = items.reduce((sum, item) => sum.add(D(item.unit_price).mul(item.quantity)), D(0))
   const discount = items.reduce((sum, item) => sum.add(item.discount), D(0))
-  return { cart_id: cartId, items: summaries, subtotal: money(subtotal), discount: money(discount), tax: '0.00', total: money(subtotal.sub(discount)) }
+  return { cart_id: cartId, currency: (await cartCurrency(db, items)) ?? 'USD', items: summaries, subtotal: money(subtotal), discount: money(discount), tax: '0.00', total: money(subtotal.sub(discount)) }
 }
 
 export async function addCartItem(customerId: string | null, guestToken: string | null, input: { product_type: string; resource_id: string; billing_cycle: string; quantity: number; configuration: Record<string, unknown>; currency: string | null }) {
   return transaction(async (client) => {
     const cartId = await resolveCart(client, customerId, guestToken)
     const product = await catalogProduct(input.product_type, input.resource_id, input.currency, true, client)
+    // One currency per cart: checkout already refuses mixed currencies, so refuse them when the item is added.
+    const existingCurrency = await cartCurrency(client, await query<CartItemRow>('SELECT * FROM orders_cart_item WHERE cart_id = $1', [cartId], client))
+    if (existingCurrency && existingCurrency !== product.currency)
+      throw invalid(`Your cart is priced in ${existingCurrency}. Switch to ${existingCurrency} to add this item, or empty your cart first.`)
     if (input.billing_cycle !== product.billing_cycle) throw invalid('The requested billing cycle does not match the selected product.')
     let configuration: Record<string, unknown> = { ...(input.configuration ?? {}) }
     if (input.product_type === 'domain') {

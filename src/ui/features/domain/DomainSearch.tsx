@@ -3,6 +3,8 @@ import { ArrowRight, LoaderCircle, Search } from 'lucide-react'
 import { Link, useNavigate } from '@/lib/navigation'
 import { addDomainToCart, ApiError, searchDomain, type DomainPrice, type DomainSearchResult } from '../../lib/api'
 import { useCart } from '../../lib/cart'
+import { useCurrency, usePriceLabel } from '../../lib/currency'
+import { CurrencySelector } from '../../components/CurrencySelector'
 
 function normalizeSearch(value: string) {
   const cleaned = value.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')
@@ -15,7 +17,9 @@ function validSearch(value: string) {
 
 export function DomainSearch({ compact = false }: { compact?: boolean }) {
   const { refresh: refreshCart } = useCart()
-  const currency = 'USD'
+  const { code: displayCurrency } = useCurrency()
+  const priceLabel = usePriceLabel()
+  const label = (price: DomainPrice) => priceLabel(price.usd, price.kes)
   const navigate = useNavigate()
   const [domain, setDomain] = useState('')
   const [domainFocused, setDomainFocused] = useState(false)
@@ -126,7 +130,8 @@ export function DomainSearch({ compact = false }: { compact?: boolean }) {
     setError('')
     setClaimingDomain(targetDomain)
     try {
-      await addDomainToCart({ resource_id: price.product_id, domain: targetDomain, billing_cycle: 'annually', currency })
+      // KES is charged when an exact KES price exists; every other selection is charged in USD.
+      await addDomainToCart({ resource_id: price.product_id, domain: targetDomain, billing_cycle: 'annually', currency: displayCurrency === 'KES' && price.kes ? 'KES' : 'USD' })
       await refreshCart()
       navigate('/cart')
     } catch (err) {
@@ -179,13 +184,13 @@ export function DomainSearch({ compact = false }: { compact?: boolean }) {
       {showPreview && <section className="mx-1.5 mb-3 overflow-hidden rounded-xl border border-maven-line bg-white shadow-lg" aria-label="Suggested domains">
         <div className="flex items-center justify-between gap-2 border-b border-maven-line bg-slate-50 px-4 py-3">
           <span className="text-sm font-semibold text-maven-ink">Find your domain</span>
-          <span className="flex items-center gap-1.5 text-xs text-maven-muted" role="status">{previewLoading && <LoaderCircle className="size-3 animate-spin" />}{previewLoading ? 'Checking availability…' : preview ? 'Live availability · USD / year' : 'Choose an extension'}</span>
+          <span className="flex items-center gap-1.5 text-xs text-maven-muted" role="status">{previewLoading && <LoaderCircle className="size-3 animate-spin" />}{previewLoading ? 'Checking availability…' : preview ? 'Live availability · price per year' : 'Choose an extension'}</span>
         </div>
         <ul id={suggestionsId} role="listbox" aria-label="Domain suggestions" className="max-h-80 overflow-y-auto divide-y divide-maven-line">
           {previewRows.map((item, index) => <li key={item.domain} role="option" id={`${suggestionsId}-${index}`} aria-selected={activeSuggestion === index}>
             <button type="button" onClick={() => { setDomain(item.domain); void lookup(item.domain) }} className={`flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-sky-50 ${activeSuggestion === index ? 'bg-sky-50' : ''}`}>
               <span className="mono truncate text-sm font-semibold text-maven-ink">{item.domain}</span>
-              <span className="shrink-0 text-xs font-medium text-maven-muted">{item.available === undefined ? 'Check availability' : item.premium ? 'Premium' : item.available ? item.registration_price ? `$${item.registration_price.usd} / yr · Available` : 'Available' : 'Taken'}</span>
+              <span className="shrink-0 text-xs font-medium text-maven-muted">{item.available === undefined ? 'Check availability' : item.premium ? 'Premium' : item.available ? item.registration_price ? `${label(item.registration_price).main} / yr · Available` : 'Available' : 'Taken'}</span>
             </button>
           </li>)}
         </ul>
@@ -207,7 +212,7 @@ export function DomainSearch({ compact = false }: { compact?: boolean }) {
             </div>
             {result.premium ? <Link to="/contact?type=general" className="btn btn-secondary">Ask about premium domain</Link> : result.available && registerPrice ? (
               <div className="flex items-center gap-4">
-                <p className="mono text-sm font-semibold text-maven-ink">${registerPrice.usd} <span className="font-normal text-maven-muted">USD · per year</span></p>
+                <p className="mono text-sm font-semibold text-maven-ink">{label(registerPrice).main} <span className="font-normal text-maven-muted">per year</span>{label(registerPrice).note && <span className="block text-xs font-normal text-maven-muted">{label(registerPrice).note}</span>}</p>
                 <button onClick={() => claimDomain(result.domain, registerPrice)} disabled={claimingDomain !== null} className="btn btn-signal">
                   {claimingDomain === result.domain ? <LoaderCircle className="size-4 animate-spin" /> : null}
                   Add to cart
@@ -216,7 +221,8 @@ export function DomainSearch({ compact = false }: { compact?: boolean }) {
             ) : result.available ? <span className="text-xs font-medium text-maven-muted">Price confirmation needed</span> : null}
           </div>
 
-          <p className="mt-3 text-xs leading-6 text-maven-muted">{result.prices.renew ? `Renewal: $${result.prices.renew.usd} USD per year.` : 'Renewal price requires confirmation.'} {result.prices.transfer ? `Transfer price: $${result.prices.transfer.usd} USD, subject to eligibility.` : 'Transfer and expired-domain recovery fees are confirmed separately.'} Premium names are excluded from ordinary pricing. Review the final total and taxes in your cart.</p>
+          <p className="mt-3 text-xs leading-6 text-maven-muted">{result.prices.renew ? `Renewal: ${label(result.prices.renew).main} per year.` : 'Renewal price requires confirmation.'} {result.prices.transfer ? `Transfer price: ${label(result.prices.transfer).main}, subject to eligibility.` : 'Transfer and expired-domain recovery fees are confirmed separately.'} Premium names are excluded from ordinary pricing. Review the final total and taxes in your cart.</p>
+          <CurrencySelector className="mt-4" />
           {allSuggestions.length > 0 && <section className="mt-5" aria-labelledby={`${suggestionsId}-results`}>
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3"><h3 role="status" id={`${suggestionsId}-results`} className="text-sm font-semibold text-maven-ink">{allSuggestions.filter(item => item.available).length} available alternatives</h3><label className="flex items-center gap-2 text-xs text-maven-muted"><input type="checkbox" checked={showUnavailable} onChange={event => setShowUnavailable(event.target.checked)} />Show taken domains</label></div>
             {suggestions.length === 0 && <p className="mb-3 text-sm text-maven-muted">No available alternatives in this selection. Try a different business name or extension.</p>}
@@ -228,7 +234,7 @@ export function DomainSearch({ compact = false }: { compact?: boolean }) {
                     <span className={`status-dot ${suggestion.available ? 'is-live' : 'is-off'}`} />
                     <div className="min-w-0"><p className="mono truncate text-sm font-semibold text-maven-ink">{suggestion.domain}</p><p className="text-xs text-maven-muted">{suggestion.premium ? 'Premium · price confirmation required' : suggestion.available ? 'Available to register' : 'Already registered'}</p></div>
                   </div>
-                  {suggestion.premium ? <Link to="/contact?type=general" className="inline-flex items-center gap-1 text-sm font-semibold text-maven-signal hover:underline">Ask about this domain <ArrowRight className="size-3.5" /></Link> : suggestion.available && suggestionPrice ? <div className="flex items-center justify-between gap-3 sm:justify-end"><p className="mono text-sm font-semibold text-maven-ink">${suggestionPrice.usd} <span className="text-xs font-medium text-maven-muted">USD / yr</span></p><button type="button" onClick={() => claimDomain(suggestion.domain, suggestionPrice)} disabled={claimingDomain !== null} className="btn btn-signal px-3 py-2">{claimingDomain === suggestion.domain ? <LoaderCircle className="size-4 animate-spin" /> : 'Add to cart'}</button></div> : <span className="text-xs font-medium text-maven-muted">{suggestion.available ? 'Price confirmation needed' : 'Unavailable'}</span>}
+                  {suggestion.premium ? <Link to="/contact?type=general" className="inline-flex items-center gap-1 text-sm font-semibold text-maven-signal hover:underline">Ask about this domain <ArrowRight className="size-3.5" /></Link> : suggestion.available && suggestionPrice ? <div className="flex items-center justify-between gap-3 sm:justify-end"><p className="mono text-sm font-semibold text-maven-ink">{label(suggestionPrice).main} <span className="text-xs font-medium text-maven-muted">/ yr</span></p><button type="button" onClick={() => claimDomain(suggestion.domain, suggestionPrice)} disabled={claimingDomain !== null} className="btn btn-signal px-3 py-2">{claimingDomain === suggestion.domain ? <LoaderCircle className="size-4 animate-spin" /> : 'Add to cart'}</button></div> : <span className="text-xs font-medium text-maven-muted">{suggestion.available ? 'Price confirmation needed' : 'Unavailable'}</span>}
                 </li>
               })}
             </ul>

@@ -105,8 +105,9 @@ suite('domains API', () => {
     const result = await call('GET', '/domains/search/?domain=Synthetic%20Bakery&suggestion_limit=1')
     expect(result.status).toBe(200)
     expect(result.body).toMatchObject({ domain: 'synthetic-bakery.com', available: true, registrar: 'openprovider', message: null, next_offset: 1 })
-    expect(result.body.prices).toEqual({ register: { product_id: expect.any(Number), usd: '12.50' }, renew: { product_id: expect.any(Number), usd: '15.00' } })
-    expect(result.body.suggestions).toEqual([{ domain: 'synthetic-bakery.net', available: true, premium: false, registration_price: { product_id: expect.any(Number), usd: '14.99' } }])
+    // An exact `kes` price is added when a USD→KES rate exists in the shared test database.
+    expect(result.body.prices).toEqual({ register: expect.objectContaining({ product_id: expect.any(Number), usd: '12.50' }), renew: expect.objectContaining({ product_id: expect.any(Number), usd: '15.00' }) })
+    expect(result.body.suggestions).toEqual([{ domain: 'synthetic-bakery.net', available: true, premium: false, registration_price: expect.objectContaining({ product_id: expect.any(Number), usd: '14.99' }) }])
     expect((await call('GET', '/domains/search/?domain=a@b.com')).body).toEqual({ domain: ['Enter a business name or a domain such as yourbusiness.com. Use letters, numbers, spaces or hyphens.'] })
   })
 

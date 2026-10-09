@@ -6,7 +6,7 @@ export function useHostingCatalog() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
-  useEffect(() => { let current = true; setLoading(true); setError(''); listHostingPlans({ currency: 'USD' }).then(data => { if (current) setPlans(data) }).catch(() => { if (current) setError('The hosting catalog could not be loaded. Try again or contact support for current options.') }).finally(() => { if (current) setLoading(false) }); return () => { current = false } }, [attempt])
+  useEffect(() => { let current = true; setLoading(true); setError(''); listHostingPlans({ currency: 'USD,KES' }).then(data => { if (current) setPlans(data) }).catch(() => { if (current) setError('The hosting catalog could not be loaded. Try again or contact support for current options.') }).finally(() => { if (current) setLoading(false) }); return () => { current = false } }, [attempt])
   return { plans, loading, error, retry: () => setAttempt(value => value + 1) }
 }
 export function features(plan: HostingPlan) { return plan.verification_status === 'verified' ? plan.verified_features : plan.proposed_features ?? {} }

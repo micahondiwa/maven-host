@@ -11,8 +11,6 @@ const COLUMNS: { heading: string; links: { label: string; to: string }[] }[] = [
       { label: 'Domain search', to: '/domains' },
       { label: 'Web hosting', to: '/hosting' },
       { label: 'Email hosting', to: '/hosting?category=email' },
-      { label: 'Managed VPS', to: '/hosting?category=vps' },
-      { label: 'Dedicated servers', to: '/hosting?category=dedicated' },
       { label: 'Services', to: '/services' },
       { label: 'AI website builder', to: '/ai-builder' },
       { label: 'Pricing', to: '/hosting' },
@@ -61,7 +59,7 @@ const QUICK_LINKS = [
 const FAQS = [
   { question: 'What does a domain purchase include?', answer: 'Registration gives you the right to use the named domain for the purchased term, subject to registrar rules. Hosting, website development and email subscriptions are separate. Availability is not reserved by a search or cart selection.' },
   { question: 'Can I buy hosting for a domain I already own?', answer: 'Yes, the selection does not require a new domain registration. Each plan hosts its listed number of websites in one hosting account, managed from the Maven Host control panel. Hosting checkout and activation open once the hosting platform is activated.' },
-  { question: 'What will I pay for a hosting billing period?', answer: 'The plan shows the total charged for its selected period in USD. A monthly equivalent is a comparison figure, not a monthly instalment. The catalog shows renewal prices where available and identifies VAT already included in the offer. Confirm configuration-dependent licences and other charges before purchase.' },
+  { question: 'What will I pay for a hosting billing period?', answer: 'The plan shows the total charged for its selected period in US dollars or Kenyan shillings; Ugandan, Tanzanian and Rwandan amounts are indicative conversions charged in USD. A monthly equivalent is a comparison figure, not a monthly instalment. The catalog shows renewal prices where available and identifies VAT already included in the offer. Confirm configuration-dependent licences and other charges before purchase.' },
   { question: 'Is business email included?', answer: 'Every hosting plan includes the published number of mailboxes on your domain, each with its own 10 GB of storage. Aliases and forwarding are different from stored mailboxes. Google Workspace and Microsoft 365 are not included, and ordinary hosting email does not include a bulk-mail service or guaranteed inbox placement.' },
   { question: 'Can you move my website or domain?', answer: 'Send the current domain, registrar and hosting setup to support. Eligibility, access, migration scope and fees need confirmation. A registrar transfer does not itself move website files or email, and expired-domain recovery follows different rules.' },
   { question: 'Who helps with application code?', answer: 'MavenHost supports purchased domain and hosting services within the approved support scope. Application development, custom code changes and broader maintenance are separate Inara Crest Devs engagements. They are not included automatically with a MavenHost plan.' },

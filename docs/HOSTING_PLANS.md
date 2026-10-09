@@ -19,6 +19,20 @@ later from staff tools without a migration.
 
 All prices include 16% VAT and renew at the same price (no introductory discount that jumps at renewal).
 
+## Currencies
+
+USD is the base and default. Following the inaracresttechnologies.com pattern, customers can switch the display
+currency: **USD** and **KES** are payment currencies (fixed catalog prices above; card or M-Pesa), while **UGX, TZS and
+RWF** under "Other currencies" show an indicative conversion from USD with the rate's timestamp, and are charged in USD.
+Rates come from ExchangeRate-API's open endpoint (attribution "Rates By Exchange Rate API" is shown with conversions);
+v1's Frankfurter/ECB source publishes no KES, UGX, TZS or RWF rates. A cart holds one charge currency.
+
+## Removed
+
+The managed VPS and dedicated server plans were KnownHost hardware configurations; migration
+`0005_retire_knownhost_infrastructure.sql` withdraws them (and any KnownHost packages) until infrastructure products are
+defined on 20i.
+
 Every plan includes, as published by 20i for its reseller platform: unlimited bandwidth, free SSL (including
 wildcard), global Anycast CDN, web application firewall, DDoS protection, malware scanning, two-factor sign-in,
 WordPress manager and staging, WP-CLI, SSH, Git, PHP version control, DNS management, webmail, autoresponders,

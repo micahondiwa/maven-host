@@ -5,12 +5,15 @@ import { CustomerHeader } from '../components/CustomerHeader'
 import { SiteFooter } from '../components/SiteFooter'
 import { ApiError, checkout, removeCartItem } from '../lib/api'
 import { useCart } from '../lib/cart'
+import { useCurrency } from '../lib/currency'
 import { useAuth } from '../lib/auth'
 
 import { SEO } from '../components/SEO'
 import { DomainContactFields, validateDomainContact } from '../components/DomainContactFields'
 export function CartPage() {
   const { cart, loading, refresh } = useCart()
+  const currency = useCurrency()
+  const money = (value: string) => currency.format(value, cart?.currency ?? 'USD')
   const { user } = useAuth()
   const navigate = useNavigate()
   const [removingId, setRemovingId] = useState<string | null>(null)
@@ -138,7 +141,7 @@ export function CartPage() {
                       {item.product_type === 'hosting' && !item.checkout_blocked && <p className="mt-1 text-sm text-maven-muted">Primary domain: <span className="font-medium text-maven-ink">{item.domain_name || 'Choose at checkout'}</span></p>}
                     </div>
                     <div className="flex items-center gap-4">
-                      <p className="mono font-semibold text-maven-ink">${item.total} <span className="text-xs font-medium text-maven-muted">USD</span></p>
+                      <p className="mono font-semibold text-maven-ink">{money(item.total)} <span className="text-xs font-medium text-maven-muted">{cart.currency}</span></p>
                       <button
                         onClick={() => remove(item.item_id)}
                         disabled={removingId === item.item_id}
@@ -157,10 +160,11 @@ export function CartPage() {
             <div className="panel h-fit p-6">
               <h2 className="font-semibold text-maven-ink">Order summary</h2>
               <dl className="mt-4 space-y-2 text-sm">
-                <div className="flex justify-between"><dt className="text-maven-muted">Subtotal</dt><dd className="mono text-maven-ink">${cart.subtotal}</dd></div>
-                <div className="flex justify-between"><dt className="text-maven-muted">Discount</dt><dd className="mono text-maven-ink">-${cart.discount}</dd></div>
-                <div className="flex justify-between"><dt className="text-maven-muted">Additional tax</dt><dd className="mono text-maven-ink">${cart.tax}</dd></div>
-                <div className="mt-2 flex justify-between border-t border-maven-line pt-3 text-base"><dt className="font-semibold text-maven-ink">Total <span className="text-xs font-normal text-maven-muted">USD</span></dt><dd className="mono font-semibold text-maven-ink">${cart.total}</dd></div>
+                <div className="flex justify-between"><dt className="text-maven-muted">Subtotal</dt><dd className="mono text-maven-ink">{money(cart.subtotal)}</dd></div>
+                <div className="flex justify-between"><dt className="text-maven-muted">Discount</dt><dd className="mono text-maven-ink">-{money(cart.discount)}</dd></div>
+                <div className="flex justify-between"><dt className="text-maven-muted">Additional tax</dt><dd className="mono text-maven-ink">{money(cart.tax)}</dd></div>
+                <div className="mt-2 flex justify-between border-t border-maven-line pt-3 text-base"><dt className="font-semibold text-maven-ink">Total <span className="text-xs font-normal text-maven-muted">{cart.currency}</span></dt><dd className="mono font-semibold text-maven-ink">{money(cart.total)}</dd></div>
+                {currency.indicative && cart.currency === 'USD' && currency.convertUsd(cart.total) && <p className="text-xs text-maven-muted">≈ {currency.format(currency.convertUsd(cart.total)!)} at today's indicative rate. You are charged in US dollars.</p>}
               </dl>
               {user && !checkoutBlocked && cart.items.some(item => item.product_type === 'domain') && <DomainContactFields value={domainContact} onChange={setDomainContact} />}
               {error && <p role="alert" className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-maven-danger">{error}</p>}

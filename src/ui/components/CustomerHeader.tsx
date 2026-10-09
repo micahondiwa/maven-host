@@ -37,9 +37,7 @@ const NAV_ENTRIES: NavEntry[] = [
   { label: 'Hosting', icon: Server, rootTo: '/hosting', activePath: '/hosting', items: [
     { to: '/hosting', label: 'Web hosting', description: 'Cloud hosting plans · checkout opening soon', icon: Monitor },
     { to: '/hosting?category=email', label: 'Email hosting', description: '10 GB mailboxes included with every plan', icon: Mail },
-    { to: '/hosting?category=vps', label: 'Managed VPS', description: 'Published configurations · confirm availability', icon: Server },
-    { to: '/hosting?category=dedicated', label: 'Dedicated servers', description: 'Starting configurations · confirm stock and licences', icon: Database },
-    { to: '/hosting#compare-plans', label: 'Compare all options', description: 'Billing periods, resources and restrictions', icon: Tag },
+    { to: '/hosting#compare-plans', label: 'Compare all plans', description: 'Prices in USD, KES and East African currencies', icon: Tag },
   ] },
   { label: 'Developers', icon: Code2, rootTo: '/developers', activePath: '/developers', items: [
     { to: '/developers', label: 'Hosting for developers', description: 'Deploy and maintain your own applications', icon: Code2 },
@@ -179,7 +177,7 @@ export function CustomerHeader(_props: { dark?: boolean }) {
 
   const subItemActive = (to: string) => {
     if (!isActive(to)) return false
-    const target = new URL(to, window.location.origin)
+    const target = new URL(to, 'http://localhost')
     if (target.pathname === '/hosting' && !target.search && !target.hash) return !new URLSearchParams(location.search).get('category') || new URLSearchParams(location.search).get('category') === 'shared'
     return true
   }

@@ -9,6 +9,8 @@ import { billingRoutes, notificationRoutes, orderRoutes, staffCommerceRoutes } f
 import { bootstrap } from '../bootstrap'
 import { contactRoutes, customerTicketRoutes, staffTicketRoutes } from './support'
 import { blogRoutes } from './blog'
+import { AllowAny } from '../http/router'
+import { publicCurrencies } from '../pricing/engine'
 
 /** config/urls.py: every `/api/v1/` include, in v1 order. */
 export const api = new Router()
@@ -29,6 +31,7 @@ export const api = new Router()
   .include('/api/v1/notifications/', notificationRoutes)
   .include('/api/v1/customer/', customerRoutes)
   .include('/api/v1/blog/', blogRoutes)
+  .include('/api/v1/currencies/', new Router().get('', () => publicCurrencies(), { authenticate: false, permissions: [AllowAny] }))
   .include('/api/v1/contact/', contactRoutes)
   .include('/api/v1/support/', customerTicketRoutes)
 

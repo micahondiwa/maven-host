@@ -2,7 +2,7 @@ import 'server-only'
 import { randomUUID } from 'node:crypto'
 import { database, query, queryOne, transaction, type Queryable } from '../db'
 import { notFound } from '../http/errors'
-import { calculatePrice, currencyByCode, defaultPricingRule, type Currency } from '../pricing/engine'
+import { calculatePrice, currencyByCode, defaultPricingRule, ExchangeRateNotFound, type Currency } from '../pricing/engine'
 import { audit } from '../audit/audit'
 import { dispatch } from '../events/bus'
 import { assertSupplierReady, extensionFor, routingConfig, slugForExtension, tldExtensions } from './routing'
@@ -33,7 +33,8 @@ export const statusLabel = (status: string) => STATUS_LABELS[status] ?? status
 const searchCache = new Map<string, { expires: number; payload: unknown }>()
 const PRIORITY = ['.com', '.net', '.org', '.co', '.io', '.info', '.biz', '.me']
 
-type Price = { product_id: number; usd: string }
+/** `kes` is the exact KES charge (same pricing rule); absent when no KES rate is configured. */
+type Price = { product_id: number; usd: string; kes?: string }
 
 export async function searchDomains(input: { domain: string; years: number; suggestionLimit: number; suggestionOffset: number }) {
   const key = JSON.stringify([routingConfig.generalRegistrar, routingConfig.countryRegistrars, input])
@@ -107,6 +108,7 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
 
   const rule = await defaultPricingRule()
   const usd = await currencyByCode('USD')
+  const kes = await currencyByCode('KES')
   const prices = new Map<string, Record<string, Price>>()
   if (rule && usd) {
     const rows = await query<{ id: number; price: string; price_type: string; extension: string; slug: string; currency_id: number }>(
@@ -120,8 +122,16 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
       if (row.slug !== expected) continue
       if (!currencies.has(row.currency_id)) currencies.set(row.currency_id, (await queryOne<Currency>('SELECT * FROM currencies_currency WHERE id = $1', [row.currency_id]))!)
       const quote = await calculatePrice({ supplierPrice: row.price, supplierCurrency: currencies.get(row.currency_id)!, targetCurrency: usd, rule })
+      let kesPrice: string | undefined
+      if (kes) {
+        try {
+          kesPrice = (await calculatePrice({ supplierPrice: row.price, supplierCurrency: currencies.get(row.currency_id)!, targetCurrency: kes, rule })).sellingPrice
+        } catch (error) {
+          if (!(error instanceof ExchangeRateNotFound)) throw error
+        }
+      }
       const key = `${row.extension}|${expected}`
-      prices.set(key, { ...(prices.get(key) ?? {}), [row.price_type]: { product_id: row.id, usd: quote.sellingPrice } })
+      prices.set(key, { ...(prices.get(key) ?? {}), [row.price_type]: { product_id: row.id, usd: quote.sellingPrice, ...(kesPrice ? { kes: kesPrice } : {}) } })
     }
   }
   if (exact.available && !exact.premium && matching) result.prices = prices.get(`${matching}|${exact.registrar}`) ?? {}
