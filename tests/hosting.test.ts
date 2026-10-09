@@ -182,6 +182,20 @@ suite('hosting lifecycle on the 20i supplier', () => {
     expect(await verifiedPackages(knownhostPlans)).toEqual([])
   })
 
+  it('publishes the cloud lineup with USD and KES prices and no reseller plans', async () => {
+    const plans = (await call('GET', '/hosting/plans/?currency=USD,KES')).body as { slug: string; plan_type: string; requires_quote: boolean; verification_status: string; proposed_features: Record<string, unknown>; advertised_offers: { term: string; total: string; renewal_total: string }[]; prices: { billing_cycle: string; currency: string; price: string }[] }[]
+    expect(plans.some((plan) => plan.plan_type === 'reseller')).toBe(false)
+    expect(plans.filter((plan) => ['basic', 'standard', 'professional', 'premium'].includes(plan.slug))).toEqual([])
+    const cloud = Object.fromEntries(plans.filter((plan) => plan.slug.startsWith('cloud-')).map((plan) => [plan.slug, plan]))
+    expect(Object.keys(cloud)).toEqual(['cloud-starter', 'cloud-business', 'cloud-pro'])
+    const price = (slug: string, cycle: string, currency: string) => cloud[slug].prices.find((row) => row.billing_cycle === cycle && row.currency === currency)?.price
+    expect([price('cloud-starter', 'annually', 'USD'), price('cloud-starter', 'annually', 'KES'), price('cloud-business', 'monthly', 'KES'), price('cloud-pro', 'biennially', 'USD')]).toEqual(['29.99', '3899.00', '899.00', '179.99'])
+    // Until a 20i package type is verified for a plan, it is shown but cannot be bought.
+    expect(cloud['cloud-business']).toMatchObject({ requires_quote: true, verification_status: 'pending', proposed_features: { websites: 5, storage_gb: 50, mailbox_storage_gb: 10, cdn: 'Global Anycast CDN', control_panel: 'Maven Host control panel' } })
+    expect(cloud['cloud-starter'].advertised_offers.find((offer) => offer.term === '1-year')).toMatchObject({ total: '29.99', renewal_total: '29.99' })
+    expect(JSON.stringify(Object.values(cloud))).not.toMatch(/20i|twentyi|knownhost|cPanel/i)
+  })
+
   it('provisions a paid hosting order through the outbox exactly once and records the subscription', async () => {
     const buyer = await account('Customer')
     const admin = await account('Platform Administrator')

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listHostingPlans, type HostingPlan } from './api'
-export const BILLING_TERMS = [{ value: '1-month', label: 'Monthly', cycle: 'monthly' }, { value: '1-year', label: '1 year', cycle: 'annually' }, { value: '2-year', label: '2 years', cycle: 'biennially' }, { value: '3-year', label: '3 years', cycle: 'triennially' }]
+export const BILLING_TERMS = [{ value: '1-month', label: 'Monthly', cycle: 'monthly' }, { value: '1-year', label: '1 year', cycle: 'annually' }, { value: '2-year', label: '2 years', cycle: 'biennially' }]
 export function useHostingCatalog() {
   const [plans, setPlans] = useState<HostingPlan[]>([])
   const [loading, setLoading] = useState(true)

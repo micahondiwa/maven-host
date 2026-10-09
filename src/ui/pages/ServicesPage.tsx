@@ -29,7 +29,7 @@ const SERVICES = [
     id: 'web-hosting',
     icon: Server,
     title: 'Web hosting plans',
-    description: 'Compare the current hosting plans by storage, bandwidth, websites per cPanel account, databases, email accounts, backups and SSL support.',
+    description: 'Compare the current hosting plans by websites, storage, mailboxes, databases, SSL, CDN and security features.',
     detail: 'Published configurations and prices come from the catalog. Hosting checkout and activation are pending; you can compare plans and save a selection now.',
     to: '/hosting',
     action: 'Compare hosting plans',

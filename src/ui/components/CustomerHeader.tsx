@@ -35,9 +35,8 @@ const NAV_ENTRIES: NavEntry[] = [
     { to: '/account/domains', label: 'Manage domains', description: 'Your purchased domains and supported DNS controls', icon: Globe2 },
   ] },
   { label: 'Hosting', icon: Server, rootTo: '/hosting', activePath: '/hosting', items: [
-    { to: '/hosting', label: 'Web hosting', description: 'Published cPanel configurations · checkout pending', icon: Monitor },
-    { to: '/hosting?category=email', label: 'Email hosting', description: 'Mailboxes included in cPanel hosting', icon: Mail },
-    { to: '/hosting?category=reseller', label: 'Reseller hosting', description: 'WHM pools with separate cPanel accounts', icon: Users },
+    { to: '/hosting', label: 'Web hosting', description: 'Cloud hosting plans · checkout opening soon', icon: Monitor },
+    { to: '/hosting?category=email', label: 'Email hosting', description: '10 GB mailboxes included with every plan', icon: Mail },
     { to: '/hosting?category=vps', label: 'Managed VPS', description: 'Published configurations · confirm availability', icon: Server },
     { to: '/hosting?category=dedicated', label: 'Dedicated servers', description: 'Starting configurations · confirm stock and licences', icon: Database },
     { to: '/hosting#compare-plans', label: 'Compare all options', description: 'Billing periods, resources and restrictions', icon: Tag },
@@ -147,7 +146,8 @@ export function CustomerHeader(_props: { dark?: boolean }) {
 
   const isActive = (to: string) => {
 
-    const destination = new URL(to, window.location.origin)
+    // Only the path, hash and query are compared, so a fixed base keeps this safe during server rendering.
+    const destination = new URL(to, 'http://localhost')
 
     const pathname = destination.pathname
 

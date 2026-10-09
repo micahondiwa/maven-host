@@ -20,6 +20,8 @@ export const PUBLIC_ENTITLEMENT_KEYS = new Set([
   'max_databases', 'litespeed', 'patchman_included', 'dedicated_ipv4', 'backup_retention', 'inodes', 'white_label',
   'imunify360', 'cloudlinux', 'ipv6', 'whmcs', ...COMMON_FEATURES, 'object_caching', 'storage_configuration',
   'cpu_threads', 'network_port',
+  // Cloud (20i) plan features
+  'mailbox_storage_gb', 'cdn', 'waf', 'malware_scanning', 'two_factor_auth', 'dkim', 'wordpress_manager', 'wordpress_staging', 'free_migration',
 ])
 
 const OFFER_KEYS = new Set(['term', 'months', 'currency', 'total', 'renewal_total', 'monthly', 'renewal_monthly', 'vat_percent', 'vat_included', 'starting_price'])
