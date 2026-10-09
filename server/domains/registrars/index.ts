@@ -1,7 +1,6 @@
 import 'server-only'
 import { routingConfig } from '../routing'
 import { SupplierFeatureUnavailable, type Registrar } from '../types'
-import { NamecheapRegistrar } from './namecheap'
 import { OpenproviderRegistrar } from './openprovider'
 
 /**
@@ -23,7 +22,6 @@ function standby(slug: string, message: string): Registrar {
 
 const FACTORIES: Record<string, () => Registrar> = {
   openprovider: () => new OpenproviderRegistrar(),
-  namecheap: () => new NamecheapRegistrar(),
   register_ke: () => standby('register_ke', 'Register.co.ke is in standby pending reseller API documentation and credentials.'),
   registry_tz: () => standby('registry_tz', 'registry.co.tz is in standby pending reseller API documentation and credentials.'),
 }
@@ -37,7 +35,7 @@ export function setRegistrarOverride(factory: ((slug: string) => Registrar | und
 
 /** RegistrarManager.get */
 export function registrarFor(slug?: string | null): Registrar {
-  const key = (slug ?? routingConfig.defaultRegistrar).toLowerCase()
+  const key = (slug ?? routingConfig.generalRegistrar).toLowerCase()
   const replaced = override?.(key)
   if (replaced) return replaced
   const factory = FACTORIES[key]

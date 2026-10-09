@@ -61,7 +61,7 @@ export class SupplierFeatureUnavailable extends DetailError {
     super(message, 422, 'supplier_feature_unavailable')
   }
 }
-/** Sanitized supplier boundary failure (OpenproviderUnavailable / NamecheapAPIError). */
+/** Sanitized supplier boundary failure (OpenproviderUnavailable). */
 export class RegistrarUnavailable extends DetailError {
   constructor(message: string) {
     super(message, 502, 'registrar_unavailable')

@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import Decimal from 'decimal.js'
 import { queryOne } from '../../db'
 import { pythonDumps } from '../../lib/python-json'
-import { flag, routingConfig, tldExtensions } from '../routing'
+import { flag, tldExtensions } from '../routing'
 import {
   ContactValidationError, OpenproviderNotReady, PricingNotAvailableError, RegistrarUnavailable, emptyRecordExtras,
   type Availability, type Contact, type ContactDetails, type DnsHost, type DnsRecord, type Registrar, type RegistrationRequest, type SupplierPrice,
@@ -153,7 +153,7 @@ export class OpenproviderRegistrar implements Registrar {
   }
 
   async checkDomains(domains: string[]): Promise<Availability[]> {
-    if (routingConfig.defaultRegistrar === 'openprovider') this.requireReady()
+    this.requireReady()
     if (!domains.length) return []
     this.configuration()
     const normalized = domains.map((name) => name.trim().toLowerCase().replace(/\.$/, ''))

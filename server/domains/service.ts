@@ -36,7 +36,7 @@ const PRIORITY = ['.com', '.net', '.org', '.co', '.io', '.info', '.biz', '.me']
 type Price = { product_id: number; usd: string }
 
 export async function searchDomains(input: { domain: string; years: number; suggestionLimit: number; suggestionOffset: number }) {
-  const key = JSON.stringify([routingConfig.enabled, routingConfig.defaultRegistrar, routingConfig.generalRegistrar, routingConfig.countryRegistrars, input])
+  const key = JSON.stringify([routingConfig.generalRegistrar, routingConfig.countryRegistrars, input])
   const cached = searchCache.get(key)
   if (cached && cached.expires > Date.now()) return cached.payload
   const payload = await runSearch(input)
@@ -47,13 +47,11 @@ export async function searchDomains(input: { domain: string; years: number; sugg
 
 async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestionOffset }: { domain: string; years: number; suggestionLimit: number; suggestionOffset: number }) {
   let domain = rawDomain.trim().toLowerCase()
-  const routed = routingConfig.enabled
-  const registrarSlug = routingConfig.defaultRegistrar
   const tlds = await query<{ id: number; extension: string; is_featured: boolean; registration_order: number }>(
-    `SELECT id, extension, is_featured, registration_order FROM domains_tld WHERE is_active ${routed ? '' : 'AND provider_supported'} ORDER BY registration_order DESC`,
+    `SELECT id, extension, is_featured, registration_order FROM domains_tld WHERE is_active ORDER BY registration_order DESC`,
   )
   let supported = tlds.map((tld) => tld.extension)
-  if (routed) {
+  {
     const pairs = new Set((await query<{ pair: string }>(
       `SELECT DISTINCT t.extension || '|' || r.slug AS pair FROM domains_domainprice p JOIN domains_tld t ON t.id = p.tld_id JOIN domains_registrar r ON r.id = p.registrar_id
         WHERE t.is_active AND r.is_active AND p.price_type = 'register' AND p.years = $1`,
@@ -74,13 +72,9 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
   const pageSize = Math.min(suggestionLimit, 49)
 
   const candidateRows = await query<{ extension: string; is_featured: boolean; registration_order: number }>(
-    routed
-      ? `SELECT DISTINCT t.extension, t.is_featured, t.registration_order FROM domains_tld t JOIN domains_domainprice p ON p.tld_id = t.id JOIN domains_registrar r ON r.id = p.registrar_id
-          WHERE t.is_active AND p.price_type = 'register' AND p.years = $1 AND r.is_active AND t.extension = ANY($2)`
-      : `SELECT DISTINCT t.extension, t.is_featured, t.registration_order FROM domains_tld t JOIN domains_domainprice p ON p.tld_id = t.id JOIN domains_registrar r ON r.id = p.registrar_id
-          JOIN currencies_currency c ON c.id = p.currency_id
-          WHERE t.is_active AND t.provider_supported AND p.price_type = 'register' AND p.years = $1 AND r.slug = $2 AND c.code = 'USD'`,
-    routed ? [years, supported] : [years, registrarSlug],
+    `SELECT DISTINCT t.extension, t.is_featured, t.registration_order FROM domains_tld t JOIN domains_domainprice p ON p.tld_id = t.id JOIN domains_registrar r ON r.id = p.registrar_id
+      WHERE t.is_active AND p.price_type = 'register' AND p.years = $1 AND r.is_active AND t.extension = ANY($2)`,
+    [years, supported],
   )
   const priority = (ext: string) => (PRIORITY.includes(ext) ? PRIORITY.indexOf(ext) : 100)
   const ordered = candidateRows
@@ -95,15 +89,15 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
   const groups = new Map<string, string[]>()
   for (const name of names) {
     const extension = name === domain ? matching! : pricedExtensions[alternatives.indexOf(name)]
-    const slug = routed ? slugForExtension(extension) : registrarSlug
+    const slug = slugForExtension(extension)
     groups.set(slug, [...(groups.get(slug) ?? []), name])
   }
   const checked = new Map<string, Availability>()
   for (const [slug, batch] of groups) {
-    if (routed) assertSupplierReady(slug)
+    assertSupplierReady(slug)
     for (const item of await registrarFor(slug).checkDomains(batch)) checked.set(item.domain.toLowerCase(), item)
   }
-  const exactSlug = routed ? slugForExtension(searched) : registrarSlug
+  const exactSlug = slugForExtension(searched)
   const exact = checked.get(domain) ?? { domain, available: false, premium: false, registrar: exactSlug }
   const result: { domain: string; available: boolean; premium: boolean; registrar: string; message: string | null; prices: Record<string, Price>; suggestions: unknown[]; next_offset: number | null } = {
     domain: exact.domain, available: exact.available, premium: exact.premium, registrar: exact.registrar,
@@ -122,7 +116,7 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
     )
     const currencies = new Map<number, Currency>()
     for (const row of rows) {
-      const expected = routed ? slugForExtension(row.extension) : registrarSlug
+      const expected = slugForExtension(row.extension)
       if (row.slug !== expected) continue
       if (!currencies.has(row.currency_id)) currencies.set(row.currency_id, (await queryOne<Currency>('SELECT * FROM currencies_currency WHERE id = $1', [row.currency_id]))!)
       const quote = await calculatePrice({ supplierPrice: row.price, supplierCurrency: currencies.get(row.currency_id)!, targetCurrency: usd, rule })

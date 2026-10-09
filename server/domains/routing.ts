@@ -6,7 +6,6 @@ import { PricingNotAvailableError } from './types'
  * Supplier routing for new registrations (apps/domains/registrars/routing.py). Approved providers:
  * Openprovider for international extensions, Register.co.ke for Kenya, registry.co.tz for Tanzania.
  * Existing domains always stay with the registrar recorded on the domain.
- * `DOMAIN_ROUTING_ENABLED=false` restores v1's single `DEFAULT_REGISTRAR` behaviour for comparison runs.
  */
 
 const KENYA = ['.co.ke', '.or.ke', '.ne.ke', '.me.ke', '.mobi.ke', '.info.ke', '.ac.ke', '.go.ke', '.sc.ke', '.ke']
@@ -18,12 +17,6 @@ function list(name: string, fallback: string[]) {
 }
 
 export const routingConfig = {
-  get enabled() {
-    return (process.env.DOMAIN_ROUTING_ENABLED ?? 'true').trim().toLowerCase() !== 'false'
-  },
-  get defaultRegistrar() {
-    return (process.env.DEFAULT_REGISTRAR?.trim() || 'openprovider').toLowerCase()
-  },
   get generalRegistrar() {
     return (process.env.DOMAIN_GENERAL_REGISTRAR?.trim() || 'openprovider').toLowerCase()
   },
@@ -38,7 +31,6 @@ export const routingConfig = {
 }
 
 export function slugForExtension(extension: string): string {
-  if (!routingConfig.enabled) return routingConfig.defaultRegistrar
   const value = extension.toLowerCase()
   const routes = routingConfig.countryRegistrars
   for (const suffix of Object.keys(routes).sort((a, b) => b.length - a.length)) if (value === suffix || value.endsWith(suffix)) return routes[suffix]

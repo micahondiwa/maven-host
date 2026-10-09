@@ -3,7 +3,6 @@ import { createHash, randomUUID } from 'node:crypto'
 import { database, query, queryOne, transaction } from '../db'
 import { pythonDumps } from '../lib/python-json'
 import { registerDomain } from '../domains/service'
-import { routingConfig } from '../domains/routing'
 import type { Contact } from '../domains/types'
 import { PRIMARY_DOMAIN, transitionOrder } from './service'
 
@@ -93,7 +92,7 @@ async function fulfillDomain(customerId: string, item: Item) {
   let recovered = Boolean(existing && existing.status === 'active')
   if (!recovered) {
     const price = /^\d+$/.test(item.resource_id) ? await queryOne<{ slug: string }>('SELECT r.slug FROM domains_domainprice p JOIN domains_registrar r ON r.id = p.registrar_id WHERE p.id = $1', [Number(item.resource_id)]) : undefined
-    if (!price && routingConfig.enabled) throw new Error('The paid domain supplier reference is missing; reconcile this order before fulfillment.')
+    if (!price) throw new Error('The paid domain supplier reference is missing; reconcile this order before fulfillment.')
     const result = await registerDomain(customerId, {
       domain: domainName, years: Number(config.years ?? 1),
       registrant: await contactFor(customerId, config.registrant as never), admin: await contactFor(customerId, config.admin as never),

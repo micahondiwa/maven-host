@@ -9,11 +9,6 @@ if (url) {
 }
 
 describe('supplier routing', () => {
-  afterEach(() => {
-    delete process.env.DOMAIN_ROUTING_ENABLED
-    delete process.env.DEFAULT_REGISTRAR
-  })
-
   it('routes international, Kenyan and Tanzanian extensions to the approved providers', async () => {
     const { slugForExtension, assertSupplierReady } = await import('../server/domains/routing')
     expect(slugForExtension('.com')).toBe('openprovider')
@@ -24,9 +19,6 @@ describe('supplier routing', () => {
     expect(slugForExtension('.tz')).toBe('registry_tz')
     expect(() => assertSupplierReady('register_ke')).toThrow('Register.co.ke purchases are disabled pending reseller API integration.')
     expect(() => assertSupplierReady('registry_tz')).toThrow('registry.co.tz purchases are disabled pending reseller API integration.')
-    process.env.DOMAIN_ROUTING_ENABLED = 'false'
-    process.env.DEFAULT_REGISTRAR = 'namecheap'
-    expect(slugForExtension('.co.ke')).toBe('namecheap')
   })
 
   it('matches v1 Openprovider DNS record identifiers, including non-ASCII values', async () => {
@@ -154,35 +146,6 @@ suite('domains API', () => {
     expect((await call('PUT', `/domains/customer/domains/${domain.id}/nameservers/`, { token: staff.access, body: { nameservers: [{ hostname: 'ns1.example.net' }] } })).body).toEqual({ nameservers: ['Ensure this field has at least 2 elements.'] })
     expect((await call('GET', `/domains/customer/domains/${domain.id}/nameservers/`, { token: staff.access })).body).toEqual({ nameservers: [{ hostname: 'ns1.example.net' }, { hostname: 'ns2.example.net' }] })
   }, 60_000)
-})
-
-suite('Namecheap adapter for existing domains', () => {
-  const realFetch = globalThis.fetch
-  afterEach(() => {
-    globalThis.fetch = realFetch
-  })
-
-  it('reads lowercase host records, keeps them when adding a record and parses namespaced renewals', async () => {
-    const { NamecheapRegistrar } = await import('../server/domains/registrars/namecheap')
-    const sent: URLSearchParams[] = []
-    const envelope = (command: string, body: string) => `<?xml version="1.0" encoding="utf-8"?><ApiResponse Status="OK" xmlns="http://api.namecheap.com/xml.response"><CommandResponse Type="${command}">${body}</CommandResponse></ApiResponse>`
-    globalThis.fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const params = init?.body instanceof URLSearchParams ? init.body : new URL(String(input)).searchParams
-      sent.push(params)
-      const command = params.get('Command')
-      if (command === 'namecheap.domains.dns.getHosts')
-        return new Response(envelope(command, '<DomainDNSGetHostsResult Domain="legacy.com" IsUsingOurDNS="true"><host HostId="1" Name="@" Type="A" Address="192.0.2.1" MXPref="10" TTL="1800" /><host HostId="2" Name="www" Type="CNAME" Address="legacy.com." MXPref="10" TTL="1800" /></DomainDNSGetHostsResult>'))
-      if (command === 'namecheap.domains.dns.setHosts') return new Response(envelope(command, '<DomainDNSSetHostsResult Domain="legacy.com" IsSuccess="true" />'))
-      if (command === 'namecheap.domains.renew') return new Response(envelope(command, '<DomainRenewResult DomainName="legacy.com" DomainID="7" Renew="true" OrderID="55" TransactionID="66" ChargedAmount="9.0"><DomainDetails><ExpiredDate>10/09/2028</ExpiredDate></DomainDetails></DomainRenewResult>'))
-      return new Response(envelope(command ?? '', ''))
-    }) as typeof fetch
-    const registrar = new NamecheapRegistrar()
-    expect((await registrar.getDnsRecords('legacy.com')).map((record) => record.host)).toEqual(['@', 'www'])
-    await registrar.createDnsRecord('legacy.com', { id: null, type: 'TXT', host: '@', value: 'v=spf1 -all', ttl: 1800, priority: null, weight: null, port: null, protocol: null, flag: null, tag: null })
-    const update = sent.find((params) => params.get('Command') === 'namecheap.domains.dns.setHosts')!
-    expect([update.get('HostName1'), update.get('HostName2'), update.get('RecordType3')]).toEqual(['@', 'www', 'TXT'])
-    expect(await registrar.renewDomain('legacy.com', 1)).toMatchObject({ renewed: true, new_expiration_date: '2028-10-09', order_id: '55', transaction_id: '66' })
-  })
 })
 
 suite('Openprovider adapter against documented responses', () => {
