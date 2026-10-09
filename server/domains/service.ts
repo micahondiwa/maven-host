@@ -467,7 +467,7 @@ const DEFAULT_TLDS: [string, string, boolean][] = [
   ['.co.ke', 'Kenya Commercial', true], ['.ac.ke', 'Kenya Academic', false], ['.co.tz', 'Tanzania Commercial', false],
 ]
 
-/** seed_tlds (plus Tanzania's .co.tz, routed to registry.co.tz). */
+/** seed_tlds (plus Tanzania's .co.tz); all are provisioned through Openprovider. */
 export async function seedTlds(db: Queryable = database()) {
   for (const [order, [extension, name, featured]] of DEFAULT_TLDS.entries())
     await db.query(

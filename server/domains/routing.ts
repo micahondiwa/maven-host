@@ -3,8 +3,9 @@ import { database, query, type Queryable } from '../db'
 import { PricingNotAvailableError } from './types'
 
 /**
- * Supplier routing for new registrations (apps/domains/registrars/routing.py). Approved providers:
- * Openprovider for international extensions, Register.co.ke for Kenya, registry.co.tz for Tanzania.
+ * Supplier routing for new registrations (apps/domains/registrars/routing.py). Openprovider is the sole
+ * provisioning source for every extension, including .ke and .tz. Register.co.ke and registry.co.tz remain
+ * proposed providers in standby until accreditation; they can be routed to later via DOMAIN_COUNTRY_REGISTRARS.
  * Existing domains always stay with the registrar recorded on the domain.
  */
 
@@ -23,7 +24,7 @@ export const routingConfig = {
   get countryRegistrars(): Record<string, string> {
     const raw = process.env.DOMAIN_COUNTRY_REGISTRARS?.trim()
     if (raw) return Object.fromEntries(Object.entries(JSON.parse(raw) as Record<string, string>).map(([suffix, slug]) => [suffix.toLowerCase(), slug.toLowerCase()]))
-    return { '.ke': 'register_ke', '.tz': 'registry_tz' }
+    return {}
   },
   get countryExtensions() {
     return list('DOMAIN_COUNTRY_EXTENSIONS', [...KENYA, ...TANZANIA])

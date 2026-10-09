@@ -9,14 +9,12 @@ if (url) {
 }
 
 describe('supplier routing', () => {
-  it('routes international, Kenyan and Tanzanian extensions to the approved providers', async () => {
+  it('routes every extension to Openprovider and keeps the proposed national registrars in standby', async () => {
     const { slugForExtension, assertSupplierReady } = await import('../server/domains/routing')
-    expect(slugForExtension('.com')).toBe('openprovider')
-    expect(slugForExtension('.org')).toBe('openprovider')
+    for (const extension of ['.com', '.org', '.co.ke', '.ke', '.co.tz', '.tz']) expect(slugForExtension(extension)).toBe('openprovider')
+    process.env.DOMAIN_COUNTRY_REGISTRARS = '{".ke":"register_ke"}'
     expect(slugForExtension('.co.ke')).toBe('register_ke')
-    expect(slugForExtension('.ke')).toBe('register_ke')
-    expect(slugForExtension('.co.tz')).toBe('registry_tz')
-    expect(slugForExtension('.tz')).toBe('registry_tz')
+    delete process.env.DOMAIN_COUNTRY_REGISTRARS
     expect(() => assertSupplierReady('register_ke')).toThrow('Register.co.ke purchases are disabled pending reseller API integration.')
     expect(() => assertSupplierReady('registry_tz')).toThrow('registry.co.tz purchases are disabled pending reseller API integration.')
   })
@@ -112,8 +110,11 @@ suite('domains API', () => {
     expect((await call('GET', '/domains/search/?domain=a@b.com')).body).toEqual({ domain: ['Enter a business name or a domain such as yourbusiness.com. Use letters, numbers, spaces or hyphens.'] })
   })
 
-  it('fails closed for Kenyan and Tanzanian searches until those reseller APIs are integrated', async () => {
-    expect((await call('GET', '/domains/search/?domain=bakery.co.ke')).body).toEqual({ detail: 'Register.co.ke purchases are disabled pending reseller API integration.' })
+  it('searches Kenyan names through Openprovider and ignores standby supplier prices', async () => {
+    const result = await call('GET', '/domains/search/?domain=bakery.co.ke')
+    // Only a synced Openprovider price makes .co.ke sellable; the standby Register.co.ke price is never used.
+    expect(result.body).toMatchObject({ domain: 'bakery.co.ke', available: false, registrar: 'openprovider', message: 'This extension is not currently supported for registration.', prices: {} })
+    expect(stub.checks.flat()).not.toContain('bakery.co.ke')
   })
 
   it('registers only through staff permission, reconciles repeats and keeps renewals staff-only', async () => {
