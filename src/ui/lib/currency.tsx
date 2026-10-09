@@ -3,7 +3,7 @@ import { listCurrencies, type CurrencyCatalog, type DisplayCurrency } from './ap
 
 /**
  * Display currency, following the Inara Crest pattern: prices are set in US dollars (the default); KES is also a
- * payment currency with its own fixed prices; UGX, TZS and RWF show an indicative conversion from USD and are
+ * payment currency with its own fixed prices; UGX, TZS, RWF, EUR and GBP show an indicative conversion from USD and are
  * charged in USD.
  */
 
@@ -36,7 +36,9 @@ export function formatMoney(amount: string | number, currency: Pick<DisplayCurre
   if (!Number.isFinite(value)) return String(amount)
   const digits = currency.decimal_places
   const number = new Intl.NumberFormat('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value)
-  return currency.code === 'USD' ? `$${number}` : `${currency.symbol} ${number}`
+  if (currency.code === 'USD') return `$${number}`
+  // Single-character symbols (€, £) sit against the number; letter symbols (KSh, USh, TSh, FRw) take a space.
+  return /^[^A-Za-z]$/.test(currency.symbol) ? `${currency.symbol}${number}` : `${currency.symbol} ${number}`
 }
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {

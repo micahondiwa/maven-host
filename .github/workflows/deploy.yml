@@ -1,0 +1,98 @@
+name: Test and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test on PostgreSQL ${{ matrix.postgres }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: true
+      matrix:
+        postgres: ['10', '18']
+    services:
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: mavenhost_ci
+          POSTGRES_PASSWORD: mavenhost_ci
+          POSTGRES_DB: mavenhost_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U mavenhost_ci -d mavenhost_test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://mavenhost_ci:mavenhost_ci@127.0.0.1:5432/mavenhost_test
+      TEST_DATABASE_URL: postgresql://mavenhost_ci:mavenhost_ci@127.0.0.1:5432/mavenhost_test
+      LOCAL_DATABASE_ONLY: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - name: Apply migrations
+        run: node scripts/migrate.mjs
+      - run: npm test
+
+  deploy:
+    name: Deploy to cPanel
+    needs: test
+    # Runs only for main once the server is configured (repository variable APP_ROOT).
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.APP_ROOT != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: maven-host-app-production
+      cancel-in-progress: false
+    env:
+      SSH_HOST: ${{ vars.CPANEL_SSH_HOST }}
+      SSH_PORT: ${{ vars.CPANEL_SSH_PORT }}
+      SSH_USER: ${{ vars.CPANEL_SSH_USER }}
+      APP_ROOT: ${{ vars.APP_ROOT }}
+      APP_URL: ${{ vars.APP_URL }}
+      SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build release
+        run: bash deploy/build-release.sh "$SHA" "$RUNNER_TEMP/release.tar.gz"
+      - name: Configure deployment SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.CPANEL_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.CPANEL_KNOWN_HOSTS }}
+        run: |
+          test -n "$DEPLOY_KEY" && test -n "$KNOWN_HOSTS" || { echo 'Set the CPANEL_DEPLOY_KEY and CPANEL_KNOWN_HOSTS secrets.'; exit 1; }
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/cpanel && chmod 600 ~/.ssh/cpanel
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+      - name: Upload and deploy
+        run: |
+          ssh_opts=(-i ~/.ssh/cpanel -o BatchMode=yes -o StrictHostKeyChecking=yes)
+          ssh "${ssh_opts[@]}" -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" 'umask 077; mkdir -p "$HOME/deploy-incoming"'
+          scp "${ssh_opts[@]}" -P "${SSH_PORT:-22}" "$RUNNER_TEMP/release.tar.gz" "$SSH_USER@$SSH_HOST:deploy-incoming/$SHA.tar.gz"
+          ssh "${ssh_opts[@]}" -p "${SSH_PORT:-22}" "$SSH_USER@$SSH_HOST" \
+            "set -e; d=\$(mktemp -d); tar -xzf \"\$HOME/deploy-incoming/$SHA.tar.gz\" -C \"\$d\" release/deploy/cpanel/deploy.sh; bash \"\$d/release/deploy/cpanel/deploy.sh\" '$SHA' \"\$HOME/deploy-incoming/$SHA.tar.gz\" '$APP_ROOT'; rm -rf \"\$d\""
+      - name: Verify the deployed site
+        if: env.APP_URL != ''
+        run: |
+          sleep 10
+          curl --fail --silent --show-error --retry 6 --retry-delay 10 --retry-all-errors "$APP_URL/" -o /dev/null
+          curl --fail --silent --show-error --retry 6 --retry-delay 10 --retry-all-errors "$APP_URL/api/v1/currencies/" -o /dev/null
+          curl --fail --silent --show-error --retry 6 --retry-delay 10 --retry-all-errors "$APP_URL/api/v1/hosting/plans/" -o /dev/null
+          echo "Deployed $SHA to $APP_URL"

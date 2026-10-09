@@ -61,7 +61,7 @@ export async function calculatePrice(input: { supplierPrice: string; supplierCur
 
 /**
  * Currencies Maven Host shows. USD is the base and default; USD and KES are payment currencies (fixed catalog prices,
- * card and M-Pesa). UGX, TZS and RWF are display-only: an indicative conversion from USD, charged in USD.
+ * card and M-Pesa). UGX, TZS, RWF, EUR and GBP are display-only: an indicative conversion from USD, charged in USD.
  */
 export const SUPPORTED_CURRENCIES = [
   { code: 'USD', name: 'US Dollar', symbol: '$', decimals: 2, payment: true },
@@ -69,6 +69,8 @@ export const SUPPORTED_CURRENCIES = [
   { code: 'UGX', name: 'Ugandan Shilling', symbol: 'USh', decimals: 0, payment: false },
   { code: 'TZS', name: 'Tanzanian Shilling', symbol: 'TSh', decimals: 0, payment: false },
   { code: 'RWF', name: 'Rwandan Franc', symbol: 'FRw', decimals: 0, payment: false },
+  { code: 'EUR', name: 'Euro', symbol: '€', decimals: 2, payment: false },
+  { code: 'GBP', name: 'British Pound', symbol: '£', decimals: 2, payment: false },
 ] as const
 export const PAYMENT_CURRENCIES: readonly string[] = SUPPORTED_CURRENCIES.filter((currency) => currency.payment).map((currency) => currency.code)
 export const RATE_ATTRIBUTION = { label: 'Rates By Exchange Rate API', url: 'https://www.exchangerate-api.com' }

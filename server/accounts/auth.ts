@@ -1,4 +1,5 @@
 import 'server-only'
+import { passwordValidationErrors } from '../auth/validators'
 import { randomBytes, randomUUID } from 'node:crypto'
 import { settings } from '../config'
 import { database, onCommit, queryOne, transaction, type Queryable } from '../db'
@@ -138,5 +139,7 @@ export async function confirmPasswordReset(uid: string, token: string, password:
   const userId = normalizeUuid(decodeUid(uid) ?? '')
   const user = userId ? await findUserById(userId) : undefined
   if (!user || !user.is_active || !checkResetToken(user, token)) throw ValidationError.field('token', 'Invalid or expired password reset link.')
+  const errors = passwordValidationErrors(password, user)
+  if (errors.length) throw new ValidationError({ password: errors })
   await updateUser(database(), user.id, { password: await hashPassword(password) })
 }

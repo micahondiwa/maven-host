@@ -1,8 +1,9 @@
 import 'server-only'
 import { database, query, queryOne, transaction } from '../db'
-import { HttpError, notFound } from '../http/errors'
+import { HttpError, notFound, ValidationError } from '../http/errors'
 import { AllowAny, json, Router, type Context } from '../http/router'
 import { f, fieldError, invalid, validate } from '../http/validation'
+import { passwordValidationErrors } from '../auth/validators'
 import { pageParams, paginate, pageWindow } from '../http/pagination'
 import { allStaffPermissions, PERMISSION_REGISTRY, ROLE_PERMISSION_MATRIX, roleCodes, STAFF_ROLES, staffPermission, userRoles } from '../auth/permissions'
 import * as auth from '../accounts/auth'
@@ -61,7 +62,14 @@ export const authRoutes = new Router()
         confirm_password: f.string(),
       },
       await ctx.body(),
-      { validate: (values) => { if (values.password !== values.confirm_password) fieldError('confirm_password', 'Passwords do not match.') } },
+      {
+        validate: (values) => {
+          if (values.password !== values.confirm_password) fieldError('confirm_password', 'Passwords do not match.')
+          // v1 applied Django's password validators to staff accounts only; customers now get the same checks.
+          const errors = passwordValidationErrors(values.password, values)
+          if (errors.length) throw new ValidationError({ password: errors })
+        },
+      },
     )
     return json(await auth.register(data), 201)
   }, publicRoute('registration'))

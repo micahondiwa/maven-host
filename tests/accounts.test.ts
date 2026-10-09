@@ -94,6 +94,9 @@ suite('accounts API', () => {
       body: { email: ['Enter a valid email address.'], password: ['Ensure this field has at least 8 characters.'] },
     })
     expect((await call('POST', '/auth/register/', { body: { email: unique(), password: 'Synthetic-pass-123', confirm_password: 'different' } })).body).toEqual({ confirm_password: ['Passwords do not match.'] })
+    // Django's password validators now apply to customers as well as staff.
+    expect((await call('POST', '/auth/register/', { body: { email: unique(), password: 'password123', confirm_password: 'password123' } })).body).toEqual({ password: ['This password is too common.'] })
+    expect((await call('POST', '/auth/register/', { body: { email: unique(), password: '83920175', confirm_password: '83920175' } })).body).toEqual({ password: ['This password is entirely numeric.'] })
     const account = await registerCustomer()
     expect((await call('POST', '/auth/register/', { body: { email: account.email, password: 'Synthetic-pass-123', confirm_password: 'Synthetic-pass-123' } })).body).toEqual({ email: ['A user with this email already exists.'] })
     expect((await call('POST', '/auth/login/', { body: { email: account.email, password: 'wrong-password' } })).body).toEqual({ non_field_errors: ['Invalid email or password.'] })
@@ -135,6 +138,7 @@ suite('accounts API', () => {
     await call('POST', '/auth/password-reset/', { body: { email: account.email.toUpperCase() } })
     const email = sent().filter((message) => message.to[0] === account.email && message.subject === 'Reset your MavenHost password').at(-1)!
     const [, uid, token] = /reset-password\/([^/]+)\/(\S+)$/.exec(email.text)!
+    expect((await call('POST', '/auth/password-reset/confirm/', { body: { uid, token, password: 'qwertyuiop', confirm_password: 'qwertyuiop' } })).body).toEqual({ password: ['This password is too common.'] })
     expect((await call('POST', '/auth/password-reset/confirm/', { body: { uid, token, password: 'New-synthetic-456', confirm_password: 'New-synthetic-456' } })).body).toEqual({ message: 'Password reset successfully.' })
     expect((await call('POST', '/auth/password-reset/confirm/', { body: { uid, token, password: 'Another-pass-789', confirm_password: 'Another-pass-789' } })).body).toEqual({ token: ['Invalid or expired password reset link.'] })
     expect((await call('POST', '/auth/login/', { body: { email: account.email, password: 'New-synthetic-456' } })).status).toBe(200)

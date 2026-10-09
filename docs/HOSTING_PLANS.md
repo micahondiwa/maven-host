@@ -32,7 +32,7 @@ bought (until then the site shows "pending activation" and checkout stays closed
 
 USD is the base and default. Following the inaracresttechnologies.com pattern, customers can switch the display
 currency: **USD** and **KES** are payment currencies (fixed catalog prices above; card or M-Pesa), while **UGX, TZS and
-RWF** under "Other currencies" show an indicative conversion from USD with the rate's timestamp, and are charged in USD.
+RWF, EUR and GBP** under "Other currencies" show an indicative conversion from USD with the rate's timestamp, and are charged in USD.
 Rates come from ExchangeRate-API's open endpoint (attribution "Rates By Exchange Rate API" is shown with conversions);
 v1's Frankfurter/ECB source publishes no KES, UGX, TZS or RWF rates. A cart holds one charge currency.
 

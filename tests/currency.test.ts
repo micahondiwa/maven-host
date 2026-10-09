@@ -31,12 +31,12 @@ suite('display and payment currencies', () => {
     const updatedAt = new Date('2026-10-09T00:02:31Z')
     const result = await synchronizeExchangeRates(async (base) => {
       expect(base).toBe('USD')
-      return { rates: { USD: 1, KES: 129.5, UGX: 3981.202747, TZS: 2618.547243, RWF: 1477.829021, ZZZ: 2 }, updatedAt }
+      return { rates: { USD: 1, KES: 129.5, UGX: 3981.202747, TZS: 2618.547243, RWF: 1477.829021, EUR: 0.86, GBP: 0.756516, ZZZ: 2 }, updatedAt }
     })
     expect(result.skipped).toBe(1)
     const body = (await call('GET', '/currencies/')).body
     expect(body).toMatchObject({ base: 'USD', default: 'USD', payment_currencies: ['USD', 'KES'], attribution: { label: 'Rates By Exchange Rate API', url: 'https://www.exchangerate-api.com' } })
-    expect(body.currencies.map((currency: { code: string }) => currency.code)).toEqual(['USD', 'KES', 'UGX', 'TZS', 'RWF'])
+    expect(body.currencies.map((currency: { code: string }) => currency.code)).toEqual(['USD', 'KES', 'UGX', 'TZS', 'RWF', 'EUR', 'GBP'])
     expect(body.currencies[0]).toMatchObject({ code: 'USD', payment: true, rate: '1', rate_updated_at: null })
     expect(body.currencies[2]).toMatchObject({ code: 'UGX', symbol: 'USh', decimal_places: 0, payment: false, rate: '3981.20274700', rate_updated_at: '2026-10-09T03:02:31+03:00' })
   })
