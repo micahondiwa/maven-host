@@ -184,3 +184,44 @@ suite('Namecheap adapter for existing domains', () => {
     expect(await registrar.renewDomain('legacy.com', 1)).toMatchObject({ renewed: true, new_expiration_date: '2028-10-09', order_id: '55', transaction_id: '66' })
   })
 })
+
+suite('Openprovider adapter against documented responses', () => {
+  const realFetch = globalThis.fetch
+  afterEach(() => {
+    globalThis.fetch = realFetch
+    delete process.env.OPENPROVIDER_ENABLED
+    delete process.env.OPENPROVIDER_TRANSACTIONS_ENABLED
+    delete process.env.OPENPROVIDER_USERNAME
+    delete process.env.OPENPROVIDER_PASSWORD
+  })
+
+  it('treats "in use" and "reserved" as taken, defaults is_premium, and requests zone records explicitly', async () => {
+    Object.assign(process.env, { OPENPROVIDER_ENABLED: 'true', OPENPROVIDER_TRANSACTIONS_ENABLED: 'true', OPENPROVIDER_USERNAME: 'synthetic', OPENPROVIDER_PASSWORD: 'synthetic' })
+    const { OpenproviderRegistrar } = await import('../server/domains/registrars/openprovider')
+    const requests: { method: string; url: URL; body?: unknown }[] = []
+    globalThis.fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = new URL(String(input))
+      requests.push({ method: init?.method ?? 'GET', url, body: init?.body ? JSON.parse(String(init.body)) : undefined })
+      const reply = (data: unknown) => new Response(JSON.stringify({ code: 0, data, desc: '' }))
+      if (url.pathname.endsWith('/auth/login')) return reply({ token: 'synthetic-token' })
+      if (url.pathname.endsWith('/domains/check'))
+        return reply({ results: [{ domain: 'free-name.com', status: 'free' }, { domain: 'taken-name.com', status: 'in use' }, { domain: 'held-name.com', status: 'reserved', is_premium: true }] })
+      if (url.pathname.endsWith('/domains')) return reply({ results: [{ id: 42, domain: { name: 'zone-test', extension: 'com' }, status: 'ACT', renewal_date: '2027-01-01' }] })
+      if (url.pathname.endsWith('/dns/zones/zone-test.com'))
+        return reply(url.searchParams.get('with_records') === 'true' ? { id: 7, name: 'zone-test.com', records: [{ name: 'www.zone-test.com', type: 'A', value: '192.0.2.1', ttl: 900 }] } : { id: 7, name: 'zone-test.com' })
+      return reply({ success: true })
+    }) as typeof fetch
+    const registrar = new OpenproviderRegistrar()
+    expect(await registrar.checkDomains(['free-name.com', 'taken-name.com', 'held-name.com'])).toEqual([
+      { domain: 'free-name.com', available: true, premium: false, registrar: 'openprovider' },
+      { domain: 'taken-name.com', available: false, premium: false, registrar: 'openprovider' },
+      { domain: 'held-name.com', available: false, premium: true, registrar: 'openprovider' },
+    ])
+    const [record] = await registrar.getDnsRecords('zone-test.com')
+    expect(record).toMatchObject({ host: 'www', type: 'A', value: '192.0.2.1', ttl: 900 })
+    await expect(registrar.createDnsRecord('zone-test.com', { ...record, id: null, host: 'mail', ttl: 300 })).rejects.toThrow('TTL values')
+    await registrar.createDnsRecord('zone-test.com', { ...record, id: null, host: 'mail', ttl: 3600 })
+    const update = requests.find((request) => request.method === 'PUT' && request.url.pathname.endsWith('/dns/zones/zone-test.com'))!
+    expect(update.body).toEqual({ id: 7, name: 'zone-test.com', records: { add: [{ name: 'mail.zone-test.com', type: 'A', value: '192.0.2.1', ttl: 3600 }] } })
+  })
+})

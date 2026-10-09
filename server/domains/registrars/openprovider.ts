@@ -164,11 +164,13 @@ export class OpenproviderRegistrar implements Registrar {
       if (!Array.isArray(data.results)) throw new RegistrarUnavailable('The domain supplier availability response was invalid.')
       const mapped = new Map<string, Availability>()
       for (const row of data.results as Row[]) {
-        if (!row || typeof row.status !== 'string' || !['free', 'active'].includes(row.status) || typeof row.is_premium !== 'boolean')
+        // Documented statuses are "free", "reserved" and "in use"; is_premium is only present for premium names.
+        // v1 accepted only "free"/"active" and required is_premium, so ordinary taken names failed the whole search.
+        if (!row || typeof row.status !== 'string' || !['free', 'reserved', 'in use', 'active'].includes(row.status) || (row.is_premium !== undefined && typeof row.is_premium !== 'boolean'))
           throw new RegistrarUnavailable('The domain supplier availability response was invalid.')
         const name = row.domain
         if (typeof name !== 'string' || !batch.includes(name) || mapped.has(name)) throw new RegistrarUnavailable('The domain supplier returned an unexpected domain result.')
-        mapped.set(name, { domain: name, available: row.status === 'free', premium: row.is_premium, registrar: 'openprovider' })
+        mapped.set(name, { domain: name, available: row.status === 'free', premium: row.is_premium === true, registrar: 'openprovider' })
       }
       if (mapped.size !== batch.length) throw new RegistrarUnavailable('The domain supplier returned incomplete availability results.')
       results.push(...batch.map((name) => mapped.get(name)!))
@@ -234,7 +236,8 @@ export class OpenproviderRegistrar implements Registrar {
       company_name: contact.organization || '',
       email: contact.email,
       address: { street: contact.address1, number: contact.street_number, suffix: contact.street_suffix, city: contact.city, state: contact.state, zipcode: contact.postal_code, country: contact.country.toUpperCase() },
-      phone: { country_code: contact.phone_country_code, area_code: contact.phone_area_code, subscriber_number: contact.phone_subscriber_number },
+      // Openprovider's customer schema writes the country calling code with a leading "+".
+      phone: { country_code: `+${contact.phone_country_code}`, area_code: contact.phone_area_code, subscriber_number: contact.phone_subscriber_number },
     }
   }
 
@@ -313,10 +316,10 @@ export class OpenproviderRegistrar implements Registrar {
       const text = (source: Row, key: string) => String(source[key] ?? '')
       return {
         first_name: text(name, 'first_name'), last_name: text(name, 'last_name'), organization: text(data, 'company_name'), email: text(data, 'email'),
-        phone: `+${text(phone, 'country_code')}${text(phone, 'area_code')}${text(phone, 'subscriber_number')}`,
+        phone: `+${text(phone, 'country_code').replace(/^\+/, '')}${text(phone, 'area_code')}${text(phone, 'subscriber_number')}`,
         address1: text(address, 'street'), address2: '', city: text(address, 'city'), state: text(address, 'state'), postal_code: text(address, 'zipcode'), country: text(address, 'country'),
         street_number: text(address, 'number'), street_suffix: text(address, 'suffix'),
-        phone_country_code: text(phone, 'country_code'), phone_area_code: text(phone, 'area_code'), phone_subscriber_number: text(phone, 'subscriber_number'),
+        phone_country_code: text(phone, 'country_code').replace(/^\+/, ''), phone_area_code: text(phone, 'area_code'), phone_subscriber_number: text(phone, 'subscriber_number'),
       }
     }
     return { registrant: await contact('owner_handle'), admin: await contact('admin_handle'), technical: await contact('tech_handle'), billing: await contact('billing_handle') }
@@ -375,12 +378,17 @@ export class OpenproviderRegistrar implements Registrar {
     return createHash('sha256').update(pythonDumps(row, { sortKeys: true })).digest('hex')
   }
 
-  private async zoneRecords(domain: string) {
+  private async zone(domain: string) {
     await this.domainParts(domain)
     await this.owned(domain)
-    const data = await this.readResource(`/dns/zones/${domain}`)
+    // Records are only returned when explicitly requested; v1 omitted the flag, so every zone read failed.
+    const data = await this.readResource(`/dns/zones/${domain}`, { with_records: 'true' })
     if (data.name !== domain || !Array.isArray(data.records)) throw new RegistrarUnavailable('The supplier DNS zone could not be verified.')
-    return (data.records as Row[]).map((row) => Object.fromEntries(['name', 'type', 'value', 'ttl', 'prio'].filter((key) => key in row).map((key) => [key, row[key]])))
+    return { id: data.id, records: (data.records as Row[]).map((row) => Object.fromEntries(['name', 'type', 'value', 'ttl', 'prio'].filter((key) => key in row).map((key) => [key, row[key]]))) }
+  }
+
+  private async zoneRecords(domain: string) {
+    return (await this.zone(domain)).records
   }
 
   async getDnsRecords(domain: string): Promise<DnsRecord[]> {
@@ -397,6 +405,8 @@ export class OpenproviderRegistrar implements Registrar {
 
   private static recordPayload(record: DnsRecord, domain: string) {
     if (!['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS'].includes(record.type)) throw new ContactValidationError('This record type requires a verified supplier-specific encoding.')
+    // Openprovider stores any other TTL as 86400 without reporting it.
+    if (![900, 3600, 10800, 21600, 43200, 86400].includes(record.ttl)) throw new ContactValidationError('Openprovider DNS supports TTL values of 900, 3600, 10800, 21600, 43200 or 86400 seconds.')
     const host = record.host === '@' || record.host === '' ? domain : record.host.endsWith(`.${domain}`) ? record.host : `${record.host}.${domain}`
     if (host !== domain && !host.endsWith(`.${domain}`)) throw new ContactValidationError('DNS record must belong to the zone.')
     const payload: Row = { name: host, type: record.type, value: record.value, ttl: record.ttl }
@@ -406,7 +416,7 @@ export class OpenproviderRegistrar implements Registrar {
 
   private async mutateDns(domain: string, operation: 'add' | 'update' | 'remove', record?: DnsRecord, recordId?: string) {
     this.requireReady()
-    const rows = await this.zoneRecords(domain)
+    const { id, records: rows } = await this.zone(domain)
     let delta: Row
     if (operation === 'add') delta = { add: [OpenproviderRegistrar.recordPayload(record!, domain)] }
     else {
@@ -415,7 +425,7 @@ export class OpenproviderRegistrar implements Registrar {
       if (matches.length !== 1) throw new ContactValidationError('DNS record changed or no longer exists; refresh before editing.')
       delta = operation === 'remove' ? { remove: matches } : { update: [{ original_record: matches[0], record: OpenproviderRegistrar.recordPayload(record!, domain) }] }
     }
-    await this.write('PUT', `/dns/zones/${domain}`, { records: delta })
+    await this.write('PUT', `/dns/zones/${domain}`, { ...(id === undefined ? {} : { id }), name: domain, records: delta })
     return { success: true, domain_name: domain, registrar: 'openprovider' }
   }
 
