@@ -120,10 +120,10 @@ export const IsAuthenticated: Permission = (ctx) => ctx.user !== null
 export class Router {
   private routes: Route[] = []
 
-  add(method: string | string[], pattern: string, handler: Handler, options: RouteOptions = {}) {
+  private static compile(pattern: string) {
     const names: string[] = []
     const converters: string[] = []
-    const source = pattern.replace(/[.*+?^${}()|[\]\\]/g, (char) => (char === '<' || char === '>' ? char : `\\${char}`)).replace(
+    const source = pattern.replace(/[.*+?^${}()|[\]\\]/g, (char) => `\\${char}`).replace(
       /<(?:(\w+):)?(\w+)>/g,
       (_, converter = 'str', name) => {
         names.push(name)
@@ -131,6 +131,11 @@ export class Router {
         return `(${CONVERTERS[converter] ?? CONVERTERS.str})`
       },
     )
+    return { source, names, converters }
+  }
+
+  add(method: string | string[], pattern: string, handler: Handler, options: RouteOptions = {}) {
+    const { source, names, converters } = Router.compile(pattern)
     for (const verb of Array.isArray(method) ? method : [method])
       this.routes.push({ method: verb.toUpperCase(), regex: new RegExp(`^${source}$`), names, converters, handler, options })
     return this
@@ -152,11 +157,12 @@ export class Router {
     return this.add('DELETE', pattern, handler, options)
   }
 
+  /** Mounts another router under `prefix`, which may itself contain converters (e.g. `<uuid:customer_id>`). */
   include(prefix: string, router: Router) {
+    const compiled = Router.compile(prefix)
     for (const route of router.routes) {
       const inner = route.regex.source.replace(/^\^/, '')
-      const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      this.routes.push({ ...route, regex: new RegExp(`^${escapedPrefix}${inner}`) })
+      this.routes.push({ ...route, regex: new RegExp(`^${compiled.source}${inner}`), names: [...compiled.names, ...route.names], converters: [...compiled.converters, ...route.converters] })
     }
     return this
   }

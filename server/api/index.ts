@@ -7,11 +7,13 @@ import { aiRoutes, websiteRoutes } from './websites'
 import { customerRoutes, domainRoutes, staffCustomerDomainRoutes } from './domains'
 import { billingRoutes, notificationRoutes, orderRoutes, staffCommerceRoutes } from './commerce'
 import { bootstrap } from '../bootstrap'
+import { contactRoutes, customerTicketRoutes, staffTicketRoutes } from './support'
 
 /** config/urls.py: every `/api/v1/` include, in v1 order. */
 export const api = new Router()
   .include('/api/v1/auth/', authRoutes)
   .include('/api/v1/staff/customers/', customerStaffRoutes)
+  .include('/api/v1/staff/customers/<uuid:customer_id>/support/tickets/', staffTicketRoutes)
   .include('/api/v1/staff/customers/', staffCustomerDomainRoutes)
   .include('/api/v1/staff/customers/', staffCommerceRoutes)
   .include('/api/v1/staff/', staffRoutes)
@@ -24,6 +26,8 @@ export const api = new Router()
   .include('/api/v1/billing/', billingRoutes)
   .include('/api/v1/notifications/', notificationRoutes)
   .include('/api/v1/customer/', customerRoutes)
+  .include('/api/v1/contact/', contactRoutes)
+  .include('/api/v1/support/', customerTicketRoutes)
 
 /** Operations not yet ported fail closed; they are never proxied to the v1 Django service. */
 function migrationInProgress() {
