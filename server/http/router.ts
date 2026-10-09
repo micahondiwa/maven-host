@@ -60,10 +60,18 @@ export class Context {
     return this.user
   }
 
+  private raw?: Buffer
+
+  /** Exact request bytes (webhook signatures are computed over them). */
+  async rawBody(): Promise<Buffer> {
+    if (!this.raw) this.raw = Buffer.from(await this.request.arrayBuffer())
+    return this.raw
+  }
+
   async body<T = Record<string, unknown>>(): Promise<T> {
     if (!this.bodyRead) {
       this.bodyRead = true
-      const text = await this.request.text()
+      const text = (await this.rawBody()).toString('utf8')
       if (!text.trim()) this.parsedBody = {}
       else {
         const type = this.header('content-type') ?? ''

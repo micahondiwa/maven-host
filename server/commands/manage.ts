@@ -3,6 +3,7 @@
  */
 import { database, transaction } from '../db'
 import { syncPermissions } from '../auth/permissions'
+import { bootstrap } from '../bootstrap'
 import { commands as accountCommands } from './accounts'
 import { commands as websiteCommands } from './websites'
 import { commands as domainCommands } from './domains'
@@ -33,6 +34,7 @@ const commands: Record<string, Command> = {
 }
 
 async function main() {
+  bootstrap()
   const [name, ...args] = process.argv.slice(2)
   const command = name ? commands[name] : undefined
   if (!command) {

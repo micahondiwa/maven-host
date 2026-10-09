@@ -29,7 +29,7 @@ export async function processOutbox(pool:Pool,handlers:ReadonlyMap<string,(event
  for(let i=0;i<limit;i++){
   const event=await claimOutbox(pool);if(!event)break
   const handler=handlers.get(event.event_name)
-  try{if(!handler)throw new Error('Unknown event type');await handler(event);if(await finishOutbox(pool,event,true))completed++}catch{await finishOutbox(pool,event,false)}
+  try{if(!handler)throw new Error('Unknown event type');await handler(event);if(await finishOutbox(pool,event,true))completed++}catch(error){console.error(`Outbox event ${event.id} (${event.event_name}) failed on attempt ${event.attempts}`,error);await finishOutbox(pool,event,false)}
  }
  return completed
 }

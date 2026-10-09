@@ -4,6 +4,7 @@ import { database, query, queryOne, transaction, type Queryable } from '../db'
 import { notFound } from '../http/errors'
 import { calculatePrice, currencyByCode, defaultPricingRule, type Currency } from '../pricing/engine'
 import { audit } from '../audit/audit'
+import { dispatch } from '../events/bus'
 import { assertSupplierReady, extensionFor, routingConfig, slugForExtension, tldExtensions } from './routing'
 import { registrarFor } from './registrars'
 import {
@@ -252,18 +253,12 @@ export const domainManagement = {
 
 // --- Registration (RegistrationService) ---
 
-/** Fires after a domain becomes active; consumers (hosting zone setup, notifications) register here. */
-const registeredListeners: ((payload: Record<string, unknown>) => Promise<void> | void)[] = []
-export function onDomainRegistered(listener: (payload: Record<string, unknown>) => Promise<void> | void) {
-  registeredListeners.push(listener)
-}
-
+/** `domains.domain.registered` (DomainRegisteredEvent): notifications and hosting listen on the event bus. */
 function announceRegistered(domain: { id: string; domain_name: string; registrar_order_id: string; registrar_transaction_id: string; expires_at: string | null }, ownerId: string, registrar: string) {
-  const payload = {
+  void dispatch('domains.domain.registered', {
     domain_id: domain.id, domain_name: domain.domain_name, customer_id: ownerId, registrar,
     registrar_order_id: domain.registrar_order_id || '', registrar_transaction_id: domain.registrar_transaction_id || '', expires_at: domain.expires_at,
-  }
-  for (const listener of registeredListeners) Promise.resolve().then(() => listener(payload)).catch((error) => console.error('domains.domain.registered handler failed', error))
+  })
 }
 
 const reconciled = (domain: DomainRow, message: string): RegistrationResult => ({
