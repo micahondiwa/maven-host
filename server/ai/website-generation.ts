@@ -2,6 +2,7 @@ import 'server-only'
 import { createHash, randomUUID } from 'node:crypto'
 import { database, queryOne, transaction, type Queryable } from '../db'
 import { DetailError } from '../http/errors'
+import { pythonDumps } from '../lib/python-json'
 import { aiProvider, AIProviderError, estimateCost, type AIProvider, type AIResult } from './provider'
 import { createPage, ownedWebsite, validateContent, websiteData, type WebsiteRow } from '../websites/service'
 
@@ -83,18 +84,7 @@ export function sanitizeBrief(brief: string) {
 export const sha256 = (value: string) => createHash('sha256').update(value).digest('hex')
 
 /** Python `json.dumps(data, sort_keys=True, separators=(",", ":"))` for output hashing. */
-export function canonicalJson(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`
-  if (value && typeof value === 'object')
-    return `{${Object.keys(value).sort().map((key) => `${pythonJsonString(key)}:${canonicalJson((value as Record<string, unknown>)[key])}`).join(',')}}`
-  if (typeof value === 'string') return pythonJsonString(value)
-  return JSON.stringify(value)
-}
-
-/** json.dumps escapes every non-ASCII character as \uXXXX (ensure_ascii=True). */
-function pythonJsonString(value: string) {
-  return JSON.stringify(value).replace(/[\u007f-￿]/g, (char) => `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`)
-}
+export const canonicalJson = (value: unknown) => pythonDumps(value, { sortKeys: true, compact: true })
 
 function validateResult(data: Record<string, unknown>): GeneratedWebsite {
   const pages = data.pages

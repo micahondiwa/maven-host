@@ -43,7 +43,7 @@ suite('AI builder, websites, SEO and trials', () => {
   let ip = 0
 
   async function call(method: string, path: string, options: { body?: unknown; token?: string; headers?: Record<string, string> } = {}) {
-    const headers: Record<string, string> = { 'Content-Type': 'application/json', 'X-Forwarded-For': `10.1.${++ip % 250}.1`, ...options.headers }
+    const headers: Record<string, string> = { 'Content-Type': 'application/json', 'X-Forwarded-For': `10.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}.${++ip % 250}`, ...options.headers }
     if (options.token) headers.Authorization = `Bearer ${options.token}`
     const response = await api.handleApi(new Request(`http://localhost:3000/api/v1${path}`, { method, headers, body: options.body === undefined ? undefined : JSON.stringify(options.body) }))
     const text = await response.text()
