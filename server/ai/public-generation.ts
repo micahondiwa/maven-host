@@ -23,7 +23,7 @@ export class PublicGenerationError extends Error {
 
 const STATUS_BY_CODE: Record<string, number> = {
   rate_limited: 429, timeout: 504, provider_rejected: 502, invalid_response: 502, invalid_structured_output: 502,
-  empty_response: 502, not_configured: 503, transport_error: 503, provider_unavailable: 503, generation_error: 409, unexpected_error: 503,
+  empty_response: 502, refused: 502, auth_failed: 503, quota_exhausted: 503, not_configured: 503, transport_error: 503, provider_unavailable: 503, generation_error: 409, unexpected_error: 503,
 }
 
 export const publicErrorStatus = (error: PublicGenerationError) => STATUS_BY_CODE[error.code] ?? 503

@@ -39,7 +39,7 @@ const websiteSchema = (create: boolean) => ({
 })
 
 function providerFailure(error: AIProviderError) {
-  const status = { timeout: 504, provider_rejected: 502, invalid_response: 502, invalid_structured_output: 502, empty_response: 502 }[error.code] ?? 503
+  const status = ({ timeout: 504, provider_rejected: 502, invalid_response: 502, invalid_structured_output: 502, empty_response: 502, refused: 502 } as Record<string, number>)[error.code] ?? 503
   return json({ detail: error.message }, status)
 }
 

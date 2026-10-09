@@ -123,8 +123,8 @@ export async function createAIRequest(db: Queryable, input: { userId: string | n
 
 export async function completeAIRequest(db: Queryable, id: string, data: GeneratedWebsite, result: AIResult, model?: string) {
   await db.query(
-    `UPDATE ai_airequest SET status = 'succeeded', model = $2, output_hash = $3, input_tokens = $4, output_tokens = $5, estimated_cost = $6, completed_at = CURRENT_TIMESTAMP WHERE id = $1`,
-    [id, model ?? result.model, sha256(canonicalJson(data)), result.inputTokens, result.outputTokens, estimateCost(result.inputTokens, result.outputTokens)],
+    `UPDATE ai_airequest SET status = 'succeeded', provider = $7, model = $2, output_hash = $3, input_tokens = $4, output_tokens = $5, estimated_cost = $6, completed_at = CURRENT_TIMESTAMP WHERE id = $1`,
+    [id, result.provider === 'openai' && model ? model : result.model, sha256(canonicalJson(data)), result.inputTokens, result.outputTokens, estimateCost(result.inputTokens, result.outputTokens, result.provider), result.provider],
   )
 }
 

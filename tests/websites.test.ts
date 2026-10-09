@@ -65,7 +65,7 @@ suite('AI builder, websites, SEO and trials', () => {
   beforeEach(async () => {
     resetThrottles()
     const { setAIProvider } = await import('../server/ai/provider')
-    setAIProvider({ providerName: 'openai', model: 'synthetic-model', generateStructured: async ({ schemaName }) => ({ data: schemaName === 'maven_assistant_answer' ? { answer: 'Synthetic answer.' } : structuredClone(SPEC), inputTokens: 10, outputTokens: 20, model: 'synthetic-model', providerRequestId: 'req_1' }) })
+    setAIProvider({ providerName: 'openai', model: 'synthetic-model', generateStructured: async ({ schemaName }) => ({ data: schemaName === 'maven_assistant_answer' ? { answer: 'Synthetic answer.' } : structuredClone(SPEC), inputTokens: 10, outputTokens: 20, model: 'synthetic-model', providerRequestId: 'req_1', provider: 'openai' }) })
   })
 
   afterAll(async () => {
