@@ -95,9 +95,9 @@ suite('cart, checkout, payment and fulfillment', () => {
     const { setRegistrarOverride } = await import('../server/domains/registrars')
     setRegistrarOverride((slug) => slug !== 'openprovider' ? undefined : ({
       slug,
-      checkDomains: async (names) => names.map((domain) => ({ domain, available: true, premium: false, registrar: slug })),
-      registerDomain: async (request) => ({ success: true, registrar: slug, domain: request.domain, order_id: '501', transaction_id: null, expiration_date: '2027-10-09', message: '', pending: false }),
-      getRegistrationInfo: async (domain) => ({ domain, is_owner: false, status: 'not_found', provider_domain_id: null, expiration_date: null }),
+      checkDomains: async (names: string[]) => names.map((domain) => ({ domain, available: true, premium: false, registrar: slug })),
+      registerDomain: async (request: { domain: string }) => ({ success: true, registrar: slug, domain: request.domain, order_id: '501', transaction_id: null, expiration_date: '2027-10-09', message: '', pending: false }),
+      getRegistrationInfo: async (domain: string) => ({ domain, is_owner: false, status: 'not_found', provider_domain_id: null, expiration_date: null }),
     } as never))
   })
 
