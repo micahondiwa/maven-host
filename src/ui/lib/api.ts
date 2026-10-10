@@ -128,6 +128,9 @@ export async function submitContactRequest(payload: {
   })
 }
 
+/** Authenticated request for feature modules that keep their own typed client (e.g. staff administration). */
+export const apiRequest = <T,>(path: string, options: RequestOptions = {}) => request<T>(path, options)
+
 async function request<T>(path: string, options: RequestOptions = {}, isRetry = false): Promise<T> {
   const { method = 'GET', body, auth = true, params, signal, headers: extraHeaders } = options
 

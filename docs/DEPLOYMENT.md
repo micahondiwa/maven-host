@@ -64,8 +64,15 @@ $NODE --env-file=../.env tools/manage.mjs seed_pricing_rules
 $NODE --env-file=../.env tools/manage.mjs seed_blog --create-editorial-author
 ```
 
-Remove `DJANGO_SUPERUSER_PASSWORD` from `.env` afterwards. Payment gateways (Paystack, card, M-Pesa, manual) are
-configured by staff in the database; their credentials are encrypted with `FIELD_ENCRYPTION_KEY` / `SECRET_KEY`.
+Remove `DJANGO_SUPERUSER_PASSWORD` from `.env` afterwards.
+
+Then sign in at `/staff/login` and use **Administration** (`/staff/admin`) to configure, with every change audited:
+
+- **Payment gateways** and **Gateway credentials** (Paystack `secret_key`, M-Pesa keys, `reconciliation_token`).
+  Credentials are encrypted with `FIELD_ENCRYPTION_KEY` / `SECRET_KEY` and are never displayed again.
+- **Hosting packages**: one 20i package type per plan, marked verified after checking it in the 20i account.
+- **Hosting plans** and **prices**, **Domain extensions**, **Registrars** (activate Openprovider), **Pricing rules**.
+- **Background jobs** (retry failed events) and the **Audit log**.
 
 ## Scheduled jobs (installed by every deployment)
 

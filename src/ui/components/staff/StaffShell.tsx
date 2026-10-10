@@ -2,7 +2,7 @@ import { ThemeToggle } from '../ThemeToggle'
 import { BrandLogo } from '../BrandLogo'
 import { useState, type ReactNode } from 'react'
 import { NavLink, useNavigate } from '@/lib/navigation'
-import { ChevronLeft, ChevronRight, LogOut, Menu, ShieldCheck, Users, X, LayoutDashboard } from 'lucide-react'
+import { ChevronLeft, ChevronRight, LogOut, Menu, Settings2, ShieldCheck, Users, X, LayoutDashboard } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { SiteFooter } from '../SiteFooter'
 
@@ -11,6 +11,8 @@ const navigation = [
   { to: '/staff/customers', label: 'Customers', icon: Users, permission: 'view_customer' },
   { to: '/staff/team', label: 'Staff', icon: Users, permission: 'manage_users' },
   { to: '/staff/roles', label: 'Roles & permissions', icon: ShieldCheck, permission: 'manage_roles' },
+  // Each administration area checks its own permissions; the index lists only what the role can see.
+  { to: '/staff/admin', label: 'Administration', icon: Settings2, permission: null },
 ]
 
 export function StaffShell({ children }: { children: ReactNode }) {

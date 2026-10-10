@@ -9,6 +9,7 @@ import { billingRoutes, notificationRoutes, orderRoutes, staffCommerceRoutes } f
 import { bootstrap } from '../bootstrap'
 import { contactRoutes, customerTicketRoutes, staffTicketRoutes } from './support'
 import { blogRoutes } from './blog'
+import { adminRoutes } from './admin'
 import { AllowAny } from '../http/router'
 import { publicCurrencies } from '../pricing/engine'
 
@@ -20,6 +21,7 @@ export const api = new Router()
   .include('/api/v1/staff/customers/', staffCustomerHostingRoutes)
   .include('/api/v1/staff/customers/', staffCustomerDomainRoutes)
   .include('/api/v1/staff/customers/', staffCommerceRoutes)
+  .include('/api/v1/staff/admin/', adminRoutes)
   .include('/api/v1/staff/', staffRoutes)
   .include('/api/v1/authorization/', authorizationRoutes)
   .include('/api/v1/domains/', domainRoutes)
