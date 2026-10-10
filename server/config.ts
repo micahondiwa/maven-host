@@ -74,6 +74,8 @@ export const settings = {
       staff_invitation: '5/hour',
       chatbot: '30/hour',
       public_contact: '5/hour',
+      domain_security: '20/hour',
+      domain_auth_code: '5/hour',
     }
     if (!(scope in defaults)) return undefined
     return env(`THROTTLE_${scope.toUpperCase()}`, defaults[scope])

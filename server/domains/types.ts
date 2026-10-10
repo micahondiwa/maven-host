@@ -39,6 +39,42 @@ export interface Registrar {
   createDnsRecord(domain: string, record: DnsRecord): Promise<MutationResult>
   updateDnsRecord(domain: string, record: DnsRecord): Promise<MutationResult>
   deleteDnsRecord(domain: string, recordId: string): Promise<MutationResult>
+  /** Optional capabilities: present only when verified against the supplier's documented API. */
+  getDomainState?(domain: string): Promise<DomainState>
+  setLock?(domain: string, locked: boolean): Promise<MutationResult>
+  setPrivacy?(domain: string, enabled: boolean): Promise<MutationResult>
+  getAuthCode?(domain: string): Promise<string>
+  listTlds?(): Promise<SupplierTld[]>
+}
+
+/** Live registry state of a domain (registrar lock, WHOIS privacy, expiry). */
+export type DomainState = {
+  status: string
+  expires_on: string | null
+  locked: boolean
+  lockable: boolean
+  privacy_enabled: boolean
+  privacy_allowed: boolean
+  auth_code_required_for_transfer: boolean
+  can_renew: boolean
+}
+
+type SupplierAmount = { currency: string; price: string } | null
+
+/** One extension from the supplier catalog with its wholesale one-year prices (null when not offered). */
+export type SupplierTld = {
+  extension: string
+  active: boolean
+  min_period: number | null
+  max_period: number | null
+  renew_available: boolean
+  transfer_available: boolean
+  transfer_auth_code_required: boolean
+  privacy_allowed: boolean
+  dnssec_allowed: boolean
+  restrictions: unknown[]
+  setup_fee: boolean
+  prices: { register: SupplierAmount; renew: SupplierAmount; transfer: SupplierAmount }
 }
 
 export class ContactValidationError extends DetailError {

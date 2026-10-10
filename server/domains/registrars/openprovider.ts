@@ -5,12 +5,13 @@ import { queryOne } from '../../db'
 import { pythonDumps } from '../../lib/python-json'
 import { flag, tldExtensions } from '../routing'
 import {
-  ContactValidationError, OpenproviderNotReady, PricingNotAvailableError, RegistrarUnavailable, emptyRecordExtras,
-  type Availability, type Contact, type ContactDetails, type DnsHost, type DnsRecord, type Registrar, type RegistrationRequest, type SupplierPrice,
+  ContactValidationError, OpenproviderNotReady, PricingNotAvailableError, RegistrarUnavailable, SupplierFeatureUnavailable, emptyRecordExtras,
+  type Availability, type Contact, type ContactDetails, type DnsHost, type DnsRecord, type DomainState, type Registrar, type RegistrationRequest, type SupplierPrice, type SupplierTld,
 } from '../types'
 
 /** Port of apps/domains/clients/openprovider.py, openprovider_lifecycle.py and registrars/openprovider.py. */
 
+// Openprovider moved to /v1 (functionally identical); /v1beta is switched off on 2027-06-30 (developer.openprovider.com).
 const ALLOWED_URLS = new Set(['https://api.sandbox.openprovider.nl/v1beta', 'https://api.openprovider.eu/v1', 'https://api.openprovider.eu/v1beta'])
 const DOMAIN_PATTERN = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9-]{2,63}$/
 
@@ -56,7 +57,8 @@ export class OpenproviderRegistrar implements Registrar {
   }
 
   private requireReady() {
-    if (!this.transactionReady) throw new OpenproviderNotReady('Openprovider is in standby; transactions are disabled pending verification.')
+    // Customer-visible: never name the upstream supplier.
+    if (!this.transactionReady) throw new OpenproviderNotReady('Domain registration services are temporarily unavailable.')
   }
 
   private async send(method: string, path: string, init: { headers?: Record<string, string>; json?: unknown; params?: Record<string, string | number> } = {}): Promise<Row> {
@@ -122,14 +124,14 @@ export class OpenproviderRegistrar implements Registrar {
   }
 
   private async readResource(path: string, params?: Record<string, string | number>) {
-    if (!/^\/(domains(?:\/\d+)?|customers\/[A-Za-z0-9_-]+|tlds(?:\/[a-z0-9.-]+)?|dns\/(zones\/[a-z0-9.-]+|nameservers\/[a-z0-9.-]+))$/.test(path))
+    if (!/^\/(domains(?:\/\d+(?:\/authcode)?)?|customers\/[A-Za-z0-9_-]+|tlds(?:\/[a-z0-9.-]+)?|dns\/(zones\/[a-z0-9.-]+|nameservers\/[a-z0-9.-]+))$/.test(path))
       throw new RegistrarUnavailable('Invalid supplier resource.')
     return this.read(path, params)
   }
 
   private async write(method: 'POST' | 'PUT', path: string, payload: unknown) {
     this.configuration()
-    if (!this.config.transactions) throw new OpenproviderNotReady('Openprovider transactions are disabled pending account verification.')
+    if (!this.config.transactions) throw new OpenproviderNotReady('Domain registration services are temporarily unavailable.')
     if (!/^\/(customers|domains(?:\/transfer|\/\d+(?:\/renew)?)?|dns\/(zones\/[a-z0-9.-]+|nameservers(?:\/[a-z0-9.-]+)?))$/.test(path))
       throw new OpenproviderNotReady('Unsupported supplier mutation.')
     const token = await this.token()
@@ -437,6 +439,105 @@ export class OpenproviderRegistrar implements Registrar {
   }
   deleteDnsRecord(domain: string, recordId: string) {
     return this.mutateDns(domain, 'remove', undefined, recordId)
+  }
+
+  /** GET /domains/{id}: live lock, WHOIS privacy and expiry (developer.openprovider.com, DomainService "Get domain"). */
+  async getDomainState(domain: string): Promise<DomainState> {
+    const row = await this.owned(domain)
+    const data = await this.readResource(`/domains/${row.id}`)
+    const yes = (key: string) => data[key] === true
+    const authRequired = data.transfer_auth_code_required
+    return {
+      status: data.status === 'ACT' ? 'active' : typeof data.status === 'string' && data.status ? data.status.toLowerCase() : 'unknown',
+      expires_on: supplierDate(data.renewal_date),
+      locked: yes('is_locked'),
+      lockable: yes('is_lockable'),
+      privacy_enabled: yes('is_private_whois_enabled'),
+      privacy_allowed: yes('is_private_whois_allowed'),
+      auth_code_required_for_transfer: authRequired !== undefined && authRequired !== null && authRequired !== '' && authRequired !== '0' && authRequired !== false,
+      can_renew: yes('can_renew'),
+    }
+  }
+
+  /** PUT /domains/{id} with is_locked; refused when the registry does not support locking this domain. */
+  async setLock(domain: string, locked: boolean) {
+    this.requireReady()
+    const state = await this.getDomainState(domain)
+    if (!state.lockable) throw new SupplierFeatureUnavailable('Registrar lock is not available for this domain.')
+    if (state.locked !== locked) await this.write('PUT', `/domains/${(await this.owned(domain)).id}`, { is_locked: locked })
+    return { success: true, domain_name: domain, registrar: 'openprovider' }
+  }
+
+  /** PUT /domains/{id} with is_private_whois_enabled; refused when the extension does not allow WHOIS privacy. */
+  async setPrivacy(domain: string, enabled: boolean) {
+    this.requireReady()
+    const state = await this.getDomainState(domain)
+    if (!state.privacy_allowed) throw new SupplierFeatureUnavailable('WHOIS privacy is not available for this domain extension.')
+    if (state.privacy_enabled !== enabled) await this.write('PUT', `/domains/${(await this.owned(domain)).id}`, { is_private_whois_enabled: enabled })
+    return { success: true, domain_name: domain, registrar: 'openprovider' }
+  }
+
+  /** GET /domains/{id}/authcode (AuthCode "Get auth code") for a transfer to another registrar. */
+  async getAuthCode(domain: string) {
+    this.configuration()
+    const row = await this.owned(domain)
+    const data = await this.readResource(`/domains/${row.id}/authcode`)
+    if (data.success === false || typeof data.auth_code !== 'string' || !data.auth_code)
+      throw new SupplierFeatureUnavailable('A transfer code is not available for this domain online. Please contact support.')
+    return data.auth_code
+  }
+
+  /**
+   * GET /tlds (TldService "List tlds") with limit/offset pagination and prices. Reads are idempotent, so transient
+   * failures are retried with backoff; the whole sync fails rather than storing a partial catalog.
+   */
+  async listTlds(): Promise<SupplierTld[]> {
+    this.configuration()
+    const pageSize = 100
+    const results: SupplierTld[] = []
+    for (let offset = 0, page = 0; page < 100; offset += pageSize, page++) {
+      let data: Row | undefined
+      for (let attempt = 1; !data; attempt++) {
+        try {
+          data = await this.readResource('/tlds', { limit: pageSize, offset, with_price: 'true', with_restrictions: 'true' })
+        } catch (error) {
+          if (!(error instanceof RegistrarUnavailable) || attempt >= 3) throw error
+          await new Promise((resolve) => setTimeout(resolve, 500 * attempt))
+        }
+      }
+      if (!Array.isArray(data.results)) throw new RegistrarUnavailable('The supplier catalog response was invalid.')
+      for (const row of data.results as Row[]) results.push(OpenproviderRegistrar.parseTld(row))
+      const total = typeof data.total === 'number' ? data.total : 0
+      if (!(data.results as Row[]).length || offset + pageSize >= total) return results
+    }
+    throw new RegistrarUnavailable('The supplier catalog is larger than expected; review before importing.')
+  }
+
+  static parseTld(row: Row): SupplierTld {
+    if (!row || typeof row.name !== 'string' || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)*$/.test(row.name)) throw new RegistrarUnavailable('The supplier catalog contained an invalid extension.')
+    const table = (row.prices ?? {}) as Record<string, Record<string, Row> | undefined>
+    const price = (key: string) => {
+      const cost = table[key]?.reseller
+      if (!cost || cost.price === undefined || cost.price === null) return null
+      const amount = new Decimal(String(cost.price))
+      if (!amount.isFinite() || amount.isNegative() || !/^[A-Z]{3}$/.test(String(cost.currency))) return null
+      return { currency: String(cost.currency), price: amount.toString() }
+    }
+    const setup = table.setup_price?.reseller?.price
+    return {
+      extension: `.${row.name}`,
+      active: row.status === 'ACT',
+      min_period: typeof row.min_period === 'number' ? row.min_period : null,
+      max_period: typeof row.max_period === 'number' ? row.max_period : null,
+      renew_available: row.renew_available === true,
+      transfer_available: row.transfer_available === true,
+      transfer_auth_code_required: row.is_transfer_auth_code_required === true,
+      privacy_allowed: row.is_private_whois_allowed === true,
+      dnssec_allowed: row.dnssec_allowed === true,
+      restrictions: Array.isArray(row.restrictions) ? row.restrictions : [],
+      setup_fee: setup !== undefined && setup !== null && !new Decimal(String(setup)).isZero(),
+      prices: { register: price('create_price'), renew: price('renew_price'), transfer: price('transfer_price') },
+    }
   }
 
   /** One-year wholesale lifecycle pricing for explicitly approved extensions (sync_openprovider_catalog). */

@@ -78,6 +78,7 @@ manage="cd $app/current && $node_bin --env-file=$app/.env tools/manage.mjs"
   echo "23 * * * * $manage cleanup_public_generations >> $app/logs/ai.log 2>&1"
   echo "41 3 * * * $manage sync_exchange_rates >> $app/logs/rates.log 2>&1"
   echo "53 3 * * * $manage flushexpiredtokens >> $app/logs/tokens.log 2>&1"
+  echo "7 4 * * * $manage sync_domain_catalog >> $app/logs/catalog.log 2>&1"
   echo "$marker end"
 } | crontab -
 

@@ -104,7 +104,7 @@ suite('domains API', () => {
   it('searches through the routed supplier with 25% retail markup and paged suggestions', async () => {
     const result = await call('GET', '/domains/search/?domain=Synthetic%20Bakery&suggestion_limit=1')
     expect(result.status).toBe(200)
-    expect(result.body).toMatchObject({ domain: 'synthetic-bakery.com', available: true, registrar: 'openprovider', message: null, next_offset: 1 })
+    expect(result.body).toMatchObject({ domain: 'synthetic-bakery.com', available: true, registrar: 'Maven Host', message: null, next_offset: 1 })
     // An exact `kes` price is added when a USD→KES rate exists in the shared test database.
     expect(result.body.prices).toEqual({ register: expect.objectContaining({ product_id: expect.any(Number), usd: '12.50' }), renew: expect.objectContaining({ product_id: expect.any(Number), usd: '15.00' }) })
     expect(result.body.suggestions).toEqual([{ domain: 'synthetic-bakery.net', available: true, premium: false, registration_price: expect.objectContaining({ product_id: expect.any(Number), usd: '14.99' }) }])
@@ -114,7 +114,7 @@ suite('domains API', () => {
   it('searches Kenyan names through Openprovider and ignores standby supplier prices', async () => {
     const result = await call('GET', '/domains/search/?domain=bakery.co.ke')
     // Only a synced Openprovider price makes .co.ke sellable; the standby Register.co.ke price is never used.
-    expect(result.body).toMatchObject({ domain: 'bakery.co.ke', available: false, registrar: 'openprovider', message: 'This extension is not currently supported for registration.', prices: {} })
+    expect(result.body).toMatchObject({ domain: 'bakery.co.ke', available: false, registrar: 'Maven Host', message: 'This extension is not currently supported for registration.', prices: {} })
     expect(stub.checks.flat()).not.toContain('bakery.co.ke')
   })
 
@@ -131,7 +131,7 @@ suite('domains API', () => {
     expect((await call('POST', '/domains/customer/register/', { token: staff.access, body: { domain: 'taken.com' } })).body).toEqual({ detail: "Domain 'taken.com' is no longer available." })
 
     const list = (await call('GET', '/domains/customer/domains/', { token: staff.access })).body
-    expect(list).toEqual([expect.objectContaining({ domain_name: fresh, registrar: 'Openprovider', status: 'Active', expires_at: '2027-10-09' })])
+    expect(list).toEqual([expect.objectContaining({ domain_name: fresh, registrar: 'Maven Host', status: 'Active', expires_at: '2027-10-09' })])
     expect((await call('GET', `/domains/customer/domains/${list[0].id}/`, { token: customer.access })).status).toBe(404)
     expect((await call('POST', `/domains/customer/domains/${list[0].id}/renew/`, { token: customer.access, body: {} })).status).toBe(403)
     expect((await call('POST', `/domains/customer/domains/${list[0].id}/renew/`, { token: staff.access, body: {} })).body).toMatchObject({ renewed: true, new_expiration_date: '2028-10-09' })

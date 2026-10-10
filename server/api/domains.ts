@@ -6,6 +6,7 @@ import { HttpError, ValidationError } from '../http/errors'
 import { f, fieldError, invalid, validate } from '../http/validation'
 import { staffPermission } from '../auth/permissions'
 import * as domains from '../domains/service'
+import { domainSecurity } from '../domains/platform'
 import { PricingNotAvailableError, RegistrarUnavailable, emptyRecordExtras, type ContactDetails, type DnsRecord } from '../domains/types'
 
 /** apps/domains/api/urls.py and customer_urls.py */
@@ -133,7 +134,7 @@ async function register(ctx: Context) {
 }
 
 const mutation = (result: { success: boolean; domain_name: string; registrar: string }, status = 200) =>
-  json({ success: result.success, domain_name: result.domain_name, registrar: result.registrar }, status)
+  json({ success: result.success, domain_name: result.domain_name, registrar: domains.CUSTOMER_REGISTRAR }, status)
 
 export const domainRoutes = new Router()
   .get('tlds/', (ctx) => domains.listTlds(ctx.query), { authenticate: false, permissions: [AllowAny] })
@@ -181,6 +182,17 @@ export const domainRoutes = new Router()
   .post('customer/domains/<uuid:id>/dns-records/', async (ctx) => mutation(await domains.domainManagement.createRecord(user(ctx), ctx.params.id, await readRecord(ctx)), 201))
   .patch('customer/domains/<uuid:id>/dns-records/<str:record_id>/', async (ctx) => mutation(await domains.domainManagement.updateRecord(user(ctx), ctx.params.id, await readRecord(ctx, ctx.params.record_id))))
   .delete('customer/domains/<uuid:id>/dns-records/<str:record_id>/', async (ctx) => mutation(await domains.domainManagement.deleteRecord(user(ctx), ctx.params.id, ctx.params.record_id)))
+  // Domain platform: live registry state and owner security controls (registrar lock, WHOIS privacy, transfer code).
+  .get('customer/domains/<uuid:id>/status/', (ctx) => domainSecurity.state(user(ctx), ctx.params.id))
+  .put('customer/domains/<uuid:id>/lock/', async (ctx) => {
+    const data = validate({ locked: f.boolean() }, await ctx.body())
+    return domainSecurity.setLock(user(ctx), ctx.params.id, data.locked, { userId: user(ctx), ip: ctx.ip })
+  }, { throttle: 'domain_security' })
+  .put('customer/domains/<uuid:id>/privacy/', async (ctx) => {
+    const data = validate({ enabled: f.boolean() }, await ctx.body())
+    return domainSecurity.setPrivacy(user(ctx), ctx.params.id, data.enabled, { userId: user(ctx), ip: ctx.ip })
+  }, { throttle: 'domain_security' })
+  .post('customer/domains/<uuid:id>/auth-code/', (ctx) => domainSecurity.authCode(user(ctx), ctx.params.id, { userId: user(ctx), ip: ctx.ip }), { throttle: 'domain_auth_code' })
 
 /** /api/v1/customer/ (customer_urls.py) */
 export const customerRoutes = new Router().post('register/', register, { permissions: [staffPermission('register_domain')] })
@@ -189,11 +201,11 @@ export const customerRoutes = new Router().post('register/', register, { permiss
 export const staffCustomerDomainRoutes = new Router()
   .get('<uuid:customer_id>/domains/', async (ctx) => {
     await staffCustomer(ctx)
-    return domains.listCustomerDomains(ctx.params.customer_id)
+    return domains.listCustomerDomains(ctx.params.customer_id, 'staff')
   }, { permissions: [staffPermission('view_customer'), staffPermission('view_domain')] })
   .get('<uuid:customer_id>/domains/<uuid:domain_id>/', async (ctx) => {
     await staffCustomer(ctx)
-    return domains.domainDetail(await domains.ownedDomain(ctx.params.customer_id, ctx.params.domain_id))
+    return domains.domainDetail(await domains.ownedDomain(ctx.params.customer_id, ctx.params.domain_id), 'staff')
   }, { permissions: [staffPermission('view_customer'), staffPermission('view_domain')] })
   .post('<uuid:customer_id>/domains/<uuid:domain_id>/auto-renew/', async (ctx) => {
     await staffCustomer(ctx)

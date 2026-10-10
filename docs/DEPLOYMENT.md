@@ -83,6 +83,7 @@ Then sign in at `/staff/login` and use **Administration** (`/staff/admin`) to co
 | hourly | `cleanup_public_generations` | `logs/ai.log` |
 | daily 03:41 | `sync_exchange_rates` | `logs/rates.log` |
 | daily 03:53 | `flushexpiredtokens` | `logs/tokens.log` |
+| daily 04:07 | `sync_domain_catalog` (skipped while `OPENPROVIDER_ENABLED` is off) | `logs/catalog.log` |
 
 Only the block marked `# maven-host-app:<APP_ROOT>` is managed; other crontab entries (certificate renewal) are kept.
 

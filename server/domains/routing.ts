@@ -55,7 +55,8 @@ export const openproviderReady = () => flag('OPENPROVIDER_ENABLED') && flag('OPE
 
 /** Refuses purchases through suppliers that are not live. */
 export function assertSupplierReady(slug: string) {
-  if (slug === 'openprovider' && !openproviderReady()) throw new PricingNotAvailableError('Openprovider purchases are disabled pending verification.')
+  // Customer-visible: never name the upstream supplier.
+  if (slug === 'openprovider' && !openproviderReady()) throw new PricingNotAvailableError('Domain registration for this extension is temporarily unavailable.')
   if (slug === 'register_ke') throw new PricingNotAvailableError('Register.co.ke purchases are disabled pending reseller API integration.')
   if (slug === 'registry_tz') throw new PricingNotAvailableError('registry.co.tz purchases are disabled pending reseller API integration.')
   if (slug === 'kenic') throw new PricingNotAvailableError('The direct KeNIC integration has been retired.')

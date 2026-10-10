@@ -2,6 +2,7 @@ import { database } from '../db'
 import { seedCurrencies, synchronizeExchangeRates } from '../pricing/engine'
 import { importSupplierPrices, seedSupplierRecords, seedTlds } from '../domains/service'
 import { OpenproviderRegistrar } from '../domains/registrars/openprovider'
+import { syncDomainCatalog } from '../domains/platform'
 import type { Command } from './manage'
 
 function option(args: string[], name: string) {
@@ -68,6 +69,18 @@ export const commands: Record<string, Command> = {
       const prices = [...(await client.getPricing('REGISTER')), ...(await client.getPricing('RENEW')), ...(await client.getPricing('TRANSFER'))]
       const count = await importSupplierPrices('openprovider', prices)
       console.log(`Imported ${count} supplier prices; no suppliers or TLDs were activated and no domains purchased.`)
+    },
+  },
+  sync_domain_catalog: {
+    help: 'Synchronise the full supplier extension catalog (paginated): periods, restrictions and one-year prices. New extensions stay inactive.',
+    run: async () => {
+      // Scheduled daily; skip quietly until the supplier integration is switched on.
+      if ((process.env.OPENPROVIDER_ENABLED ?? '').trim().toLowerCase() !== 'true') {
+        console.log('Domain supplier integration is disabled; catalog sync skipped.')
+        return
+      }
+      const summary = await syncDomainCatalog()
+      console.log(`Catalog synchronised: ${summary.extensions} extensions (${summary.added} new, ${summary.supported} supported, ${summary.unsupported} withdrawn); ${summary.priced} prices refreshed, ${summary.price_changes} changed, ${summary.skipped_currency} skipped for unknown currency.`)
     },
   },
 }

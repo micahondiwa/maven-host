@@ -16,7 +16,7 @@ import {
 
 export class DomainCatalogUnavailable extends Error {}
 
-type DomainRow = {
+export type DomainRow = {
   id: string; owner_id: string; registrar_id: number; tld_id: number | null; domain_name: string; status: string; registration_years: number
   registrar_order_id: string; registrar_transaction_id: string; auto_renew: boolean; locked: boolean; privacy_enabled: boolean
   expires_at: string | null; created_at: Date; updated_at: Date; registrar_slug: string; registrar_name: string; tld_extension: string | null
@@ -101,7 +101,7 @@ async function runSearch({ domain: rawDomain, years, suggestionLimit, suggestion
   const exactSlug = slugForExtension(searched)
   const exact = checked.get(domain) ?? { domain, available: false, premium: false, registrar: exactSlug }
   const result: { domain: string; available: boolean; premium: boolean; registrar: string; message: string | null; prices: Record<string, Price>; suggestions: unknown[]; next_offset: number | null } = {
-    domain: exact.domain, available: exact.available, premium: exact.premium, registrar: exact.registrar,
+    domain: exact.domain, available: exact.available, premium: exact.premium, registrar: CUSTOMER_REGISTRAR,
     message: matching ? null : 'This extension is not currently supported for registration.',
     prices: {}, suggestions: [], next_offset: pageSize && extensionPage.length > pageSize ? suggestionOffset + pageSize : null,
   }
@@ -197,15 +197,20 @@ export async function ownedDomain(ownerId: string, domainId: string, db: Queryab
   return domain
 }
 
-export async function listCustomerDomains(ownerId: string) {
+/** Maven Host is the only brand customers see; staff views keep the upstream supplier for operations. */
+export const CUSTOMER_REGISTRAR = 'Maven Host'
+type Audience = 'customer' | 'staff'
+const registrarLabel = (domain: DomainRow, audience: Audience) => (audience === 'staff' ? domain.registrar_name : CUSTOMER_REGISTRAR)
+
+export async function listCustomerDomains(ownerId: string, audience: Audience = 'customer') {
   return (await query<DomainRow>(`${DOMAIN_SELECT} WHERE d.owner_id = $1 ORDER BY d.domain_name`, [ownerId])).map((domain) => ({
-    id: domain.id, domain_name: domain.domain_name, registrar: domain.registrar_name, status: statusLabel(domain.status), expires_at: domain.expires_at, auto_renew: domain.auto_renew,
+    id: domain.id, domain_name: domain.domain_name, registrar: registrarLabel(domain, audience), status: statusLabel(domain.status), expires_at: domain.expires_at, auto_renew: domain.auto_renew,
   }))
 }
 
-export function domainDetail(domain: DomainRow) {
+export function domainDetail(domain: DomainRow, audience: Audience = 'customer') {
   return {
-    id: domain.id, domain_name: domain.domain_name, registrar: domain.registrar_name, tld: domain.tld_extension, status: statusLabel(domain.status),
+    id: domain.id, domain_name: domain.domain_name, registrar: registrarLabel(domain, audience), tld: domain.tld_extension, status: statusLabel(domain.status),
     registration_years: domain.registration_years, expires_at: domain.expires_at, auto_renew: domain.auto_renew, locked: domain.locked, privacy_enabled: domain.privacy_enabled,
   }
 }
