@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from '@/lib/navigation'
+import type { ReactNode } from 'react'
+import { NavLink, useNavigate } from '@/lib/navigation'
 import { LogOut } from 'lucide-react'
 import { CustomerHeader } from '../CustomerHeader'
 import { SiteFooter } from '../SiteFooter'
@@ -19,7 +20,7 @@ const tabs = [
   { to: '/account/invoices', label: 'Invoices' },
 ]
 
-export function AccountShell() {
+export function AccountShell({ children }: { children: ReactNode }) {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
 
@@ -55,7 +56,7 @@ export function AccountShell() {
             </NavLink>
           ))}
         </nav>
-        <main id="main-content" className="min-w-0"><Outlet /></main>
+        <main id="main-content" className="min-w-0">{children}</main>
       </div>
       <SiteFooter />
     </div>

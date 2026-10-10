@@ -5,10 +5,12 @@ import { useCallback, useEffect, type ComponentProps, type ReactNode } from 'rea
 type LinkProps = Omit<ComponentProps<typeof NextLink>, 'href'> & { to: string }
 export function Link({ to, ...props }: LinkProps) { return <NextLink href={to} {...props} /> }
 export function NavLink({ to, end, className, ...props }: Omit<LinkProps,'className'> & { end?: boolean; className?: string | ((state: { isActive: boolean }) => string) }) {
- const path = usePathname(); const active = end ? path.replace(/\/$/,'') === to.replace(/\/$/,'') : path === to || path.startsWith(to+'/')
+ const path = routerPath(usePathname()); const target = routerPath(to); const active = end ? path === target : path === target || path.startsWith(target+'/')
  return <Link to={to} className={typeof className === 'function' ? className({isActive:active}) : className} aria-current={active ? 'page' : undefined} {...props} />
 }
-export function useLocation() { const pathname=usePathname(); const search=nextSearchParams(); return {pathname,search:search.size?'?'+search.toString():'',hash:typeof window==='undefined'?'':window.location.hash,state:typeof window==='undefined'?null:window.history.state?.migrationNavigationState} }
+/** React Router reported paths without a trailing slash; Next.js (trailingSlash) keeps it. Ported pages compare paths, so strip it. */
+const routerPath=(path: string)=>path.length>1?path.replace(/\/+$/,''):path
+export function useLocation() { const pathname=routerPath(usePathname()); const search=nextSearchParams(); return {pathname,search:search.size?'?'+search.toString():'',hash:typeof window==='undefined'?'':window.location.hash,state:typeof window==='undefined'?null:window.history.state?.migrationNavigationState} }
 export function useNavigate() {
  const router=useRouter()
  return useCallback((to: string | number, options?: {replace?:boolean;state?:unknown}) => {

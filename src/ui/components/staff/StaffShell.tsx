@@ -1,7 +1,7 @@
 import { ThemeToggle } from '../ThemeToggle'
 import { BrandLogo } from '../BrandLogo'
-import { useState } from 'react'
-import { NavLink, Outlet, useNavigate } from '@/lib/navigation'
+import { useState, type ReactNode } from 'react'
+import { NavLink, useNavigate } from '@/lib/navigation'
 import { ChevronLeft, ChevronRight, LogOut, Menu, ShieldCheck, Users, X, LayoutDashboard } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { SiteFooter } from '../SiteFooter'
@@ -13,7 +13,7 @@ const navigation = [
   { to: '/staff/roles', label: 'Roles & permissions', icon: ShieldCheck, permission: 'manage_roles' },
 ]
 
-export function StaffShell() {
+export function StaffShell({ children }: { children: ReactNode }) {
   const { user, signOut, hasPermission } = useAuth()
   const navigate = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -60,7 +60,7 @@ export function StaffShell() {
           <div className="hidden lg:block"><p className="text-xs font-bold uppercase tracking-[0.16em] text-maven-muted">Staff control plane</p><p className="text-sm font-semibold text-slate-700">Operational access managed by backend authorization</p></div>
           <div className="ml-auto flex items-center gap-3"><span className="hidden rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-maven-blue sm:inline-flex">{user?.account_type === 'admin' ? 'Platform admin' : 'Staff'}</span><div className="grid size-9 place-items-center rounded-full bg-maven-navy text-sm font-black text-white">{(user?.first_name || user?.email || 'S').slice(0, 1).toUpperCase()}</div><ThemeToggle /></div>
         </header>
-        <main className="mx-auto w-full max-w-[1440px] p-4 sm:p-6 lg:p-8"><Outlet /></main>
+        <main className="mx-auto w-full max-w-[1440px] p-4 sm:p-6 lg:p-8">{children}</main>
         <SiteFooter />
       </div>
     </div>

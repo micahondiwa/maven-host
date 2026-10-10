@@ -1,7 +1,8 @@
-import { Navigate, Outlet, useLocation } from '@/lib/navigation'
+import type { ReactNode } from 'react'
+import { Navigate, useLocation } from '@/lib/navigation'
 import { useAuth } from '../../lib/auth'
 
-export function CustomerRoute() {
+export function CustomerRoute({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth()
   const location = useLocation()
 
@@ -21,5 +22,5 @@ export function CustomerRoute() {
     return <Navigate to={`/login?next=${next}`} replace />
   }
 
-  return <Outlet />
+  return children
 }
