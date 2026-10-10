@@ -583,6 +583,29 @@ export async function getCustomerPayment(customerId: string, paymentId: string):
   return request<StaffCustomerPaymentDetail>(`/staff/customers/${customerId}/payments/${paymentId}/`)
 }
 
+export type StaffRefund = { refund_id: string; payment_id: string; amount: string; status: string; reason: string; provider_reference: string; processed_at: string | null; created_at: string }
+export type StaffCreditNote = { credit_note_id: string; invoice_id: string; amount: string; status: string; reason: string; issued_at: string | null; applied_at: string | null; created_at: string }
+
+export async function getInvoiceAdjustments(customerId: string, invoiceId: string): Promise<{ refunds: StaffRefund[]; credit_notes: StaffCreditNote[] }> {
+  return request(`/staff/customers/${customerId}/invoices/${invoiceId}/adjustments/`)
+}
+
+export async function createRefund(customerId: string, paymentId: string, input: { amount: string; reason: string }): Promise<StaffRefund> {
+  return request(`/staff/customers/${customerId}/payments/${paymentId}/refunds/`, { method: 'POST', body: input })
+}
+
+export async function transitionRefund(customerId: string, refundId: string, action: 'process' | 'complete' | 'fail' | 'cancel', providerReference?: string): Promise<StaffRefund> {
+  return request(`/staff/customers/${customerId}/refunds/${refundId}/${action}/`, { method: 'POST', body: providerReference ? { provider_reference: providerReference } : {} })
+}
+
+export async function createCreditNote(customerId: string, invoiceId: string, input: { amount: string; reason: string }): Promise<StaffCreditNote> {
+  return request(`/staff/customers/${customerId}/invoices/${invoiceId}/credit-notes/`, { method: 'POST', body: input })
+}
+
+export async function transitionCreditNote(customerId: string, creditNoteId: string, action: 'issue' | 'apply' | 'cancel'): Promise<StaffCreditNote> {
+  return request(`/staff/customers/${customerId}/credit-notes/${creditNoteId}/${action}/`, { method: 'POST', body: {} })
+}
+
 // ---------------------------------------------------------------------------
 // Staff: customer support tickets
 // ---------------------------------------------------------------------------

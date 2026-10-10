@@ -6,6 +6,7 @@ import { f, validate } from '../http/validation'
 import { staffPermission } from '../auth/permissions'
 import * as orders from '../orders/service'
 import * as billing from '../billing/service'
+import * as adjustments from '../billing/adjustments'
 import { PaymentProviderWebhookError } from '../billing/providers'
 import { CHANNELS, NOTIFICATION_TYPES, notificationsApi } from '../notifications/service'
 
@@ -165,6 +166,8 @@ async function staffCustomer(ctx: Context) {
 }
 
 const viewing = (code: string) => ({ permissions: [staffPermission('view_customer'), staffPermission(code)] })
+const refunding = { permissions: [staffPermission('view_customer'), staffPermission('view_payment'), staffPermission('issue_refund')] }
+const crediting = { permissions: [staffPermission('view_customer'), staffPermission('view_invoice'), staffPermission('create_invoice')] }
 
 /** Staff customer orders, invoices and payments, plus staff-recorded payments (replaces the Django admin action). */
 export const staffCommerceRoutes = new Router()
@@ -194,3 +197,24 @@ export const staffCommerceRoutes = new Router()
     )
     return json(await billing.recordManualPayment({ invoiceId: ctx.params.invoice_id, amount: data.amount, method: data.method, gatewayId: data.gateway_id, providerReference: data.provider_reference, customerReference: data.customer_reference }), 201)
   }, { permissions: [staffPermission('view_customer'), staffPermission('process_payment')] })
+  // Refunds and credit notes (replaces the Django admin; v1 had no API for them).
+  .get('<uuid:customer_id>/invoices/<uuid:invoice_id>/adjustments/', async (ctx) => adjustments.invoiceAdjustments(await staffCustomer(ctx), ctx.params.invoice_id), viewing('view_invoice'))
+  .post('<uuid:customer_id>/payments/<uuid:payment_id>/refunds/', async (ctx) => {
+    const data = validate({ amount: f.decimal({ maxDigits: 12, decimalPlaces: 2, min: '0.01' }), reason: f.string({ maxLength: 2000 }) }, await ctx.body())
+    return json(await adjustments.createRefund({ actorId: ctx.authenticatedUser.id, customerId: await staffCustomer(ctx), paymentId: ctx.params.payment_id, amount: data.amount, reason: data.reason }), 201)
+  }, refunding)
+  .post('<uuid:customer_id>/refunds/<uuid:refund_id>/<str:action>/', async (ctx) => {
+    const target = ({ process: 'processing', complete: 'completed', fail: 'failed', cancel: 'cancelled' } as const)[ctx.params.action as 'process']
+    if (!target) throw notFound()
+    const data = validate({ provider_reference: f.string({ maxLength: 255 }).optional() }, await ctx.body())
+    return adjustments.transitionRefund({ actorId: ctx.authenticatedUser.id, customerId: await staffCustomer(ctx), refundId: ctx.params.refund_id, target, providerReference: data.provider_reference })
+  }, refunding)
+  .post('<uuid:customer_id>/invoices/<uuid:invoice_id>/credit-notes/', async (ctx) => {
+    const data = validate({ amount: f.decimal({ maxDigits: 12, decimalPlaces: 2, min: '0.01' }), reason: f.string({ maxLength: 2000 }) }, await ctx.body())
+    return json(await adjustments.createCreditNote({ actorId: ctx.authenticatedUser.id, customerId: await staffCustomer(ctx), invoiceId: ctx.params.invoice_id, amount: data.amount, reason: data.reason }), 201)
+  }, crediting)
+  .post('<uuid:customer_id>/credit-notes/<uuid:credit_note_id>/<str:action>/', async (ctx) => {
+    const target = ({ issue: 'issued', apply: 'applied', cancel: 'cancelled' } as const)[ctx.params.action as 'issue']
+    if (!target) throw notFound()
+    return adjustments.transitionCreditNote({ actorId: ctx.authenticatedUser.id, customerId: await staffCustomer(ctx), creditNoteId: ctx.params.credit_note_id, target })
+  }, crediting)

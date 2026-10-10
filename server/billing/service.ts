@@ -18,15 +18,15 @@ export class BillingValidationError extends HttpError {
   }
 }
 
-type InvoiceRow = {
+export type InvoiceRow = {
   id: string; number: string; order_id: string; customer_id: string; status: string; currency_id: number; currency: string
   subtotal: string; discount: string; tax: string; total: string; paid_amount: string; credited_amount: string; payment_terms: number
   notes: string; issued_at: Date | null; due_date: string | null; paid_at: Date | null; cancelled_at: Date | null; created_at: Date
 }
 
-const INVOICE_SELECT = 'SELECT i.*, c.code AS currency FROM billing_invoice i JOIN currencies_currency c ON c.id = i.currency_id'
+export const INVOICE_SELECT = 'SELECT i.*, c.code AS currency FROM billing_invoice i JOIN currencies_currency c ON c.id = i.currency_id'
 
-const balanceOf = (invoice: Pick<InvoiceRow, 'total' | 'paid_amount' | 'credited_amount'>) => Decimal.max(D(invoice.total).sub(invoice.paid_amount).sub(invoice.credited_amount), 0)
+export const balanceOf = (invoice: Pick<InvoiceRow, 'total' | 'paid_amount' | 'credited_amount'>) => Decimal.max(D(invoice.total).sub(invoice.paid_amount).sub(invoice.credited_amount), 0)
 
 export function invoiceSummary(invoice: InvoiceRow) {
   return {
@@ -129,7 +129,7 @@ export async function transitionInvoice(db: Queryable, invoiceId: string, target
 
 // --- Settlement (InvoiceSettlementService) ---
 
-async function synchronizeInvoice(db: Queryable, invoice: InvoiceRow, allowRefunded = false) {
+export async function synchronizeInvoice(db: Queryable, invoice: InvoiceRow, allowRefunded = false) {
   const balance = D(invoice.total).sub(invoice.paid_amount).sub(invoice.credited_amount)
   if (balance.isNegative()) throw new DetailError('Invoice balance cannot be negative.')
   let target: string
