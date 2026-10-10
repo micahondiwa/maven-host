@@ -46,9 +46,9 @@ export class OpenproviderRegistrar implements Registrar {
   private readonly config = config()
 
   private configuration() {
-    if (!this.config.enabled) throw new RegistrarUnavailable('The domain supplier integration is disabled.')
-    if (!ALLOWED_URLS.has(this.config.apiUrl)) throw new RegistrarUnavailable('The domain supplier endpoint is not configured correctly.')
-    if (!this.config.username || !this.config.password) throw new RegistrarUnavailable('The domain supplier credentials are not configured.')
+    if (!this.config.enabled) throw new RegistrarUnavailable('Domain management is temporarily unavailable. Please try again later.')
+    if (!ALLOWED_URLS.has(this.config.apiUrl)) throw new RegistrarUnavailable('Domain management is temporarily unavailable. Please try again later.')
+    if (!this.config.username || !this.config.password) throw new RegistrarUnavailable('Domain management is temporarily unavailable. Please try again later.')
     return this.config.apiUrl
   }
 

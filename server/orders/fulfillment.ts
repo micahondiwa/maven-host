@@ -2,9 +2,10 @@ import 'server-only'
 import { createHash, randomUUID } from 'node:crypto'
 import { database, query, queryOne, transaction } from '../db'
 import { pythonDumps } from '../lib/python-json'
-import { registerDomain } from '../domains/service'
+import { registerDomain, renewDomain } from '../domains/service'
+import { registrarFor } from '../domains/registrars'
 import type { Contact } from '../domains/types'
-import { PRIMARY_DOMAIN, transitionOrder } from './service'
+import { isRenewal, PRIMARY_DOMAIN, transitionOrder } from './service'
 
 /** Port of apps/orders/services/fulfillment.py: durable per-item provider operations after payment. */
 
@@ -19,6 +20,7 @@ export function validateOrderItems(items: Item[]) {
     if (item.quantity !== 1) throw new Error(`Order item ${item.id} has quantity ${item.quantity}; fulfillment requires quantity 1 for one-resource products.`)
     const config = item.configuration ?? {}
     if (item.product_type === 'domain') {
+      if (isRenewal(config) && !/^[0-9a-f-]{36}$/i.test(String(config.domain_id ?? ''))) throw new Error(`Renewal order item ${item.id} is missing its domain.`)
       const domain = String(config.domain ?? '').trim().toLowerCase()
       if (!domain || !domain.includes('.')) throw new Error(`Order item ${item.id} is missing a valid domain name.`)
     } else if (item.product_type === 'hosting') {
@@ -30,7 +32,7 @@ export function validateOrderItems(items: Item[]) {
   }
 }
 
-const operationFor = (item: Item) => (item.product_type === 'domain' ? 'domain_registration' : 'hosting_provisioning')
+const operationFor = (item: Item) => (item.product_type === 'domain' ? (isRenewal(item.configuration) ? 'domain_renewal' : 'domain_registration') : 'hosting_provisioning')
 
 function fingerprint(item: Item) {
   const config = { ...(item.configuration ?? {}) }
@@ -112,6 +114,38 @@ async function fulfillDomain(customerId: string, item: Item) {
   }
 }
 
+/**
+ * Renews a paid renewal. The registry expiry is compared with the expiry recorded when the customer paid: if it has
+ * already moved past it (an earlier attempt renewed but did not finish), the record is reconciled instead of buying a
+ * second year.
+ */
+async function fulfillDomainRenewal(customerId: string, item: Item) {
+  const config = item.configuration ?? {}
+  const domain = await queryOne<{ id: string; domain_name: string; expires_at: string | null; slug: string; registrar_order_id: string }>(
+    'SELECT d.id, d.domain_name, d.expires_at, d.registrar_order_id, r.slug FROM domains_domain d JOIN domains_registrar r ON r.id = d.registrar_id WHERE d.id = $1 AND d.owner_id = $2',
+    [config.domain_id, customerId],
+  )
+  if (!domain) throw new Error('The domain for this paid renewal no longer belongs to the customer; reconcile before fulfilment.')
+  const expected = typeof config.expected_expiry === 'string' ? config.expected_expiry : null
+  const years = Number(config.years ?? 1)
+  const registry = await registrarFor(domain.slug).getRegistrationInfo(domain.domain_name)
+  let expiresAt = domain.expires_at
+  let recovered = false
+  if (expected && registry.expiration_date && registry.expiration_date > expected) {
+    recovered = true
+    expiresAt = registry.expiration_date
+    await database().query(`UPDATE domains_domain SET expires_at = $2, status = 'active', updated_at = CURRENT_TIMESTAMP WHERE id = $1`, [domain.id, expiresAt])
+  } else {
+    const result = await renewDomain(customerId, domain.id, years)
+    if (!result.renewed) throw new Error('The registry did not confirm the renewal; reconcile before retrying.')
+    expiresAt = result.new_expiration_date ?? expiresAt
+  }
+  return {
+    completed: true, operation: 'domain_renewal', domain_id: domain.id, domain_name: domain.domain_name, years, previous_expires_at: expected, expires_at: expiresAt,
+    registrar: domain.slug, registrar_order_id: domain.registrar_order_id, recovered,
+  }
+}
+
 type HostingFulfiller = (input: { orderId: string; customerId: string; item: Item }) => Promise<Record<string, unknown>>
 let hostingFulfiller: HostingFulfiller | null = null
 
@@ -145,7 +179,10 @@ export async function fulfillOrder(orderId: string) {
     if (attempt && 'conflict' in attempt) throw new Error('Fulfillment request changed after the order was paid.')
     if (!attempt) continue
     try {
-      const snapshot: Record<string, unknown> = operation === 'domain_registration' ? await fulfillDomain(start.customer_id, item) : await fulfillHosting(orderId, start.customer_id, item)
+      const snapshot: Record<string, unknown> =
+        operation === 'domain_registration' ? await fulfillDomain(start.customer_id, item)
+          : operation === 'domain_renewal' ? await fulfillDomainRenewal(start.customer_id, item)
+            : await fulfillHosting(orderId, start.customer_id, item)
       await database().query('UPDATE orders_order_item SET provisioning_snapshot = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1', [item.id, JSON.stringify(snapshot)])
       await database().query(
         `UPDATE orders_fulfillmentattempt SET status = 'succeeded', provider_reference = $2, provider_resource_id = $3, completed_at = CURRENT_TIMESTAMP, last_error = '',
@@ -162,7 +199,8 @@ export async function fulfillOrder(orderId: string) {
     const rows = await query<{ completed: boolean; succeeded: boolean }>(
       `SELECT COALESCE((i.provisioning_snapshot ->> 'completed')::boolean, false) AS completed,
               EXISTS (SELECT 1 FROM orders_fulfillmentattempt a WHERE a.order_item_id = i.id AND a.status = 'succeeded'
-                       AND a.operation = CASE WHEN i.product_type = 'domain' THEN 'domain_registration' ELSE 'hosting_provisioning' END) AS succeeded
+                       AND a.operation = CASE WHEN i.product_type = 'domain' AND i.configuration ->> 'operation' = 'renew' THEN 'domain_renewal'
+                                              WHEN i.product_type = 'domain' THEN 'domain_registration' ELSE 'hosting_provisioning' END) AS succeeded
          FROM orders_order_item i WHERE i.order_id = $1`,
       [orderId],
       client,

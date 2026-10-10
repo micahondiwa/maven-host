@@ -7,6 +7,7 @@ import { f, fieldError, invalid, validate } from '../http/validation'
 import { staffPermission } from '../auth/permissions'
 import * as domains from '../domains/service'
 import { domainSecurity } from '../domains/platform'
+import { renewalQuote, setAutoRenew } from '../domains/renewals'
 import { PricingNotAvailableError, RegistrarUnavailable, emptyRecordExtras, type ContactDetails, type DnsRecord } from '../domains/types'
 
 /** apps/domains/api/urls.py and customer_urls.py */
@@ -191,6 +192,12 @@ export const domainRoutes = new Router()
   .put('customer/domains/<uuid:id>/privacy/', async (ctx) => {
     const data = validate({ enabled: f.boolean() }, await ctx.body())
     return domainSecurity.setPrivacy(user(ctx), ctx.params.id, data.enabled, { userId: user(ctx), ip: ctx.ip })
+  }, { throttle: 'domain_security' })
+  // Renewals (phase 2): quote for the portal and the Maven Host auto-renew switch; payment goes through the cart.
+  .get('customer/domains/<uuid:id>/renewal/', (ctx) => renewalQuote(user(ctx), ctx.params.id))
+  .put('customer/domains/<uuid:id>/auto-renew/', async (ctx) => {
+    const data = validate({ enabled: f.boolean() }, await ctx.body())
+    return setAutoRenew(user(ctx), ctx.params.id, data.enabled, { userId: user(ctx), ip: ctx.ip })
   }, { throttle: 'domain_security' })
   .post('customer/domains/<uuid:id>/auth-code/', (ctx) => domainSecurity.authCode(user(ctx), ctx.params.id, { userId: user(ctx), ip: ctx.ip }), { throttle: 'domain_auth_code' })
 

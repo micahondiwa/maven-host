@@ -750,6 +750,8 @@ export type CartItem = {
   name: string
   billing_cycle: string
   domain_name: string
+  /** Domain items: a new registration or a renewal of an owned domain. */
+  operation?: 'register' | 'renew' | null
   quantity: number
   unit_price: string
   discount: string

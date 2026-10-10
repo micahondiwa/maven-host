@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { Link, useParams } from '@/lib/navigation'
 import { ArrowLeft, LoaderCircle, Lock, Plus, RefreshCw, ShieldCheck, Trash2 } from 'lucide-react'
 import { DomainSecurityPanel } from '../../components/account/DomainSecurityPanel'
+import { DomainRenewalPanel } from '../../components/account/DomainRenewalPanel'
 import { ApiError, createDomainDNSRecord, deleteDomainDNSRecord, getMyDomain, listDomainDNSRecords, listDomainNameservers, listMyDomains, updateDomainNameservers, type DNSRecord, type MyDomain, type MyDomainDetail } from '../../lib/api'
 
 export function MyDomainsPage() {
@@ -84,6 +85,7 @@ function DomainDetail({ id }: { id: string }) {
         <span className="inline-flex items-center gap-1.5"><Lock className="size-4" /> {domain.locked ? 'Transfer locked' : 'Transfer unlocked'}</span>
         <span className="inline-flex items-center gap-1.5"><ShieldCheck className="size-4" /> {domain.privacy_enabled ? 'Privacy on' : 'Privacy off'}</span>
       </div>
+      <DomainRenewalPanel domainId={domain.id} />
       <DomainSecurityPanel domainId={domain.id} />
       <DomainDNSManager domain={domain} />
     </div>

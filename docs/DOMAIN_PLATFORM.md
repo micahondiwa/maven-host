@@ -26,7 +26,7 @@ The adapter accepts `/v1` and still accepts the legacy sandbox `/v1beta` host un
 | Premium detection | `POST /domains/check` (`is_premium`) | Live-ready (premium names are not sold online) |
 | Registration (paid order → durable fulfilment) | `POST /domains`, `POST /customers` (handles) | Live-ready |
 | Price guard before purchase | `GET /domains/prices` | Live-ready |
-| Renewal | `POST /domains/{id}/renew` | Live-ready for staff; customer renewal checkout: **next phase** |
+| Renewal | `POST /domains/{id}/renew` | **Live-ready (phase 2)**: customer renewal through cart, checkout and payment, with registry reconciliation |
 | Contacts (owner/admin/tech/billing) | `PUT /domains/{id}` handles, `GET/POST /customers` | Live-ready |
 | Nameservers | `PUT /domains/{id}` `name_servers` | Live-ready |
 | Glue records (existing hosts) | `GET/PUT /dns/nameservers/{name}` | Live-ready (creating new glue: next phase, `POST /dns/nameservers`) |
@@ -61,10 +61,28 @@ The adapter accepts `/v1` and still accepts the legacy sandbox `/v1beta` host un
   register/renew/transfer prices; prices the supplier no longer confirms (not offered, setup fee, multi-year minimum,
   unknown currency, withdrawn extension) are removed so they cannot be sold. Audited as `domain_catalog_synced`.
 
+## Phase 2 (done): renewals
+
+- **Renew through checkout.** A renewal is a domain cart item with `operation: renew`, priced from the extension's
+  renewal price. It is accepted only for the customer's own domain, only with a renewal price matching that domain's
+  extension and registrar, and once per cart. Renewal-only carts need no registrant contact. Registration items must
+  now use a registration price (previously a renewal or transfer price id could be added as a "registration").
+- **No double renewal.** The expiry being extended is recorded at checkout. At fulfilment the registry expiry is
+  checked first: if it is already past that date (an earlier attempt renewed but did not finish), the record is
+  reconciled and no second renewal is bought. Fulfilment uses its own durable operation (`domain_renewal`).
+- **Maven Host auto-renew.** Customers switch auto-renew on the domain page. 14 days before expiry the daily
+  `process_domain_renewals` job issues a renewal order and invoice (in the customer's USD/KES preference) and emails
+  it; the domain renews once paid. The supplier's own auto-renew stays off, so nothing is renewed unpaid.
+- **Reminders.** 30, 7 and 1 days before expiry, and once after expiry (within the 30-day grace window). Each notice
+  and each automatic invoice is recorded in `domains_renewalnotice` (unique per domain, kind and expiry date) before
+  sending, so reruns and overlapping runs never duplicate them; no automatic invoice is issued while an unpaid or
+  in-progress renewal order exists.
+- **Portal.** Renewal panel with expiry countdown, the price in the selected currency, "Renew for 1 year", a link to
+  any unpaid renewal invoice, and the auto-renew switch. Cart lines show "Renewal: example.com".
+
 ## Next phases
 
-1. Customer renewals through checkout (renewal cart product, reminders, Maven-side auto-renew billing).
-2. Transfer in (auth code at checkout, `POST /domains/transfer`, status tracking) and auth-code reset.
-3. DNSSEC management and new glue records.
-4. Contact profiles reused across registrations; registry email verification status.
-5. SSL product line; reseller balance and margin reporting for staff.
+1. Transfer in (auth code at checkout, `POST /domains/transfer`, status tracking) and auth-code reset.
+2. DNSSEC management and new glue records.
+3. Contact profiles reused across registrations; registry email verification status.
+4. SSL product line; reseller balance and margin reporting for staff.

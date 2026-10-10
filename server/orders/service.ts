@@ -153,12 +153,40 @@ export async function cartSummary(db: Queryable, cartId: string) {
     }
     summaries.push({
       checkout_blocked: blocked, item_id: item.id, product_type: item.product_type, resource_id: item.resource_id, name: item.name, billing_cycle: item.billing_cycle,
-      domain_name: item.product_type === 'hosting' ? String(item.configuration?.domain ?? '') : '', quantity: item.quantity, unit_price: item.unit_price, discount: item.discount, total: money(itemTotal(item)),
+      domain_name: item.product_type === 'hosting' || item.product_type === 'domain' ? String(item.configuration?.domain ?? '') : '',
+      operation: item.product_type === 'domain' ? (isRenewal(item.configuration) ? 'renew' : 'register') : null, quantity: item.quantity, unit_price: item.unit_price, discount: item.discount, total: money(itemTotal(item)),
     })
   }
   const subtotal = items.reduce((sum, item) => sum.add(D(item.unit_price).mul(item.quantity)), D(0))
   const discount = items.reduce((sum, item) => sum.add(item.discount), D(0))
   return { cart_id: cartId, currency: (await cartCurrency(db, items)) ?? 'USD', items: summaries, subtotal: money(subtotal), discount: money(discount), tax: '0.00', total: money(subtotal.sub(discount)) }
+}
+
+/** A renewal of a domain the customer already owns is a domain item with `configuration.operation = 'renew'`. */
+export const isRenewal = (configuration: Record<string, unknown> | null | undefined) => configuration?.operation === 'renew'
+
+/**
+ * Validates a renewal against the owned domain and the renewal price row, and records the expiry the customer is
+ * paying to extend; fulfilment compares it with the registry so a retried renewal is never charged twice.
+ */
+export async function renewalConfiguration(db: Queryable, customerId: string | null, priceId: string, configuration: Record<string, unknown>) {
+  if (!customerId) throw invalid('Sign in to renew a domain.')
+  const domainId = String(configuration.domain_id ?? '')
+  const domain = /^[0-9a-f-]{36}$/i.test(domainId)
+    ? await queryOne<{ id: string; domain_name: string; status: string; expires_at: string | null; registrar_id: number; tld_id: number | null }>(
+        'SELECT id, domain_name, status, expires_at, registrar_id, tld_id FROM domains_domain WHERE id = $1 AND owner_id = $2',
+        [domainId, customerId],
+        db,
+      )
+    : undefined
+  if (!domain) throw invalid('Select a domain that belongs to your account.')
+  if (!['active', 'expired', 'pending'].includes(domain.status)) throw invalid('This domain cannot be renewed online. Please contact Maven Host support.')
+  const price = /^\d+$/.test(priceId)
+    ? await queryOne<{ price_type: string; years: number; registrar_id: number; tld_id: number }>('SELECT price_type, years, registrar_id, tld_id FROM domains_domainprice WHERE id = $1', [Number(priceId)], db)
+    : undefined
+  if (!price || price.price_type !== 'renew' || price.registrar_id !== domain.registrar_id || price.tld_id !== domain.tld_id)
+    throw invalid('This renewal price does not apply to the selected domain.')
+  return { operation: 'renew', domain_id: domain.id, domain: domain.domain_name, years: price.years, expected_expiry: domain.expires_at }
 }
 
 export async function addCartItem(customerId: string | null, guestToken: string | null, input: { product_type: string; resource_id: string; billing_cycle: string; quantity: number; configuration: Record<string, unknown>; currency: string | null }) {
@@ -173,11 +201,21 @@ export async function addCartItem(customerId: string | null, guestToken: string 
     let configuration: Record<string, unknown> = { ...(input.configuration ?? {}) }
     if (input.product_type === 'domain') {
       if (input.quantity !== 1) throw invalid('Domain purchases must have quantity 1.')
-      const domain = String(configuration.domain ?? '').trim().toLowerCase()
-      if (!domain || domain.includes('@') || !domain.includes('.')) throw invalid('A valid fully-qualified domain is required for domain cart items.')
-      // v1 priced the cart in the requested currency but re-priced checkout in the default currency, so a KES cart
-      // produced a USD invoice. The selected currency is kept on the item and reused at checkout.
-      configuration = { ...configuration, domain, ...(input.currency ? { currency: product.currency } : {}) }
+      if (isRenewal(configuration)) {
+        const renewal = await renewalConfiguration(client, customerId, product.id, configuration)
+        const duplicate = await queryOne(`SELECT 1 FROM orders_cart_item WHERE cart_id = $1 AND product_type = 'domain' AND configuration ->> 'operation' = 'renew' AND configuration ->> 'domain_id' = $2`, [cartId, renewal.domain_id], client)
+        if (duplicate) throw invalid(`A renewal for ${renewal.domain} is already in your cart.`)
+        configuration = { ...renewal, ...(input.currency ? { currency: product.currency } : {}) }
+      } else {
+        // Registration items must use a registration price (a renewal or transfer price would be charged for a new registration).
+        if ((await queryOne<{ price_type: string }>('SELECT price_type FROM domains_domainprice WHERE id = $1', [Number(product.id)], client))?.price_type !== 'register')
+          throw invalid('This price is not a registration price. Renew an existing domain from your account instead.')
+        const domain = String(configuration.domain ?? '').trim().toLowerCase()
+        if (!domain || domain.includes('@') || !domain.includes('.')) throw invalid('A valid fully-qualified domain is required for domain cart items.')
+        // v1 priced the cart in the requested currency but re-priced checkout in the default currency, so a KES cart
+        // produced a USD invoice. The selected currency is kept on the item and reused at checkout.
+        configuration = { ...configuration, domain, ...(input.currency ? { currency: product.currency } : {}) }
+      }
     }
     if (input.product_type === 'hosting') {
       if (input.quantity !== 1) throw invalid('Hosting purchases must have quantity 1.')
@@ -289,6 +327,13 @@ export async function checkout(customerId: string, input: CheckoutInput) {
     const contact = input.domain_contact ?? {}
     for (const item of items) {
       if (item.product_type !== 'domain') continue
+      if (isRenewal(item.configuration)) {
+        // Renewals keep the existing registrant; re-check ownership and refresh the expiry being extended.
+        const configuration = { ...item.configuration, ...(await renewalConfiguration(client, customerId, item.resource_id, item.configuration)) }
+        await client.query('UPDATE orders_cart_item SET configuration = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $1', [item.id, JSON.stringify(configuration)])
+        item.configuration = configuration
+        continue
+      }
       const registrar = (await queryOne<{ slug: string }>('SELECT r.slug FROM domains_domainprice p JOIN domains_registrar r ON r.id = p.registrar_id WHERE p.id = $1', [Number(item.resource_id)], client))?.slug
       if (registrar === 'register_ke') throw invalid('Register.co.ke checkout is disabled pending reseller API integration.')
       if (registrar === 'registry_tz') throw invalid('registry.co.tz checkout is disabled pending reseller API integration.')
@@ -341,27 +386,59 @@ export async function checkout(customerId: string, input: CheckoutInput) {
     }
     if (currencies.size !== 1) throw invalid('All order items must use the same currency.')
     items = await query<CartItemRow>('SELECT * FROM orders_cart_item WHERE cart_id = $1 ORDER BY created_at FOR UPDATE', [cartId], client)
-    const summary = await cartSummary(client, cartId)
-    const orderId = randomUUID()
-    const number = await nextOrderNumber(client)
     await client.query('UPDATE orders_order SET cart_id = NULL WHERE cart_id = $1', [cartId])
-    await client.query(
-      `INSERT INTO orders_order (id, number, status, subtotal, discount, tax, total, currency, notes, placed_at, completed_at, created_at, updated_at, cart_id, customer_id)
-       VALUES ($1, $2, 'draft', $3, $4, $5, $6, $7, $8, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $9, $10)`,
-      [orderId, number, summary.subtotal, summary.discount, summary.tax, summary.total, [...currencies][0], input.notes, cartId, customerId],
-    )
-    for (const item of items)
-      await client.query(
-        `INSERT INTO orders_order_item (id, product_type, resource_id, name, description, billing_cycle, quantity, unit_price, discount, tax, total, pricing_snapshot, configuration,
-           provisioning_snapshot, created_at, updated_at, order_id)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0, $10, $11, $12, '{}', clock_timestamp(), clock_timestamp(), $13)`,
-        [randomUUID(), item.product_type, item.resource_id, item.name, item.description, item.billing_cycle, item.quantity, item.unit_price, item.discount, money(itemTotal(item)),
-          JSON.stringify({ unit_price: item.unit_price, discount: item.discount, billing_cycle: item.billing_cycle }), JSON.stringify(item.configuration ?? {}), orderId],
-      )
-    await transitionOrder(client, orderId, 'pending_payment')
-    const invoice = await createInvoiceFromOrder(client, orderId, true)
+    const placed = await placeOrder(client, customerId, items, [...currencies][0], input.notes, cartId)
     await client.query('DELETE FROM orders_cart_item WHERE cart_id = $1', [cartId])
-    return { order_id: orderId, order_number: number, invoice_id: invoice.invoice_id, invoice_number: invoice.invoice_number }
+    return placed
+  })
+}
+
+type OrderLine = Pick<CartItemRow, 'product_type' | 'resource_id' | 'name' | 'description' | 'billing_cycle' | 'quantity' | 'unit_price' | 'discount' | 'configuration'>
+
+/** Writes an order with its items, moves it to pending payment and issues the invoice (checkout and server-created orders). */
+export async function placeOrder(client: Queryable, customerId: string, lines: OrderLine[], currency: string, notes: string, cartId: string | null) {
+  const subtotal = lines.reduce((sum, line) => sum.add(D(line.unit_price).mul(line.quantity)), D(0))
+  const discount = lines.reduce((sum, line) => sum.add(line.discount), D(0))
+  const orderId = randomUUID()
+  const number = await nextOrderNumber(client)
+  await client.query(
+    `INSERT INTO orders_order (id, number, status, subtotal, discount, tax, total, currency, notes, placed_at, completed_at, created_at, updated_at, cart_id, customer_id)
+     VALUES ($1, $2, 'draft', $3, $4, '0.00', $5, $6, $7, NULL, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $8, $9)`,
+    [orderId, number, money(subtotal), money(discount), money(subtotal.sub(discount)), currency, notes, cartId, customerId],
+  )
+  for (const line of lines)
+    await client.query(
+      `INSERT INTO orders_order_item (id, product_type, resource_id, name, description, billing_cycle, quantity, unit_price, discount, tax, total, pricing_snapshot, configuration,
+         provisioning_snapshot, created_at, updated_at, order_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0, $10, $11, $12, '{}', clock_timestamp(), clock_timestamp(), $13)`,
+      [randomUUID(), line.product_type, line.resource_id, line.name, line.description, line.billing_cycle, line.quantity, line.unit_price, line.discount, money(itemTotal(line)),
+        JSON.stringify({ unit_price: line.unit_price, discount: line.discount, billing_cycle: line.billing_cycle }), JSON.stringify(line.configuration ?? {}), orderId],
+    )
+  await transitionOrder(client, orderId, 'pending_payment')
+  const invoice = await createInvoiceFromOrder(client, orderId, true)
+  return { order_id: orderId, order_number: number, invoice_id: invoice.invoice_id, invoice_number: invoice.invoice_number }
+}
+
+/**
+ * Server-created renewal order (Maven Host auto-renew): priced and validated exactly like a cart renewal, invoiced
+ * to the customer for payment. Returns null when the domain has no renewal price.
+ */
+export async function createRenewalOrder(customerId: string, domainId: string, currency: 'USD' | 'KES') {
+  return transaction(async (client) => {
+    const price = await queryOne<{ id: number }>(
+      `SELECT p.id FROM domains_domainprice p JOIN domains_domain d ON d.registrar_id = p.registrar_id AND d.tld_id = p.tld_id
+        WHERE d.id = $1 AND d.owner_id = $2 AND p.price_type = 'renew' AND p.years = 1`,
+      [domainId, customerId],
+      client,
+    )
+    if (!price) return null
+    const product = await catalogProduct('domain', String(price.id), currency, false, client)
+    const configuration = { ...(await renewalConfiguration(client, customerId, String(price.id), { domain_id: domainId })), currency: product.currency, auto_renew: true }
+    return placeOrder(
+      client, customerId,
+      [{ product_type: 'domain', resource_id: product.id, name: product.name, description: `${product.description} — ${configuration.domain}`, billing_cycle: product.billing_cycle, quantity: 1, unit_price: product.unit_price, discount: '0', configuration }],
+      product.currency, `Automatic renewal invoice for ${configuration.domain}.`, null,
+    )
   })
 }
 

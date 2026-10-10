@@ -63,7 +63,8 @@ export function CartPage() {
       navigate(`/login?next=${encodeURIComponent('/cart')}`)
       return
     }
-    const hasDomains = cart?.items.some(item => item.product_type === 'domain')
+    // Registrant contact is needed for new registrations only; renewals keep the existing registrant.
+    const hasDomains = cart?.items.some(item => item.product_type === 'domain' && item.operation !== 'renew')
     const contactError = hasDomains ? validateDomainContact(domainContact) : null
     if (contactError) {
       setError(contactError)
@@ -136,7 +137,7 @@ export function CartPage() {
                   <div className="flex items-center justify-between gap-4">
                     <div>
                       <p className="mono text-[11px] font-medium text-maven-muted">{item.product_type}</p>
-                      <p className="mt-1 font-semibold text-maven-ink">{item.name}</p>
+                      <p className="mt-1 font-semibold text-maven-ink">{item.product_type === 'domain' && item.domain_name ? `${item.operation === 'renew' ? 'Renewal: ' : ''}${item.domain_name}` : item.name}</p>
                       <p className="mt-0.5 text-sm text-maven-muted">{item.billing_cycle.replace('_', ' ')} · Qty {item.quantity}</p>
                       {item.product_type === 'hosting' && !item.checkout_blocked && <p className="mt-1 text-sm text-maven-muted">Primary domain: <span className="font-medium text-maven-ink">{item.domain_name || 'Choose at checkout'}</span></p>}
                     </div>
@@ -166,7 +167,7 @@ export function CartPage() {
                 <div className="mt-2 flex justify-between border-t border-maven-line pt-3 text-base"><dt className="font-semibold text-maven-ink">Total <span className="text-xs font-normal text-maven-muted">{cart.currency}</span></dt><dd className="mono font-semibold text-maven-ink">{money(cart.total)}</dd></div>
                 {currency.indicative && cart.currency === 'USD' && currency.convertUsd(cart.total) && <p className="text-xs text-maven-muted">≈ {currency.format(currency.convertUsd(cart.total)!)} at today's indicative rate. You are charged in US dollars.</p>}
               </dl>
-              {user && !checkoutBlocked && cart.items.some(item => item.product_type === 'domain') && <DomainContactFields value={domainContact} onChange={setDomainContact} />}
+              {user && !checkoutBlocked && cart.items.some(item => item.product_type === 'domain' && item.operation !== 'renew') && <DomainContactFields value={domainContact} onChange={setDomainContact} />}
               {error && <p role="alert" className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm font-medium text-maven-danger">{error}</p>}
               {checkoutBlocked && <p role="status" className="mt-5 rounded-lg border border-maven-line bg-maven-paper p-3 text-sm leading-6 text-maven-ink">Your hosting selection is saved. Checkout, payment and account setup are not available yet. Hosting prices already include 16% VAT.</p>}
               {!user ? (

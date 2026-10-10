@@ -3,6 +3,7 @@ import { seedCurrencies, synchronizeExchangeRates } from '../pricing/engine'
 import { importSupplierPrices, seedSupplierRecords, seedTlds } from '../domains/service'
 import { OpenproviderRegistrar } from '../domains/registrars/openprovider'
 import { syncDomainCatalog } from '../domains/platform'
+import { processDomainRenewals } from '../domains/renewals'
 import type { Command } from './manage'
 
 function option(args: string[], name: string) {
@@ -69,6 +70,13 @@ export const commands: Record<string, Command> = {
       const prices = [...(await client.getPricing('REGISTER')), ...(await client.getPricing('RENEW')), ...(await client.getPricing('TRANSFER'))]
       const count = await importSupplierPrices('openprovider', prices)
       console.log(`Imported ${count} supplier prices; no suppliers or TLDs were activated and no domains purchased.`)
+    },
+  },
+  process_domain_renewals: {
+    help: 'Daily: issue auto-renew invoices 14 days before expiry and send renewal reminders (30, 7, 1 days) and expiry notices.',
+    run: async () => {
+      const summary = await processDomainRenewals()
+      console.log(`Renewals processed: ${summary.invoices} invoices, ${summary.reminders} reminders, ${summary.expired_notices} expiry notices, ${summary.failures} failures.`)
     },
   },
   sync_domain_catalog: {
